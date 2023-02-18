@@ -1,0 +1,150 @@
+﻿@model Azure_0517.Models.ViewModel.rhp_default_viewmodel
+
+@section styles{
+    <style>
+    </style>
+}
+
+@*最新優惠訂位資訊餐廳相片相關食記歷史評論*@
+    <div class="container-fluid">
+        <h5 class="text-warning m-0 p-0">­最新優惠</h5>
+        <hr class="border-warning m-0 p-0" style="clear:both" />
+        <div class="container-fluid text-center">
+            @*放優惠(全部)*@
+            @if (Model.all_discount.Count() == 0)
+            {
+                <div class="alert alert-primary text-center" role="alert">
+                    尚未開放優惠!敬請期待
+                </div>
+            }
+            else
+            {
+                <div id="discountDiv" class="row">
+                    @Html.Action("HomePageDiscounts", "Restaurant", new { id = Model._resid })
+                </div>
+                if (Model.all_discount.Count() >= 4)
+                {
+                    <button data-maxcount="@Model.all_discount.Count()" id="discountPage" data-page="1" type="button" class="btn btn-primary mt-3 mb-3">
+                        檢視更多優惠!
+                    </button>
+                }
+
+            }
+
+        </div>
+        <h5 class="text-warning m-0 p-0">­訂位資訊</h5>
+        <hr class="border-warning m-0 p-0" style="clear:both" />
+        <div class="container-fluid text-left" style="margin-top:30px;margin-bottom:30px;">
+            @*放開放的定位(全部)*@
+
+            <input type="date" id="ReservationDate" value="" />
+            <script>
+                document.getElementById("ReservationDate").valueAsDate = new Date();
+            </script>
+            <div id="DailyReservation" class="reservation-ul">
+
+                @Html.Action("HomePageReservation", "Restaurant", new { id = Model._resid, date = DateTime.Now.Date })
+
+            </div>
+
+
+
+        </div>
+        <h5 class="text-warning m-0 p-0">­餐廳相片</h5>
+        <hr class="border-warning m-0 p-0" style="clear:both" />
+        <div class="container-fluid" style="margin-top:30px;margin-bottom:30px;">
+            @*放介紹(餐廳自己的照片 最多6筆)*@
+            <div id="rhp_defaule_photo">
+                @if (Model.all_photo.Count() == 0)
+                {
+                    <div class="alert alert-primary text-left" role="alert">
+                        餐廳目前沒有更多的介紹!敬請期待
+                    </div>
+
+                }
+                else if (Model.all_photo.Count() > 8)
+                {
+
+                    foreach (var p in Model.all_photo.Take(8))
+                    {
+                        <button class="m-1" style="background-color:transparent;border:none" type="button" data-toggle="modal" data-target="#rhp_default_picture">
+                            <div class="card float-left m-0 p-0" style="width:9.3rem;height:9.3rem">
+                                <img src="@Url.Action("getdbimage", "Restaurant", new { id = p.Pic_ID ,table="picture"})" class="card-img" style="width:9.3rem;height:9.3rem">
+                                <div class="card card-body p-0 m-0 text-center">
+                                    <h2 class="card-title collapse">@p.Pic_title</h2>
+                                    <p class="card-text collapse">@p.Pic_title</p>
+                                </div>
+                            </div>
+                        </button>
+                    }
+                    <button type="button" id="rhp_default_morephoto" class="btn btn-primary btn-lg btn-block">檢視更多的餐廳相片請點擊我前往觀看</button>
+
+                }
+                else
+                {
+                    foreach (var p in Model.all_photo)
+                    {
+                        <button class="m-1" style="background-color:transparent;border:none" type="button" data-toggle="modal" data-target="#rhp_default_picture">
+                            <div class="card float-left m-0 p-0" style="width:9.3rem;height:9.3rem">
+                                <img src="@Url.Action("getdbimage", "Restaurant", new { id = p.Pic_ID ,table="picture"})" class="card-img-top" style="width:9.3rem;height:9.3rem">
+                                <div class="card-body p-0 m-0 text-center">
+                                    <h5 class="card-title collapse">@p.Pic_title</h5>
+                                    <p class="card-text collapse">@p.Pic_title</p>
+                                </div>
+                            </div>
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+        <h5 class="text-warning m-0 p-0">­相關食記</h5>
+        <hr class="border-warning m-0 p-0" style="clear:both" />
+        <div class="container-fluid" style="margin-top:30px;margin-bottom:30px;">
+            <div>
+                @*放食記*@
+                @if (Model.all_news.Count() == 0)
+                {
+                    <div class="alert alert-primary text-center" role="alert">
+                        目前還沒有相關的食記!
+                    </div>
+                }
+                else
+                {
+                    @Html.Action("RestNewsOverView", "Restaurant", new { id = Model._resid });
+
+                    <button type="button" id="rhp_default_morenews" class="btn btn-primary btn-lg btn-block">檢視更多的相關食記請點擊我前往觀看</button>
+                }
+
+            </div>
+        </div>
+        <h5 class="text-warning m-0 p-0">­歷史評論</h5>
+        <hr class="border-warning m-0 p-0" style="clear:both" />
+        <div class="container-fluid" style="margin-top:30px;margin-bottom:30px;">
+            @*放評論*@
+            @if (Request.Cookies["Role"] == null)
+            {
+
+            }
+            else if (Request.Cookies["Role"].Value == "Member")
+            {
+                <div id="fucom">
+                    @Html.Action("CommentOverview", "Member", new { id = Model._resid })
+                </div>
+            }
+
+            <div>
+                @if (Model.all_comments.Count() == 0)
+                {
+                    <div class="alert alert-primary text-center" role="alert">
+                        目前還沒有相關的評論!
+                    </div>
+                }
+                else
+                {
+                    @Html.Action("RestaurantCommentOverview", "Restaurant", new { id = Model._resid })
+                }
+
+            </div>
+        </div>
+        <hr />
+    </div>

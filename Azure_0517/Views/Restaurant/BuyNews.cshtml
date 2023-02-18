@@ -1,0 +1,72 @@
+﻿@model Azure_0517.Models.News
+@{
+    ViewBag.Title = "廣告申請";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        .mytext {
+            resize: none;
+            height: 400px !important;
+        }
+
+        .pagenoticespan {
+            color: mediumvioletred;
+        }
+
+        table {
+            font-size: x-large;
+        }
+    </style>
+}
+
+
+<div class="container" style="margin-top:2%;margin-bottom:2%">
+
+    <form id="MyForm">
+        <h3>廣告申請</h3>
+        @Html.Hidden("New_RestaurantID", (object)ViewBag.RestID, new { value = "New_RestaurantID" })
+        <table class="table table-dark">
+            <tr><td>@Html.DisplayNameFor(n => n.Restaurant.Res_Name):@ViewBag.RestName</td></tr>
+            <tr><td>請輸入廣告需求:</td></tr>
+            <tr><td>@Html.TextAreaFor(c => c.New_Content, new { @class = "mytext form-control" })</td></tr>
+            <tr><td><input type="button" value="送出" style="width:100%;background-color:orange;" id="send" /></td></tr>
+        </table>
+        <span class="pagenoticespan">
+            *請輸入推廣文章內特別需要包含的詳細內容<button type="button" id="demoSP" style="background-color:darkgray">DEMO<i class="fas fa-laptop-code"></i></button><br />
+            *例如:活動優惠、活動名稱、活動時間期限等等<br />
+            *若無特別要求，一律以廣告食記之方式受理<br />
+        </span>
+    </form>
+</div>
+
+@section scripts{
+    <script>
+
+        $('#demoSP').click(function () {
+            event.preventDefault();
+            $('#New_Content').val('1.謝師宴特別活動。\n2.團體滿20人，每桌送有機蔬果汁一壺，主廚開胃前菜五品。\n3.老師招待RAW餐後甜品乙份。');
+            }
+        )
+
+
+        $('#send').click(function () {
+            if (confirm("確認送出廣告申請嗎?")) {
+                 $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("BuyNews", "Restaurant")',
+                    data: $('#MyForm').serialize(),
+                    success: function (data) {
+                        notice.server.send();
+                        alert(data);
+                        if (data == "申請完成") {
+                            location.href = '@Url.Action("RestaurantHomePage", "Restaurant", new {id= ViewBag.RestID })';
+
+                        }
+                    }
+                })
+            }
+            })
+    </script>
+
+}

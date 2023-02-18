@@ -1,0 +1,123 @@
+﻿@model Azure_0517.Models.Member
+<div class="container mt-5">
+    @using (Html.BeginForm("MemberManage", "Administrator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_ID, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_ID, new { htmlattributes = new { @class = "form-control", value = Model.Mem_ID, @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Name, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Name, new { htmlattributes = new { id = "m_Name", @class = "form-control", value = Model.Mem_Name } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_NickName, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_NickName, new { htmlattributes = new { id = "m_NickName", @class = "form-control", value = Model.Mem_NickName } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Account, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Account, new { htmlattributes = new { id = "m_Account", @class = "form-control", value = Model.Mem_Account } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Password, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Password, new { htmlattributes = new { id = "m_Password", @class = "form-control", value = Model.Mem_Password } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Address, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Address, new { htmlattributes = new { id = "m_Address", @class = "form-control", value = Model.Mem_Address } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Birthday, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Birthday, new { htmlattributes = new { id = "m_Birthday", @class = "form-control", value = Model.Mem_Birthday } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Mail, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Mail, new { htmlattributes = new { id = "m_Mail", @class = "form-control", value = Model.Mem_Mail } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Phone, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Phone, new { htmlattributes = new { id = "m_Phone", @class = "form-control", value = Model.Mem_Phone } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Exp, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Exp, new { htmlattributes = new { id = "m_Exp", @class = "form-control", value = Model.Mem_Exp } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Point, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Mem_Point, new { htmlattributes = new { id = "m_Point", @class = "form-control", value = Model.Mem_Point } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Mem_Photo, new { @class = "col-sm-2 col-form-label text-center" })
+            <div class="col-sm-10 text-center">
+                <img id="target" name="target" src="@Url.Action("getdbimage", "Member" ,new { id=Model.Mem_ID ,flag="mem" })" alt="Preview Image" width="500" height="500" />
+                <input type="file" class="form-control-file" style="margin-left:10.8rem" id="myfile" name="myfile">
+            </div>
+        </div>
+        <div class="form-group row mt-5">
+            <div class="col-sm-12 text-center">
+                <button id="btn_send" type="submit" class="btn btn-primary">確認修改</button>
+                @Html.ActionLink("返回前頁", "MemberOverview", "Administrator", null, new { @class = "btn btn-success" })
+                <button id="chu_demo" type="button" class="btn btn-info">Demo鍵</button>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("myfile").addEventListener("change", fileviewer);
+        })
+
+        function fileviewer() {
+            var files = document.getElementById("myfile").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    document.getElementById("target").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        }
+
+        $("#chu_demo").click(function () {
+            alert("demo");
+            $("#m_Name").val('Demo甲員');
+            $("#m_NickName").val('Demo甲員');
+            $("#m_Account").val('ryes8877');
+            $("#m_Password").val('qaz123456789');
+            $("#m_Address").val('台北市台電大樓茗生路37號7樓2號');
+            $("#m_Birthday").val('1995/7/3 下午 14:30:50');
+            $("#m_Mail").val('demo1113@gmail.com');
+            $("#m_Phone").val('0973553761');
+            $("#m_Exp").val('250');
+            $("#m_Point").val('30');
+        })
+    </script>
+
+}
+

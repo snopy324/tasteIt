@@ -1,0 +1,73 @@
+﻿@model Azure_0517.Models.Picture
+@{
+    /**/
+
+    ViewBag.Title = "修改相片內容";
+}
+@section styles{
+    <style>
+        .forinput {
+            width: 500px;
+        }
+
+        textarea {
+            width: 500px !important;
+            height: 200px !important;
+        }
+
+        .forsubmitbtn {
+            width: 100px !important;
+        }
+    </style>
+}
+
+@using (Html.BeginForm("updatepicture", "Restaurant", FormMethod.Post, new { enctype = "multipart/form-data",@class= "mt-5 ml-5" }))
+{
+    <input type="hidden" name="picid" value="@Model.Pic_ID" />
+    <input type="hidden" name="foroverview" value="@ViewBag.resid" />
+    <label name="foroverview"></label>
+    <div class="form-group">
+        <img id="target" name="target" src="@Url.Action("getdbimage", "Restaurant",new { id =Model.Pic_ID ,table="picture"})" alt="Preview Image" width="500" height="500" />
+        <input type="file" class="form-control-file" id="myfile" name="myfile">
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(t => t.Pic_title)
+        :
+        @Html.EditorFor(t => t.Pic_title, new { htmlattributes = new { @class = "form-control forinput mt-3", value = Model.Pic_title } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(c => c.Pic_Content)
+        :
+    </div>
+    <div class="form-group">
+        @Html.TextAreaFor(c => c.Pic_Content, new { htmlattributes = new { @class = "form-control forinput2", value = Model.Pic_Content } })
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary btn-block forsubmitbtn" type="submit" value="確認並送出" />
+    </div>
+}
+@section scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("myfile").addEventListener("change", fileviewer);
+        })
+
+        function fileviewer()
+        {
+            var files = document.getElementById("myfile").files;
+            for (var x of files)
+            {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    document.getElementById("target").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        }
+        
+    </script>
+}
+
+
+

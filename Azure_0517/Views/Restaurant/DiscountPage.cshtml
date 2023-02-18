@@ -1,0 +1,48 @@
+﻿@model Azure_0517.Models.Discount
+@{
+    ViewBag.Title = Model.Dis_Title;
+}
+
+<h3><a href="@Url.Action("RestaurantHomePage","Restaurant", new {id = Model.Dis_RestaurantID })">@Model.Restaurant.Res_Name</a> </h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <figure>
+                <img src='@Url.Action("GetDiscountImg","Restaurant")/@(Model.Dis_ID)' style="max-width:100%; max-width:100%" alt="Alternate Text" />
+            </figure>
+        </div>
+        <div class="col">
+            <div class="card">
+               
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p style="min-height:200px">
+                            @Html.Raw(Model.Dis_Content.Replace(((char)13).ToString(), "<br>"))
+                        </p>
+                        <footer class="blockquote-footer">
+                            From @Model.Dis_Start.Date.ToString("yyyy/MM/dd")
+                            @if (Model.Dis_End.HasValue)
+                            {
+                                <span>to @Model.Dis_End.Value.Date.ToString("yyyy/MM/dd") </span>
+                            }
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <strong>條款及細則:</strong>
+        <ul>
+            <li>此優惠不可兌換現金或其他產品。</li>
+            <li>優惠內容如有任何更改恕不另行通知，如有任何爭議，餐廳保留一切有關行使之最終決定。</li>
+            <li>以上優惠是顧客與商戶之間的商業交易，TasteIt.com 概不負上任何責任。</li>
+            <li>此優惠不可與其他折扣及優惠同時使用。</li>
+            <li>優惠需要於指定有效日期前使用，逾期無效並不設退款。</li>
+            <li>此優惠只限於店內使用。</li>
+            <li>10% 服務費以原價為基礎計算。</li>
+        </ul>
+    </div>
+</div>
+

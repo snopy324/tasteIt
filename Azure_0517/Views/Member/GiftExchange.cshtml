@@ -1,0 +1,515 @@
+﻿@model IPagedList<Azure_0517.Models.Gift>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web;
+
+@{
+    ViewBag.Title = "紅利兌換";
+}
+@section styles{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .pagebtn {
+            width: 45px;
+            height: 45px;
+            line-height: 25px;
+            border: 5px solid #d6bc45;
+            background-color: #f3e7a0;
+            border-radius: 40px; /* 高度 */
+            font-family: 'Sansita One', cursive;
+            font-weight: bolder;
+            box-shadow: 3px 5px 5px #ccc;
+        }
+
+            .pagebtn:hover {
+                background-color: gold;
+                color: white;
+            }
+
+        div .pagination-container {
+            text-align: center;
+        }
+
+        .title {
+            text-align: center;
+            color: crimson;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+            font-size: 28px;
+            font-weight: bolder;
+        }
+
+        .section-header i {
+            color: crimson;
+            font-size: 30px;
+            display: inline-block;
+        }
+
+        .section-header p {
+            max-width: 500px;
+            margin: 20px auto 0;
+        }
+
+        .single-publication {
+            border: 2px solid bisque;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            height: 80%;
+            box-shadow: 2px 3px 5px 0px #d9d3d3;
+            background-color: beige;
+        }
+
+            .single-publication:hover {
+                background-color: #cff2b5;
+            }
+
+            .single-publication figure {
+                position: relative;
+                margin: 0;
+                text-align: center;
+                box-shadow: 2px 1px 1px 0px #d9d3d3;
+            }
+
+                .single-publication figure > a {
+                    background-color: #fafafa;
+                    display: block;
+                }
+
+                .single-publication figure ul {
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+                    position: absolute;
+                    right: -50px;
+                    top: 20px;
+                    transition: .6s;
+                    -webkit-transition: .6s;
+                }
+
+            .single-publication:hover figure ul {
+                right: 15px;
+            }
+
+
+            /*獎品資訊按鈕*/
+            .single-publication figure ul li a {
+                display: inline-block;
+                width: 35px;
+                height: 35px;
+                text-align: center;
+                font-size: 15px;
+                background: gold;
+                margin-bottom: 7px;
+                border-radius: 50%;
+                line-height: 35px;
+                color: #fff;
+                cursor: pointer;
+            }
+
+                .single-publication figure ul li a:hover {
+                    color: white;
+                    background-color: #e50663;
+                }
+
+
+            .single-publication .publication-content {
+                text-align: center;
+                padding: 15px;
+                position: relative;
+                width: 230px;
+                height: 230px;
+            }
+
+            .single-publication .publication-content-name {
+                font-weight: 600;
+                position: relative;
+                left: 0px;
+                font-size: 20px;
+            }
+
+            .single-publication .publication-content-pq {
+                position: absolute;
+                left: 55px;
+                bottom: 80px;
+            }
+
+            .single-publication .publication-content h3 a {
+                color: #1f2d30;
+            }
+
+                .single-publication .publication-content h3 a:hover {
+                    color: #ff007d;
+                }
+
+            .single-publication .publication-content ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                margin-bottom: 15px;
+            }
+
+                .single-publication .publication-content ul li {
+                    display: inline-block;
+                    font-size: 18px;
+                    color: #fec42d;
+                }
+
+            .single-publication .publication-content .price {
+                font-size: 18px;
+                color: #ff007d;
+            }
+
+            .single-publication .add-to-cart {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background-color: #cff2b5;
+                opacity: 0;
+                visibility: hidden;
+                text-align: center;
+                -webkit-transform: scale(.7);
+                transform: scale(.7);
+                height: 65px;
+                -moz-transition: .4s;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            .single-publication:hover .add-to-cart {
+                visibility: visible;
+                transform: scale(1);
+                -webkit-transform: scale(1);
+                opacity: 1;
+            }
+
+            .single-publication .add-to-cart .default-btn {
+                margin-top: 15px;
+                font-size: 14px;
+                background-color: gold;
+                color: #1f2d30;
+                border: 2px solid #ff007d;
+                display: inline-block;
+                padding: 10px 30px;
+                border-radius: 30px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+
+                .single-publication .add-to-cart .default-btn:hover {
+                    color: white;
+                    background-color: #ff007d;
+                    text-decoration: none;
+                }
+
+                .single-publication .add-to-cart .default-btn:focus {
+                    outline: none;
+                }
+
+
+            .single-publication img {
+                width: 100%;
+                height: 250px;
+            }
+
+        /*搜尋列=======================================================================*/
+        .search-sec {
+            background: #1A4668;
+            padding: 2rem;
+            box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.6), inset 0px 1px 3px #fff;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+            box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5) inset;
+        }
+
+            .search-slt:focus {
+                background-color: beige;
+                box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5) inset;
+            }
+
+            .search-slt:hover {
+                background-color: beige;
+            }
+
+        .sec-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            height: calc(3rem + 2px) !important;
+            color: #fff;
+            border-radius: 3px;
+            box-shadow: -1px -3px 3px rgba(20%,20%,40%,0.5) inset;
+            border: 2px solid rgba(20%,20%,40%,0.5);
+        }
+
+            .sec-btn:active {
+                box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+                outline: none;
+            }
+
+            .sec-btn:focus {
+                outline: none;
+            }
+
+            .sec-btn:hover {
+                color: white;
+            }
+
+        /*浮動視窗=======================================================================*/
+        .modal-backdrop {
+            background: #000000;
+        }
+
+        .modal-content {
+            background-color: beige;
+            border: ridge 3px goldenrod;
+        }
+
+        .modal-title {
+            color: crimson;
+        }
+
+        .modal-body {
+            color: indianred;
+        }
+
+            .modal-body img {
+                max-width: 500px;
+                border: ridge 2px gold;
+                margin-bottom: 20px;
+            }
+
+        .modal-footer button {
+            color: maroon;
+        }
+
+        /*提示視窗=======================================================================*/
+        .addtip img {
+            width: 250px;
+            height: 200px;
+        }
+
+        .addtip button {
+            text-align: right;
+            margin-right: 10px;
+        }
+    </style>
+}
+
+<section class="our-publication  pb-70">
+    <div class="container">
+        <div @*class="section-header"*@>
+            <h3 class="title">
+                <i class="fa fa-book"></i>紅利兌換
+            </h3>
+            <br />
+        </div>
+        <section class="search-sec">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                        @*<button id="gocart" class="sec-btn LVM" style="background-color:#30c418"><i class="fa fa-shopping-cart"></i>前往購物車</button>*@
+                        <button id="gocart" href="~/Member/ShoppingCartList" class="sec-btn btn LVM" style="background-color:#30c418"><i class="fa fa-shopping-cart"></i>前往購物車</button>
+                    </div>
+                    <div class="col-lg-6 col-md-3 col-sm-12 p-0">
+                        @Html.TextBox("SearchString", null, new { placeholder = "搜尋關鍵字", @class = "form-control search-slt" })
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                        <button id="search" class="sec-btn" style="background-color:gold;color:black"><i class="fa fa-search"></i>搜尋</button>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 p-0" id="sortorder">
+                        <button id="sortdown" class="sec-btn" style="display:none;background-color:#4366ef;"><i class="fa fa-sort-down"></i>點數降序</button>
+                        <button id="sortup" class="sec-btn" style="background-color:#d63131;"><i class="fa fa-sort-up"></i>點數升序</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <ul class="dropdown-divider"></ul>
+        <div id="GiftList">
+            @Html.Partial("_GiftList")
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    @*<script src="~/Scripts/jquery-3.3.1.js"></script>
+        <script src="~/Scripts/jquery.fly.min.js"></script>*@
+    @*------------------------------------------------------------------ ShoppingCart ------------------------------------------------------------------*@
+    <script>
+        //檢查獎品數量對應資訊欄數量
+        $(document).ready(function () {
+            $('#cart li[data-id]').each(function (i, element) {
+                var id = $(element).data('id');
+                var count = $(element).data('count');
+                if (count >= $(`#add-${id}`).data('count')) {
+                    $(`#add-${id}`).attr('disabled', true).text("尚無存貨");
+                }
+                else {
+                    $(`#add-${id}`).attr('disabled', false).text("加入購物車");
+                }
+            })
+        })
+
+        //加入購物車
+        function AddToCart(giftID) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddToCart", "Member")',
+                data: { id:giftID }
+            }).done(function (data) {
+                if (data == "請先登入會員") {
+                    alert(data);
+                    location.href = '@Url.Action("MemberLogin","Home")';
+                }
+                else {
+                    $('#Cart').html(data);
+                    $(window).scroll();
+                    if ($(`#gift-${giftID}`).data('count') == $(`#${giftID}`).data('num')) {
+                        $(`#add-${giftID}`).attr('disabled', true).text("尚無存貨");
+                    }
+                }
+                })
+        };
+
+        //滑鼠移入獎品資訊按鈕 改變提示視窗的target
+        $(document).on('mouseover', '.single-publication .info', function () {
+            var id = $(this).data('id');
+            $('.giftInfo').attr('id', `info-${id}`);
+
+            var name_ele = $(this).parents('figure').next('div').find('h3').text();
+            var img_ele = $(this).parents('figure').find('img').clone();
+            var pt_ele = $(this).parents('figure').next('.publication-content').find('h4').first().data('pt');
+            var count_ele = $(this).parents('figure').next('.publication-content').find('h4').eq(1).data('count');
+            var date_ele = $(this).parents('figure').data('date');
+            var adm_ele = $(this).parents('figure').data('adm');
+            var content_ele = $(this).parents('figure').data('content');
+            $('#infoName').html(name_ele);
+            $('#infoImg').html(img_ele);
+            $('#infoPt').text("兌換點數:  " + pt_ele + " Pt");
+            $('#infoCount').text("剩餘數量:  " + count_ele + " 個");
+            $('#infoDate').text("創建日期:  " + date_ele);
+            $('#infoAdm').text("創建人員:  " + adm_ele);
+            $('#infoContent').text("獎品描述:  " + content_ele);
+        })
+
+        //滑鼠移入加入購物車按鈕 改變提示視窗的target
+        $(document).on('mouseover', '.add-to-cart .default-btn', function () {
+            var id = $(this).data('id');
+            var imgele = $(this).closest('.single-publication').find('img').clone();
+            var h3ele = $(this).closest('.single-publication').find('h3').text();
+            $('.addtip').attr('id', `tip-${id}`);
+            $('#tipimg').html(imgele);
+            $('#tipname').html(h3ele)
+        })
+
+        //加入購物車按鈕
+        $(document).on('click', '.add-to-cart .default-btn', function () {
+            var id = $(this).data('id')
+            AddToCart(id);
+
+            setTimeout(function () {
+                $('.addtip button').click();
+            }, 1000)
+            //$(`#tip-${id}`).fadeOut();
+
+        })
+
+        $('#gocart').click(function () {
+            location.href = '@Url.Action("ShoppingCartList","Member")';
+        })
+
+    </script>
+    @* ------------------------------------------------------------------ShoppingCart ------------------------------------------------------------------*@
+
+    @* ------------------------------------------------------------------FetchPage ------------------------------------------------------------------*@
+    <script>
+        var sort = "";
+        var search = "";
+        var target_top = $('.search-sec').offset().top - 150;
+
+        //載入頁面預設第一頁
+        $(document).ready(function () {
+            $(`#page-1`).css({ 'background-color': 'gold', 'color': 'white' });
+        })
+        //搜尋按鈕
+        $(document).on('click', '#search', function () {
+            var page = 1;
+            search = $('#SearchString').val();
+            fetchPage(page, sort, search);
+
+            console.log("page= " + page);
+            console.log("sort= " + sort);
+            console.log("search= " + search);
+        })
+        //排序按鈕
+        $(document).on('click', '#sortorder .sec-btn', function () {
+            var page = 1;
+            sort = sort == "" ? "point_desc" : "";
+            search = $('#SearchString').val();
+            fetchPage(page, sort, search);
+
+            //排序按鈕字樣改變
+            if (sort == "") {
+                //$('#sort').text("點數遞增排序");
+                $('#sortdown').hide();
+                $('#sortup').show();
+            }
+            else {
+                //$('#sort').text("點數遞減排序");
+                $('#sortdown').show();
+                $('#sortup').hide();
+            }
+
+            console.log("page= " + page);
+            console.log("sort= " + sort);
+            console.log("search= " + search);
+        })
+
+        //選取頁面
+        $(document).on('click', '#GiftList .pagination li button', function () {
+            var page = $(this).attr('id').slice(5);
+            search = $('#SearchString').val();
+            fetchPage(page, sort, search);
+
+            console.log("page= " + page);
+            console.log("sort= " + sort);
+            console.log("search= " + search);
+        })
+
+        //抓取partial view
+        var fetchPage = function (page, sort, search) {
+
+            //叫用partial view url
+            var pagedPartialUrl = '@Url.Action("RefreshList", "Member")'
+
+            $.post(pagedPartialUrl, { page: page, sortOrder: sort, searchString: search }, function (data) {
+                $('#GiftList').html(data);
+
+            }).done(function () {
+                $(`#page-${page}`).css({ 'background-color': 'gold', 'color': 'white' });
+            });
+            $("html,body").animate({ scrollTop: target_top }, 500);
+
+        };
+    </script>
+    @* ------------------------------------------------------------------FetchPage ------------------------------------------------------------------*@
+}

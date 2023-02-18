@@ -1,0 +1,2425 @@
+﻿@model Azure_0517.Models.ViewModel.CommentViewmodel
+
+@{
+    ViewBag.homepage = Model.Restaurant.Res_ID;
+    ViewBag.Title = Model.Restaurant.Res_Name;
+    //Layout = "~/Views/Shared/RestanrantHome_LayoutPage.cshtml";
+}
+@section styles{
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/ReservationOverview.css" rel="stylesheet" />
+    <link href="~/Content/ReservationSlideBtn.css" rel="stylesheet" />
+    <link href="~/Content/SuccessAnimation.css" rel="stylesheet" />
+    <style>
+        @@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
+
+
+        .comment {
+            width: 600px;
+            padding: 5px;
+            margin: 0 auto 0 auto;
+        }
+
+        .comment-content {
+            float: left;
+            margin: 0 0 0 10px;
+            width: 60%;
+        }
+
+            .comment-content > span {
+                line-height: 150%;
+                color: #444;
+                background: #f5f5f5;
+                display: block;
+                width: 100%;
+                padding: 10px 15px 10px 15px;
+                font-size: 0.9em;
+                display: block;
+                position: relative;
+                border-radius: 3px;
+                box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+            }
+
+                .comment-content > span:before {
+                    content: '';
+                    position: absolute;
+                    top: 28px;
+                    left: -30px;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    border: 1em solid #f5f5f5;
+                    border-color: transparent #f5f5f5 transparent transparent;
+                    font-size: .9em !important;
+                }
+
+        .comment p {
+            font-family: 'Open Sans';
+            text-shadow: 1px 1px 2px #fff;
+        }
+
+        .comment strong {
+            font-weight: 700;
+        }
+
+        .comment .author {
+            font-weight: 300;
+            font-size: .8em;
+        }
+
+        .comment-img {
+            float: left;
+            width: 22%;
+            height: auto;
+            display: inline;
+            overflow: auto;
+            border-radius: 90px;
+            border: double 6px rgba(76, 119, 155, 0.55);
+            margin: 20px 0 0 10px;
+        }
+
+        .comment-content {
+            font-size: 20px
+        }
+    </style>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 220px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+    <style>
+        .blogimg {
+            height: 200px;
+        }
+
+            .blogimg > .col-3 {
+                padding: 2px;
+                margin: 0;
+                height: 100%;
+            }
+
+                .blogimg > .col-3 > img {
+                    width: 100%;
+                    height: 100%;
+                }
+    </style>
+    <style>
+
+        .media > img {
+            width: 160px;
+            height: 160px;
+        }
+
+
+        .starshine {
+            -webkit-filter: grayscale(0);
+        }
+
+        .stargray {
+            -webkit-filter: grayscale(1);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+        .popup {
+            margin: 70px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+            .popup .close {
+                position: absolute;
+                /*top: 20px;
+                    right: 30px;*/
+                transition: all 200ms;
+                /*font-size: 20px;*/
+                font-weight: bold;
+                text-decoration: none;
+                color: aliceblue;
+                width: 90%;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+                .popup .close:hover {
+                    color: #06D85F;
+                }
+
+        .n {
+            filter: grayscale(1);
+        }
+
+        div {
+            margin: 0;
+            padding: 0;
+        }
+
+        .s {
+            filter: grayscale(0);
+        }
+
+        .mytext {
+            width: 90%;
+            resize: none;
+            margin-left: 30px;
+        }
+
+        .upmytext {
+            width: 98%;
+            height: 98%;
+            resize: none;
+            border: ridge;
+        }
+
+        .delbutton {
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+            .delbutton:hover {
+                background: #06D85F;
+            }
+
+        .yes {
+            font-weight: 900;
+            text-decoration: none;
+            color: aliceblue;
+            width: 90%;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+    </style>
+    <style>
+        .c_forinput {
+            width: 800px !important;
+        }
+
+        .thetype {
+        }
+
+        .subtype {
+        }
+
+        .restype {
+        }
+    </style>
+    <style>
+        #c_res_selfphotooverview_imges p {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+            #c_res_selfphotooverview_imges p strong {
+                position: absolute;
+                display: block;
+                z-index: 1;
+                bottom: 0;
+                width: 200px;
+                height: 40px;
+                background: rgba(0,0,0,0.5);
+                text-align: center;
+                line-height: 35px;
+                opacity: 0;
+                color: white;
+            }
+
+            #c_res_selfphotooverview_imges p span {
+                position: absolute;
+                display: block;
+                z-index: 0;
+                top: 0;
+                /*top: inherit;*/
+                width: 200px;
+                height: 200px;
+                box-shadow: inset 0 0 50px rgba(50,30,0,0.6),inset 0 0 100px rgba(50,30,0,0.3);
+                background: rgba(255,155,0,0.2);
+                opacity: 0;
+            }
+
+        #c_res_selfphotooverview_imges button {
+            padding: 0;
+            margin: 4px;
+            background-color: transparent;
+            border: none;
+        }
+
+        .chu_resself_editphoto {
+            width: 250px;
+            height: 250px;
+        }
+
+        .chu_resself_editdiv {
+            width: 400px !important;
+        }
+    </style>
+    <style>
+        #c_rhp_self_allphoto p {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+            #c_rhp_self_allphoto p strong {
+                position: absolute;
+                display: block;
+                z-index: 1;
+                bottom: 0;
+                width: 200px;
+                height: 30px;
+                background: rgba(0,0,0,0.5);
+                text-align: center;
+                line-height: 25px;
+                opacity: 0;
+                color: white;
+            }
+
+            #c_rhp_self_allphoto p span {
+                position: absolute;
+                display: block;
+                z-index: 0;
+                top: 0;
+                /*top: inherit;*/
+                width: 200px;
+                height: 200px;
+                box-shadow: inset 0 0 50px rgba(50,30,0,0.6),inset 0 0 100px rgba(50,30,0,0.3);
+                background: rgba(255,155,0,0.2);
+                /*background: rgba( 0, 35, 100, 0.1);*/
+                /*background: rgba( 0, 0, 0, 0.1);*/
+                opacity: 0;
+            }
+
+        #c_rhp_self_allphoto button {
+            padding: 0;
+            margin: 5px;
+            background-color: transparent;
+            border: none;
+        }
+        /*#c_rhp_self_photo_show p {
+                margin: 0;
+                padding: 0;
+                position: relative;
+                display: inline-block;
+                overflow: hidden;
+            }
+                #c_rhp_self_photo_show p strong {
+                    position: absolute;
+                    display: block;
+                    z-index: 1;
+                    bottom: 0;
+                    width: 500px;
+                    height: 100px;
+                    background: rgba(0,0,0,0.5);
+                    text-align: center;
+                    line-height: 25px;
+                    opacity: 1;
+                    color: white;
+                }
+                #c_rhp_self_photo_show p h5 {
+                    position: absolute;
+                    display: block;
+                    z-index: 1;
+                    top: 0;
+                    width: 500px;
+                    height: 40px;
+                    background: rgba(0,0,0,0.5);
+                    text-align: center;
+                    line-height: 35px;
+                    opacity: 1;
+                    color: white;
+                }*/
+
+    </style>
+    <style>
+        /*優惠框*/
+        .tile {
+            margin: 20px 0;
+            width: 100%;
+            display: inline-block;
+            box-sizing: border-box;
+            background: #fff;
+            padding: 10px;
+            background-color: transparent;
+        }
+
+            .tile figure {
+                margin: 10px;
+                text-align: center;
+            }
+
+                .tile figure img {
+                    height: 250px;
+                    width: 250px;
+                }
+
+        .bo {
+            border: 2px solid #e5c14d;
+            padding: 5px;
+            height: 100%;
+            box-shadow: 3px 3px 7px #808080;
+        }
+
+        .title {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .tile .card-title {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 100%;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .tile footer {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            bottom: 3%;
+            left: 0;
+        }
+
+        .tile a {
+            color: black;
+        }
+
+        .col-8 textarea {
+            margin: 0px 0px;
+            padding: 5px;
+            height: 200px !important;
+            line-height: 16px;
+            width: 96%;
+            display: block;
+            margin: 0px auto;
+            resize: none;
+        }
+    </style>
+    <style>
+        .star-rating {
+            display: flex;
+            align-items: center;
+            font-size: 1.6em;
+            /*justify-content: center;*/
+        }
+
+        .back-stars {
+            display: flex;
+            color: lightgray;
+            position: relative;
+            text-shadow: 4px 4px 10px gray;
+        }
+
+        .front-stars {
+            display: flex;
+            color: #FFBC0B;
+            overflow: hidden;
+            position: absolute;
+            text-shadow: 2px 2px 5px #d29b09;
+            top: 0;
+        }
+    </style>
+}
+
+
+
+<div class="container-fluid mr-0 ml-0 pr-0 pl-0">
+    <div class="container-fluid mr-0 ml-0 pr-0 pl-0">
+        <div class="media mr-0 ml-0 pr-0 pl-0 mt-3">
+            <img id="c_reshomepag" src="@Url.Action("getdbimage", "Restaurant", new { id = Model.Restaurant.Res_ID ,table="restaurant"})" class="homepage">
+            <div class="media-body">
+                <div class="container-fluid" @*style="display:flex;flex-direction:row;justify-content:space-between"*@>
+                    <h3 style="position:relative; top:-5px;" class="mt-0 mr-3 pl-4 font-weight-bold d-inline">@Model.Restaurant.Res_Name</h3>
+                </div>
+                @{
+                    decimal percent = (Convert.ToDecimal(Model.Restaurant.Res_StarRate) / 5) * 100;
+                }
+                <div class="star-rating mt-0 pl-4" style="align-self:flex-end" title="">
+                    <div class="back-stars">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                        <div class="front-stars" style="width:@(percent)%">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <span class="text-danger pl-4" style="font-size:large">@Model.Restaurant.Res_StarRate 分</span>
+                </div>
+                <p class="mt-0 pl-4">營業日期: @Html.DisplayFor(w => w.Restaurant.Res_WorkingDate, new { @class = "mt-0" }) &nbsp;&nbsp;&nbsp;所在城市 : @Html.DisplayFor(c => c.Restaurant.City.Cit_Name, new { @class = "mt-0" })</p>
+                <div class="container text-center">
+                    <div class="btn-group pl-5" role="group" aria-label="Basic example">
+                        <button id="btn_defaultview" type="button" class="btn btn-secondary">摘要</button>
+                        <button id="btn_res_photo_overview" type="button" class="btn btn-secondary">餐廳相簿</button>
+                        <button id="btn_res_nc_overview" type="button" class="btn btn-secondary">食記 & 評論</button>
+                        @*<a href="~/Administrator/AdmQAShow?QA_RestaurantID=@Model.Restaurant.Res_ID" class="btn btn-secondary ContactRestaurant" data-id=@Model.Restaurant.Res_ID>對話</a>*@
+                    </div>
+                </div>
+            </div>
+            <div class="text-right" style="display:flex;flex-direction:column">
+                <div class="mr-0 pr-0 d-inline">
+                    <div class="line-it-button" data-lang="zh_Hant" data-type="share-c" data-ver="3" data-url='@Url.Action("Index","Home")' data-color="default" data-size="small" data-count="false" style="display: none;"></div>
+                    <a style="position:relative;top:-10px;left:3px;" class="share__button share__button--fb" title="Share on Facebook" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a style="position:relative;top:-10px;" class="share__button share__button--tw" title="Share on Twitter" href=""><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="btn-group m-auto" role="group" style="padding:2px" aria-label="Basic example">
+                    @*===========================是會員=================================*@
+                    <button id="addtolike" class="btn btn-light m-1 p-0 LVM" data-toggle="tooltip" data-placement="top" title="加到收藏" style="border:1px solid black;border-radius:45px 45px;">
+                        <img id="c_likeicon" class="m-1" src="~/tasteitlogo/loveicon.png" data-toggle="tooltip" data-placement="top" title="加到收藏" style="width:19px;height:19px" />
+                    </button>
+                    <a id="w_comment" class="btn btn-light m-1 p-0 LVM ContactRestaurant" data-id=@Model.Restaurant.Res_ID href="~/Administrator/AdmQAShow?QA_RestaurantID=@Model.Restaurant.Res_ID" style="border:1px solid black;border-radius:45px 45px;overflow:hidden">
+                        <img id="c_cicon" class="m-1" src="~/tasteitlogo/talk.jpg" title="訪問服務" style="width:19px;height:19px;" />
+                    </a>
+                    <a id="w_new" class="btn btn-light m-1 p-0 LVM" href="@Url.Action("BlogWrite","Home",new {id=Model.Restaurant.Res_ID })" style="border:1px solid black;border-radius:45px 45px;">
+                        <img id="c_nicon" class="m-1" src="~/tasteitlogo/Nwrite.png" title="寫食記" style="width:19px;height:19px" />
+                    </a>
+                    @*===========================是會員=================================*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="border:0.5px solid black" />
+    <div class="row">
+        <div class="col-3 col-lg-3 col-md-3 col-sm-3 col-xl-3">
+            <div class="card">
+                <div style="height:300px;">
+                    <!--The div element for the map -->
+                    <div id="map"></div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold text-danger">地址:</h6> @Html.DisplayFor(r => r.Restaurant.Res_Address)
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold text-danger">電話:</h6>  @Html.DisplayFor(r => r.Restaurant.Res_Phone)
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold text-danger">介紹:</h6> @Html.DisplayFor(r => r.Restaurant.Res_IntroductionContext)
+                    </li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold text-danger">營業時間:</h6> @Html.DisplayFor(r => r.Restaurant.Res_WorkingDate)
+                    </li>
+                </ul>
+            </div>
+            <div class="accordion text-center" id="accordionExample">
+                <div class="card pt-0 pb-0 mt-0 mb-0">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                更多資訊
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body text-justify">
+                            <p>
+                                <h6 class="font-weight-bold text-primary">電子信箱:</h6>@Html.DisplayFor(r => r.Restaurant.Res_Email)
+                            </p>
+                            <p>
+                                <h6 class="font-weight-bold text-primary">消費區間:</h6>@Html.DisplayFor(min => min.Restaurant.Res_MinConsumption) - @Html.DisplayFor(max => max.Restaurant.Res_MaxConsumption)
+                            </p>
+                            <p>
+                                <h6 class="font-weight-bold text-primary">座位數目:</h6>@Html.DisplayFor(s => s.Restaurant.Res_Seats)
+                            </p>
+                            <p>
+                                <h6 class="font-weight-bold text-primary">停車位數目:</h6>@Html.DisplayFor(p => p.Restaurant.Res_ParkingSeats)
+                            </p>
+                            @{
+                                string tenpercent;
+                                string qaenable;
+                                if (Model.Restaurant.Res_TenPercentService == true)
+                                {
+                                    tenpercent = "有";
+                                }
+                                else { tenpercent = "無"; }
+                                if (Model.Restaurant.Res_QAEnable == true)
+                                {
+                                    qaenable = "開放";
+                                }
+                                else
+                                {
+                                    qaenable = "關閉";
+                                }
+                            }
+                            <p>
+                                <h6 class="font-weight-bold text-primary">提問:</h6>@(qaenable) &nbsp;&nbsp;&nbsp;
+                                <h6 class="font-weight-bold text-primary">10%服務費:</h6>@(tenpercent)
+                            </p>
+                            <p>
+                                <h6 class="font-weight-bold text-primary">付款方式:</h6>@Html.DisplayFor(p => p.Restaurant.Res_PayBy)
+                            </p>
+                            <p>
+                                <h6 class="font-weight-bold text-primary">食物標籤:</h6>
+                                @{
+                                    if (ViewBag.tagstring != null)
+                                    {
+                                        foreach (var t_tag in ViewBag.tagstring.Split(','))
+                                        {
+                                            <span class="badge badge-warning badge-warning">@t_tag</span>
+                                        }
+                                    }
+                                    if (ViewBag.stagstring != null)
+                                    {
+                                        foreach (var s_tag in ViewBag.stagstring.Split(','))
+                                        {
+                                            <span class="badge badge-dark">@s_tag</span>
+                                        }
+                                    }
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="owner" class="card collapse">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                商家專區
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        @*<div class="card-body">*@
+                        <div class="list-group">
+                            @*<button id="applynews" type="button" class="list-group-item list-group-item-action list-group-item-primary">商案申請</button>*@
+                            @Html.ActionLink("商案申請", "BuyNews", "Restaurant", null, new { @class = "list-group-item list-group-item-action list-group-item-primary" })
+                            <button id="managedata" type="button" class="list-group-item list-group-item-action list-group-item-primary">資料管理</button>
+                            <button id="managetag" type="button" class="list-group-item list-group-item-action list-group-item-primary">標籤管理</button>
+                            <button id="createnews" type="button" class="list-group-item list-group-item-action list-group-item-primary">新增照片</button>
+                            <button id="managephoto" type="button" class="list-group-item list-group-item-action list-group-item-primary">相片管理</button>
+                            <button id="discountoverview" type="button" class="list-group-item list-group-item-action list-group-item-primary">優惠管理</button>
+                            <button id="reservationoverview" type="button" class="list-group-item list-group-item-action list-group-item-primary">訂位管理</button>
+                            @*<a href="#" class="list-group-item list-group-item-action">新增介紹</a>
+                                <a href="#" class="list-group-item list-group-item-action">新增照片</a>*@
+                            @*要用pop要用a  用$("#?").html(?)用button*@
+
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-9 col-lg-9 col-md-9 col-sm-9 col-xl-9">
+            @*<input type="date" id="ReservationDate" value="" />*@
+            <div id="newReservation">
+                @* @Html.Action("HomePageReservation", new { id = Model.Restaurant.Res_ID, date = DateTime.Now.Date })*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="popup2" class="overlay">
+    <form id="MyForm" @*action="~/Restaurant/CommentBlock" method="post"*@>
+        @*尚未 加入功能*@
+        <div class="row" style="margin-bottom:30px;margin-top:30px;padding-top:10%;">
+            <div class="col-4"></div>
+            <div class="col-4" style="background-color:orange;border-bottom-right-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-top-left-radius:15px;">
+                <div id="divTop" style="margin-top:20px;margin-left:30px;">
+                </div>
+                @*@Html.EditorFor(c => Model.Com_Content, new { htmlAttributes = new { @class = "mytext"}})*@
+                @Html.TextAreaFor(c => c.Comment.Com_Content, new { @class = "mytext", maxlength = "100" })
+            </div>
+            <div class="col-4" style="padding:0;">
+                @*<a class="btn btn-danger" style="margin-left:25%"><i class="fas fa-pen-square"></i>檢舉</a>*@
+                <a class="btn btn-success" style="margin-left:10px;" name="send" id="send">送出</a>
+                <a class="btn btn-danger" href="#" style="margin-left:10px;">取消</a>
+                @*@Html.Hidden("", null, new {  })*@
+                @Html.Hidden("Comment.Com_RestaurantID", Model.Restaurant.Res_ID, null)
+                @Html.Hidden("Comment.Com_StarRate", null, new { id = "Com_StarRate" })
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="modal fade " id="c_photo_click" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content chu_resself_editdiv">
+            <div class="mt-0 mb-2 r-0 text-center bg-info" role="alert">
+                <h5 class="modal-title m-0 r-0" id="exampleModalLabel">Modal title</h5>
+            </div>
+            <form method="post" enctype="multipart/form-data" id="c_resself_form" class="pl-2 pr-2 pt-0 mt-0 text-center">
+                <div class="form-group">
+                    <img id="c_resself_target_photo" class="chu_resself_editphoto" />
+                    <input type="file" class="form-control-file collapse b-0" style="margin-left:65px" id="c_resself_photofile" name="thephoto">
+                </div>
+                <div class="form-group mt-0 mr-3 ml-3 mb-2 text-left">
+                    <input name="c_r_resid" type="hidden" value="@Model.Restaurant.Res_ID" />
+                    <input name="Pic_ID" type="hidden" id="Pic_ID" value="" />
+                    <label for="exampleInputEmail1">相片標題</label>
+                    <input type="text" name="Pic_title" class="form-control" readonly id="Pic_title" aria-describedby="emailHelp" placeholder="請輸入標題：">
+                </div>@*相片標題相片內容請輸入標題：請輸入內容：*@
+                <div class="form-group pt-0 pb-0 mt-0 mb-1 mr-3 ml-3 text-left">
+                    <label for="exampleInputPassword1">相片內容</label>
+                    <textarea name="Pic_Content" @*cols="10" , rows="3"*@ class="form-control" readonly id="Pic_Content" placeholder="請輸入內容："></textarea>
+                </div>
+                <div class="text-center pt-0 mt-1 mb-2">
+                    <button id="c_btn_create" type="button" class="btn btn-primary collapse">新增</button>
+                    <button id="c_btn_create_cancel" type="button" class="btn btn-danger collapse">取消</button>
+                    <button id="c_btn_accessandsend" type="button" class="btn btn-primary collapse">修改並送出</button>
+                    <button id="c_btn_cancelandreturn" type="button" class="btn btn-danger collapse">取消並返回</button>
+                    <button id="c_resself_formbtn_edit" type="button" class="btn btn-primary collapse">修改</button>
+                    <button id="c_resself_formbtn_delete" type="button" class="btn btn-danger collapse">刪除</button>
+                    <button id="c_resself_formbtn_close" type="button" class="btn btn-success collapse">關閉</button>
+                    <button id="c_formbtn_demo" type="button" class="btn btn-info collapse">Demo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rhp_default_picture" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="height:400px;width:400px" role="document">
+        <div class="modal-content text-left">
+            <img class="align-self-center mt-4" id="rhp_defaule_photo_img" src="" style="width:350px;height:350px" />
+            <h3 class="m-1 pl-4 text-warning" id="rhp_defaule_photo_title"></h3>
+            <p class="mb-3 ml-4 mr-4 text-dark" style="border:1px solid lightblue" id="rhp_defaule_photo_comment"></p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="rhp_allphoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="height:400px;width:400px" role="document">
+        <div class="modal-content text-left">
+            <img class="align-self-center mt-4" id="rhp_allphoto_self_img" src="" style="width:350px;height:350px" />
+            <h3 class="m-1 pl-4 text-warning" id="rhp_allphoto_self_title"></h3>
+            <p class="mb-3 ml-4 mr-4 text-dark" style="border:1px solid lightblue" id="rhp_allphoto_self_content"></p>
+        </div>
+    </div>
+</div>
+
+@*===== 訂位小框 =====*@
+<div class="modal fade" id="ReservationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">訂位</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*===== 訂位小框 =====*@
+
+
+@section scripts{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    @*============================Map=====================*@
+
+    <script>
+
+    var map;
+    function initMap() {
+
+        // Create a new StyledMapType object, passing it an array of styles,
+        // and the name to be displayed on the map type control.
+        var styledMapType = new google.maps.StyledMapType(
+            [
+                { elementType: 'geometry', stylers: [{ color: '#ebe3cd' }] },
+                { elementType: 'labels.text.fill', stylers: [{ color: '#523735' }] },
+                { elementType: 'labels.text.stroke', stylers: [{ color: '#f5f1e6' }] },
+                {
+                    featureType: 'administrative',
+                    elementType: 'geometry.stroke',
+                    stylers: [{ color: '#c9b2a6' }]
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'geometry.stroke',
+                    stylers: [{ color: '#dcd2be' }]
+                },
+                {
+                    featureType: 'administrative.land_parcel',
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#ae9e90' }]
+                },
+                {
+                    featureType: 'landscape.natural',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#dfd2ae' }]
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#dfd2ae' }]
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#93817c' }]
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'geometry.fill',
+                    stylers: [{ color: '#a5b076' }]
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#447530' }]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#f5f1e6' }]
+                },
+                {
+                    featureType: 'road.arterial',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#fdfcf8' }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#f8c967' }]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry.stroke',
+                    stylers: [{ color: '#e9bc62' }]
+                },
+                {
+                    featureType: 'road.highway.controlled_access',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#e98d58' }]
+                },
+                {
+                    featureType: 'road.highway.controlled_access',
+                    elementType: 'geometry.stroke',
+                    stylers: [{ color: '#db8555' }]
+                },
+                {
+                    featureType: 'road.local',
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#806b63' }]
+                },
+                {
+                    featureType: 'transit.line',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#dfd2ae' }]
+                },
+                {
+                    featureType: 'transit.line',
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#8f7d77' }]
+                },
+                {
+                    featureType: 'transit.line',
+                    elementType: 'labels.text.stroke',
+                    stylers: [{ color: '#ebe3cd' }]
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#dfd2ae' }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry.fill',
+                    stylers: [{ color: '#b9d3c2' }]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#92998d' }]
+                }
+            ],
+            { name: 'Styled Map' });
+
+        // Create a map object, and include the MapTypeId to add
+        // to the map type control.
+         map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: @Model.geometry.lat , lng: @Model.geometry.lng},
+            zoom: 18,
+            mapTypeControlOptions: {
+                mapTypeIds: [false]
+             },
+
+        });
+
+        //Associate the styled map with the MapTypeId and set it to display.
+        map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
+        //加入座標圖示
+        var marker = new google.maps.Marker({
+        position: { lat: @Model.geometry.lat , lng: @Model.geometry.lng},
+            map: map,
+            animation: google.maps.Animation.BOUNCE
+    });
+    }
+
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_WPox-HcTi5m-YQffFq59AavDZiapyVE&callback=initMap">
+    </script>
+    @*chu_demo*@
+    <script>
+        $(document).on('click', '#c_res_create_n_demo', function () {
+            $("#c_res_create_n_title").val('珍饌美食 !');
+            $("#c_res_create_n_content").val('珍饌美食，回味無窮 !');
+        });
+    </script>
+    @*chu_demo*@
+    @*==================餐廳主頁的上方按鈕==================*@
+    <script>
+        let def_btn = $("#btn_defaultview");
+        let allphoto = $("#btn_res_photo_overview");
+        let alln_c = $("#btn_res_nc_overview");
+        def_btn.click(function () {//摘要
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("rhp_default", "Restaurant")',
+                data: { resid:@Model.Restaurant.Res_ID}
+            }).done(function (result) {
+                def_btn.removeClass('btn-secondary')
+                def_btn.addClass('btn-primary')
+                allphoto.removeClass('btn-primary')
+                allphoto.addClass('btn-secondary');
+                alln_c.removeClass('btn-primary');
+                alln_c.addClass('btn-secondary');
+                $("#newReservation").html(result);
+                $("html,body").animate({ scrollTop: 0 }, 500);
+                loadStars();
+                loadStarEvent();
+            });
+        });
+
+
+        allphoto.click(function () {//相片
+             $.ajax({
+                type: 'Get',
+                url: '@Url.Action("rhp_photo_overview", "Restaurant")',
+                data: { resid:@Model.Restaurant.Res_ID}
+             }).done(function (result) {
+                 def_btn.removeClass('btn-primary')
+                 def_btn.addClass('btn-secondary')
+                 allphoto.removeClass('btn-secondary')
+                 allphoto.addClass('btn-primary');
+                 alln_c.removeClass('btn-primary');
+                 alln_c.addClass('btn-secondary');
+                $("#newReservation").html(result);
+                $("html,body").animate({ scrollTop: 0 }, 500);
+            });
+        });
+        alln_c.click(function () {//食記與評論
+             $.ajax({
+                type: 'Get',
+                url: '@Url.Action("RestNewsOverView", "Restaurant")',
+                data: { id: @Model.Restaurant.Res_ID}
+             }).done(function (result) {
+                 def_btn.removeClass('btn-primary')
+                 def_btn.addClass('btn-secondary')
+                 allphoto.removeClass('btn-primary')
+                 allphoto.addClass('btn-secondary');
+                 alln_c.removeClass('btn-secondary');
+                 alln_c.addClass('btn-primary');
+                $("#newReservation").html(result);
+                $("html,body").animate({ scrollTop: 0 }, 500);
+            });
+        });
+
+        let duration2 = 500;
+        $(document).on('mouseover', '#c_rhp_self_allphoto p', function () {
+            $(this).find('strong, span').stop(true).animate({
+                opacity: 1
+            }, duration2);
+        })
+
+        $(document).on('mouseout', '#c_rhp_self_allphoto p', function () {
+            $(this).find('strong, span').stop(true).animate({
+                opacity: 0
+            }, duration2);
+        })
+
+        $(document).on('click', '#rhp_photooverview button', function () {
+            let source = $(this).find('img');
+            let img_src = source.attr('src');
+            let _title = source.data('title');
+            let _content = source.data('content');
+            $("#rhp_allphoto_self_img").attr('src', source.attr('src'));
+            $("#rhp_allphoto_self_title").text(_title);
+            $("#rhp_allphoto_self_content").text(_content);
+        })
+
+        $(document).on('click', '#rhp_defaule_photo button', function () {
+            $("#rhp_defaule_photo_img").attr('src', $(this).find('img').attr('src'));
+            $("#rhp_defaule_photo_title").text($(this).find('h2').text());
+            $("#rhp_defaule_photo_comment").text($(this).find('p').text());
+        })
+
+        $(document).on('click', '#collapseTwo button', function () {
+            def_btn.removeClass('btn-primary').addClass('btn-secondary');
+            allphoto.removeClass('btn-primary').addClass('btn-secondary');
+            alln_c.removeClass('btn-primary').addClass('btn-secondary');
+        });
+
+        $(document).on('click', '#rhp_default_morephoto', function () {
+            allphoto.click();
+        });
+
+        $(document).on('click', '#rhp_default_morenews', function () {
+            alln_c.click();
+        });
+        $(document).on('click', '#rhp_default_morecoms', function () {
+            alln_c.click();
+        });
+
+    </script>
+    @*==================餐廳主頁的上方按鈕==================*@
+    @*---------------------判斷使用者改變網頁內容-------------------------*@
+    <script>
+
+        $(document).ready(function () {
+            @*alert("therole="+ @Model.therole+"____mlove="+ @Model.mlove);*@
+            if (@Model.therole == 1) {//是會員
+                console.log(@Model.therole);
+                if (@Model.mlove== 2) {//已收藏
+                    $("#addtolike").addClass("bg-warning");
+                    $("#addtolike").attr("title", "取消收藏");
+                    $("#c_likeicon").attr("title", "取消收藏");
+                } else  if(@Model.mlove== 1){
+                    $("#addtolike").attr("title", "加到收藏");
+                    $("#c_likeicon").attr("title", "加到收藏");
+                }
+                $("#btn_defaultview").click();
+            }
+            else if (@Model.therole== 2) {//是餐廳
+                @*let testtt =@Model.therole;
+                console.log(typeof (testtt));
+                console.log(typeof (@Model.resself));*@
+                $("#addtolike").addClass("collapse");
+                $("#w_comment").addClass("collapse");
+                $("#w_new").addClass("collapse");
+                //$("#btn_defaultview").click();
+                if (@Model.thekey==@Model.Restaurant.Res_ID) {
+                    $("#owner").removeClass("collapse");
+                    @*let thestring =@Model.resself;
+                    console.log(typeof (thestring));
+                    console.log(typeof (@Model.resself));
+                    console.log(typeof (@Model.therole));
+                    console.log(typeof (@Model.thekey));*@
+                    switch (@Model.resself) {
+                        case 1:
+                            console.log("1");
+                            $("#applynews").click();
+                            $("#applynews").trigger('click');
+                            break;
+                        case 2:
+                            console.log("2");
+                            //$("#managedata").click();
+                            $("#managedata").click();
+                            break;
+                        case 3:
+                            console.log("3");
+                            $("#managetag").click();
+                            break;
+                        case 4:
+                            console.log("4");
+                            $("#createnews").click();
+                            break;
+                        case 5:
+                            console.log("5");
+                            $("#managephoto").click();
+                            break;
+                        case 6:
+                            console.log("6");
+                            $("#discountoverview").click();
+                            break;
+                        case 7:
+                            console.log("7");
+                            $("#reservationoverview").click();
+                            break;
+                        case 0:
+                            console.log("0");
+                            $("#btn_defaultview").trigger('click');
+                            //$("#btn_defaultview").click();
+                            break;
+                    }
+                }
+                else {
+                    $("#btn_defaultview").trigger('click');
+                }
+            }
+            else if (@Model.therole== 3) {//管理員
+                $("#addtolike").addClass("collapse");
+                $("#w_comment").addClass("collapse");
+                $("#w_new").addClass("collapse");
+                $("#btn_defaultview").click();
+            } else {//0=遊客  無key
+                $("#btn_defaultview").click();
+            }
+        });
+        //$(function () {
+        //    $('[data-toggle="tooltip"]').tooltip('show');
+        //})
+
+
+    </script>
+    @* ------------------- 判斷使用者改變網頁內容-------------------------*@
+    @*--------------------------商家專區功能-----------------------------*@
+    @*===========================*@
+    <script>
+        $("#managetag").click(function () {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("TypeManage", "Restaurant")',
+                data: { id: @Model.Restaurant.Res_ID },
+                success: function (data) {
+                    //alert("success");
+                    $("#newReservation").html(data);
+                }
+            }).done(function () {
+                $("html,body").animate({ scrollTop: 100 }, 500);
+                //var c_data_width = $("#newReservation").css("width");
+                //console.log(c_data_width);
+                //$("#c_data>textarea").css("width", "")
+                })
+        })
+    </script>
+    <script>
+        var goal_t_or_s = 0;
+        var goal_t1_or_t2 = 0;
+        var goal_s1_or_s2 = 0;
+        var cancel_t1_or_t2 = 0;
+        var cancel_s1_or_s2 = 0;
+        $(document).on('click', '#ttype .btn', function () {
+            if (goal_t1_or_t2 % 2 == 0) {
+                $("#r_ttype_1").append(this); goal_t1_or_t2++;
+            } else {
+                $("#r_ttype_2").append(this); goal_t1_or_t2++;
+            }
+        });
+        $(document).on('click', '#stype .btn', function () {
+            if (goal_s1_or_s2 % 2 == 0) {
+                $("#r_stype_1").append(this); goal_s1_or_s2++;
+            }
+            else {
+                $("#r_stype_2").append(this); goal_s1_or_s2++;
+            }
+        });
+        $(document).on('click', '#restype .btn', function () {
+
+            var target = $(this).data("p");
+
+            if (target == "t_type") {
+                if (cancel_t1_or_t2 % 2 == 0) {
+                    $("#ttype_1").append(this);
+                    cancel_t1_or_t2++;
+                } else {
+                    $("#ttype_2").append(this);
+                    cancel_t1_or_t2++;
+                }
+            }
+            else {
+                if (cancel_s1_or_s2 % 2 == 0) {
+                    $("#stype_1").append(this);
+                    cancel_s1_or_s2++;
+                } else {
+                    $("#stype_2").append(this);
+                    cancel_s1_or_s2++;
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function savetype(resid) {
+            var r_type_saveornot = confirm("是否確認修改")
+            if (r_type_saveornot == true) {
+                var target01 = document.getElementById('r_ttype_1').children;
+            var target02 = document.getElementById('r_ttype_2').children;
+            var target03 = document.getElementById('r_stype_1').children;
+            var target04 = document.getElementById('r_stype_2').children;
+
+          $.ajax({
+                  type: 'Get',
+                  url: '@Url.Action("cleartype", "Restaurant")',
+                  data: { id: resid }
+            });
+
+            for (let t of target01) {
+                    console.log(t);
+                    $.ajax({
+                        type: 'POST',
+                        url:'@Url.Action("savetypechanged", "Restaurant")',
+                        data: { id: resid, content: t.textContent, t_type: t.getAttribute('data-p') },
+                        success: function () {
+                            console.log("savesuccess")
+                        }
+                    }).done(function (data) { console.log(data); })
+                };
+                for (let t of target02) {
+                    $.ajax({
+                        type: 'POST',
+                        url:'@Url.Action("savetypechanged", "Restaurant")',
+                        data: { id: resid, content: t.textContent, t_type: t.getAttribute('data-p') },
+                        success: function () {
+                            console.log("savesuccess")
+                        }
+                    }).done(function (data) { console.log(data); })
+                };
+                for (let t of target03) {
+                    $.ajax({
+                        type: 'POST',
+                        url:'@Url.Action("savetypechanged", "Restaurant")',
+                        data: { id: resid, content: t.textContent, t_type: t.getAttribute('data-p') },
+                        success: function () {
+                            console.log("savesuccess")
+                        }
+                    }).done(function (data) { console.log(data); })
+                };
+                for (let t of target04) {
+                    $.ajax({
+                        type: 'POST',
+                        url:'@Url.Action("savetypechanged", "Restaurant")',
+                        data: { id: resid, content: t.textContent, t_type: t.getAttribute('data-p') },
+                        success: function () {
+                            console.log("savesuccess")
+                        }
+                    }).done(function (data) { console.log(data); })
+                };
+                $("html,body").animate({ scrollTop: 100 }, 500);
+                SuccessAnimation("修改成功！");
+            }
+            else {
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("TypeManage", "Restaurant")',
+                    data: { id: @Model.Restaurant.Res_ID },
+                    success: function (data) {
+                        $("#newReservation").html(data);
+                    }
+                });
+            }
+
+        };
+    </script>
+    <script>
+        @*------------------------新增照片---------------------------*@
+        $("#createnews").click(function () {
+
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("create_n", "Restaurant")',
+                data: { resid: @Model.Restaurant.Res_ID },
+                success: function (data) {
+                    $("#newReservation").html(data);
+                }
+            }).done(function () {
+                $("html,body").animate({ scrollTop: 100 }, 500);
+            })
+        });
+
+        $(document).on('click', '#c_createpicture', function () {
+            event.preventDefault();
+            var c_p_form = new FormData($('#c_p_createform')[0]);
+            $.ajax({
+                type: 'Post',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("create_n", "Restaurant")',
+                data: c_p_form,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () { /*alert("success")*/ },
+                Error: function () { /*alert("error")*/ }
+            }).done(function (data) {
+                console.log(data);
+                SuccessAnimation("新增成功！");
+                $("html,body").animate({ scrollTop: 100 }, 500);
+            });
+        });
+
+        @* ------------------------新增照片---------------------------*@
+        @*------------------------資料管理---------------------------*@
+        $("#managedata").click(function () {
+             $.ajax({
+                type: 'Get',
+                url: '@Url.Action("managedata", "Restaurant")',
+                data: { id: @Model.Restaurant.Res_ID },
+                success: function (data) {
+                    //$("#newReservation").html();
+                    $("#newReservation").html(data);
+                }
+            }).done(function () {
+                $("html,body").animate({ scrollTop: 100 }, 500);
+            })
+        });
+
+       $(document).on("click", '#_c_data_sand', function () {
+            event.preventDefault();
+            var c_data = new FormData($('#c_data')[0]);
+            let r_data_saveornot = confirm("是否確認修改?")
+            if (r_data_saveornot == true)
+            {
+            $.ajax({
+                type: 'Post',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("managedata", "Restaurant")',
+                data: c_data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                error: function () {
+                    console.log("error");
+                }
+            }).done(function (data) {
+                $("html,body").animate({ scrollTop: 100 }, 500);
+                SuccessAnimation("修改成功！");
+                console.log(data);
+                $.ajax({
+                    type: 'Get',
+                    url:'@Url.Action("managedata", "Restaurant")',
+                    data: { id : @Model.Restaurant.Res_ID, table:"restaurant"}
+                }).done(function (imagefile) {
+                    $("#c_reshomepag").attr('src', $("#c_target_dataphoto").attr('src'));
+                    });
+                     });
+            }
+            else {
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("managedata", "Restaurant")',
+                    data: { id: @Model.Restaurant.Res_ID},
+                    success: function (data) {
+                        $("#newReservation").html(data);
+
+                    }
+                        });
+                }
+            });
+
+        $(document).on("change", "#c_photo", function () {
+            var files = document.getElementById("c_photo").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    //$("#c_target_dataphoto").arrt("src", fileContent);
+                    document.getElementById("c_target_dataphoto").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        });
+        @* ------------------------資料管理---------------------------*@
+
+        @* ------------------------照片總覽---------------------------*@
+        $("#managephoto").click(function () {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("r_selfoverview", "Restaurant")',
+                data: { resid:@Model.Restaurant.Res_ID},
+
+            }).done(function (result) {
+                $("#newReservation").html(result);
+                $("html,body").animate({ scrollTop: 100 }, 500);
+            })
+        })
+
+
+
+        @* ------------------------照片總覽---------------------------*@
+    </script>
+    <script>
+        var duration = 300;
+        const themodal = $("#c_photo_click");
+
+        const $btn_create = $("#c_photo_click button:nth-child(1)");
+        const $btn_cancel = $("#c_photo_click button:nth-child(2)");
+        const $btn_accessandsend = $("#c_photo_click button:nth-child(3)");
+        const $btn_cancelandreturn = $("#c_photo_click button:nth-child(4)");
+        const $btn_chage = $("#c_photo_click button:nth-child(5)");
+        const $btn_delete = $("#c_photo_click button:nth-child(6)");
+        const $btn_close = $("#c_photo_click button:nth-child(7)");
+        const $btn_chudemo = $("#c_photo_click button:nth-child(8)");
+
+        const inputfile = $("#c_resself_form").find("#c_resself_photofile");
+        const input_id = $("#c_resself_form").find("#Pic_ID");
+        const input_title = $("#c_resself_form").find("#Pic_title");
+        const input_content = $("#c_photo_click textarea");
+        const input_image = $("#c_photo_click img");
+        const h5title = $("#c_photo_click h5");
+
+        $(document).on('mouseover', '#c_res_selfphotooverview_imges p', function () {
+            $(this).find('strong, span').stop(true).animate({
+                opacity: 1
+            }, duration);
+        })
+
+        $(document).on('mouseout','#c_res_selfphotooverview_imges p', function () {
+            $(this).find('strong, span').stop(true).animate({
+                opacity: 0
+            }, duration);
+        })
+
+        $(document).on('click', '#c_res_selfphotooverview_imges p', function () {
+            //餐廳檢視相片
+            let $target = $(this).find('img');
+            let t_image = $target.attr('src')
+            let t_title = $target.data('title');
+            let t_comment = $target.data('content');
+            let t_id = $target.data('pid');
+
+            input_title.attr('readonly', "readonly");
+            input_content.attr('readonly', "readonly");
+
+            inputfile.addClass('collapse');
+            input_image.attr('src', t_image);
+            h5title.text('相片檢視');
+            input_id.val(t_id);
+            input_title.val(t_title);
+            input_content.val(t_comment);
+            $btn_create.addClass('collapse');
+            $btn_cancel.addClass('collapse');
+            $btn_accessandsend.addClass('collapse');
+            $btn_cancelandreturn.addClass('collapse');
+            $btn_chudemo.addClass('collapse');
+            $btn_chage.removeClass('collapse');
+            $btn_delete.removeClass('collapse');
+            $btn_close.removeClass('collapse');
+        });
+
+
+        $(document).on('click', '#c_resphoto_create', () => {
+            //新創照片區
+            input_image.attr('src',"");
+            input_id.val("");
+            input_title.val("");
+            input_content.val("");
+
+            input_title.removeAttr('readonly');
+            input_content.removeAttr('readonly');
+
+            h5title.text('新增相片');
+            inputfile.removeClass('collapse');
+            $btn_create.removeClass('collapse');
+            $btn_cancel.removeClass('collapse');
+            $btn_accessandsend.addClass('collapse');
+            $btn_cancelandreturn.addClass('collapse');
+            $btn_chage.addClass('collapse');
+            $btn_delete.addClass('collapse');
+            $btn_close.addClass('collapse');
+            $btn_chudemo.removeClass('collapse');
+        })
+
+        $("#c_btn_create").click(function () {//新增
+            event.preventDefault();
+            var c_p_form = new FormData($('#c_resself_form')[0]);
+            $.ajax({
+                type: 'Post',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("create_n", "Restaurant")',
+                data: c_p_form,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () { /*alert("success")*/ },
+                Error: function () { /*alert("error")*/ }
+            }).done(function (data) {
+                console.log(data);
+                SuccessAnimation("新增成功！");
+                themodal.modal("hide");
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("r_selfoverview", "Restaurant")',
+                    data: { resid:@Model.Restaurant.Res_ID},
+
+                }).done(function (result) {
+                    $("#newReservation").html(result);
+                    $("html,body").animate({ scrollTop: 100 }, 500);
+                });
+            });
+
+        });
+        $("#c_btn_create_cancel").click(function () {//取消
+            themodal.modal("hide");
+        });
+        $("#c_btn_accessandsend").click(function () {//修改並送出
+            event.preventDefault();
+            let c_resself_photo = new FormData($('#c_resself_form')[0]);
+            $.ajax({
+                type: 'Post',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("c_resself_updataphoto", "Restaurant")',
+                data: c_resself_photo,
+                processData: false,
+                contentType: false,
+                cache: false,
+                error: function () {
+                    console.log("error");
+                }
+            }).done(function (data) {
+                console.log(data);
+                SuccessAnimation("修改成功！");
+                themodal.modal("hide");
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("r_selfoverview", "Restaurant")',
+                    data: { resid:@Model.Restaurant.Res_ID},
+
+                }).done(function (result) {
+                    $("#newReservation").html(result);
+                    $("html,body").animate({ scrollTop: 100 }, 500);
+                });
+                });
+        });
+
+        let temp_t;
+        let temp_c;
+        let temp_scr;
+        $("#c_btn_cancelandreturn").click(function () {//取消並返回
+            $btn_accessandsend.addClass('collapse');
+            $btn_cancelandreturn.addClass('collapse');
+            $btn_chudemo.addClass('collapse');
+            $btn_chage.removeClass('collapse');
+            $btn_delete.removeClass('collapse');
+            $btn_close.removeClass('collapse');
+            input_title.attr('readonly', "readonly");
+            input_content.attr('readonly', "readonly");
+            inputfile.addClass('collapse');
+            input_title.val(temp_t);
+            input_content.val(temp_c);
+            input_image.attr('src', temp_scr);
+        });
+        $("#c_resself_formbtn_edit").click(function () {//編輯
+            temp_scr = input_image.attr('src');
+            temp_t = input_title.val();
+            temp_c = input_content.val();
+            inputfile.removeClass('collapse');
+            $btn_accessandsend.removeClass('collapse');
+            $btn_cancelandreturn.removeClass('collapse');
+            $btn_chage.addClass('collapse');
+            $btn_delete.addClass('collapse');
+            $btn_close.addClass('collapse');
+            $btn_chudemo.removeClass('collapse');
+            input_title.removeAttr('readonly');
+            input_content.removeAttr('readonly');
+        });
+
+        $("#c_formbtn_demo").click(function () {//demo
+            $("#Pic_title").val('極致美味，征服味蕾');
+            $("#Pic_Content").val('極致已達，味覺會懷念！');
+        });
+
+        $("#c_resself_formbtn_delete").click(function () {//刪除
+            let targetphotoid = input_id.val();
+            $.ajax({
+                    type: 'Post',
+                    url: '@Url.Action("c_resself_deletephoto", "Restaurant")',
+                    data: { p_id: targetphotoid }
+            }).
+                done(function (data) {
+                    alert(data);
+                     themodal.modal("hide");
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("r_selfoverview", "Restaurant")',
+                    data: { resid:@Model.Restaurant.Res_ID},
+
+                }).done(function (result) {
+                    $("#newReservation").html(result);
+                    $("html,body").animate({ scrollTop: 100 }, 500);
+                });
+
+            });
+        });
+        $("#c_resself_formbtn_close").click(function () {//取消
+            themodal.modal("hide");
+        });
+
+
+
+        $(document).on("change", "#c_resself_photofile", function () {
+            var files = document.getElementById("c_resself_photofile").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    //$("#c_target_dataphoto").arrt("src", fileContent);
+                    document.getElementById("c_resself_target_photo").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        });
+
+
+    </script>
+    @*===========================*@
+    @* -------------------------商家專區功能-----------------------------*@
+
+    @* -------------------------會員專區功能-----------------------------*@
+    <script>
+        if (@Model.therole == 1) {
+            var l_change = @Model.mlove== 2 ? 0 : 1;
+        $("#addtolike").click(function () {
+            if (l_change == 0) {//沒收藏，要加
+                l_change = 1;
+            } else if (l_change == 1)//已經收藏了，要移除
+            {
+                l_change = 0;
+            }
+            $.ajax({
+                method: "Post",
+                url: '@Url.Action("addtolikeorcancel", "Restaurant")',
+                data: { resid:@Model.Restaurant.Res_ID, memid:@Model.thekey, flagstatus: l_change}
+            }).done(function (data) {
+                if (l_change == 1) {
+                    SuccessAnimation("已取消收藏");
+                    $("#addtolike").removeClass("bg-warning");
+                    $("#addtolike").attr("title", "加到收藏");
+                    $("#c_likeicon").attr("title", "加到收藏");
+                } else {
+                    SuccessAnimation("收藏成功！");
+                    $("#addtolike").addClass("bg-warning");
+                    $("#addtolike").attr("title", "取消收藏");
+                    $("#c_likeicon").attr("title", "取消收藏");
+                }
+                //alert(data);
+            });
+        });
+        }
+
+        @*var c_change =@Model.mcom== 2? 2 @Model==1? 1:null;
+        $("#w_comment").click(function () {
+            if (c_change == 0) {//沒評論，要寫
+                //$("#c_likeicon").attr('src', "~/tasteitlogo/loveicon.png");
+                //$("#w_comment").removeClass("bg-warning");
+                $("#w_comment").addClass("bg-warning");
+                $("#w_comment").css("title", "更改評論");
+                l_change++;
+            } else {//有評論了，要改
+                 //$("#c_likeicon").attr('src', "~/tasteitlogo/Cwirte.png");
+                $("#w_comment").addClass("bg-warning");
+                $("#w_comment").css("title", "寫評論");
+                l_change--;
+            }
+        });*@
+    </script>
+
+    @* -------------------------會員專區功能-----------------------------*@
+
+    @*---------------------判斷使用者-------------------------*@
+
+
+
+
+    @*====================餐廳導覽列======================*@
+
+    @*=================寫評論用=====================*@
+    <script>
+    var starnum = 0;
+    var starArray = [];
+
+    function mouseIn() {
+    for (let i = starnum; i <= this.id.substr(4); i++) {
+    //this.id[數字]是指讀到這個字串的第幾個字元
+    starArray[i].className = "s";
+    document.getElementById("Second").innerText = `評分為${i + 1}分`
+    }
+};
+
+        //滑鼠離開
+        function mouseOut() {
+            for (let i = starnum; i <= this.id.substr(4); i++) {
+                starArray[i].className = "n";
+            }
+            document.getElementById("Second").innerText = `評分為${starnum}分`
+        };
+
+        //滑鼠點擊
+        function mouseClick() {
+            if (starnum - 1 == this.id.substr(4)) {
+                for (let i = 0; i <= this.id.substr(4); i++) {
+                    //如果點到的格子跟上次點的相同，則會全部註冊事件，讓格子都變回無色
+                    document.getElementById(starArray[i].id).addEventListener("mouseover", mouseIn);
+                    document.getElementById(starArray[i].id).addEventListener("mouseout", mouseOut);
+                    //starArray[i].className = "nocolor";
+                }
+
+                document.getElementById("Second").innerText = `評分為${starnum}分`
+                starnum = 0;
+            }
+            else {
+                for (let i = 0; i <= starArray.length - 1; i++) {
+                    //取消註冊，點到那格之前的格子會取消註冊事件，並且顏色變成彩色
+                    document.getElementById(starArray[i].id).removeEventListener("mouseover", mouseIn);
+                    document.getElementById(starArray[i].id).removeEventListener("mouseout", mouseOut);
+                    starArray[i].className = "s";
+                }
+                console.log(starnum);
+                starnum = Number(this.id.substr(4)) + 1;//字串轉數字相加
+                document.getElementById("Second").innerText = `評分為${starnum}分`
+                for (let i = starnum; i <= starArray.length - 1; i++) {
+                    //點到那格之後的格子會重新再註冊事件，然後把顏色轉空，這時候會使用原本的方案，滑到哪亮到哪
+                    document.getElementById(starArray[i].id).addEventListener("mouseover", mouseIn);
+                    document.getElementById(starArray[i].id).addEventListener("mouseout", mouseOut);
+                    starArray[i].className = "n";
+                }
+            }
+        };
+
+        function loadStars()  {
+            for (let x = 0; x <= 4; x++) {
+                document.getElementById("divTop").insertAdjacentHTML("beforeend", `<img class="n" id="Star${x}" src="/tasteit/tasteitlogo/comStar.png" />`);
+                starArray[x] = document.getElementById(`Star${x}`);
+            }
+            document.getElementById(`Star4`).insertAdjacentHTML("afterend", `<h6 id="Second">目前尚未評分</h6>`)
+        }
+
+        function loadStarEvent(){
+            for (let star of starArray) {
+                document.getElementById(star.id).addEventListener("mouseover", mouseIn);
+                document.getElementById(star.id).addEventListener("mouseout", mouseOut);
+                document.getElementById(star.id).addEventListener("click", mouseClick);
+            }
+        };
+
+        $(document).on('click', '#delthiscom', function () {
+            event.preventDefault();
+            var data_delid = $(this).attr('data-delid')
+            $.ajax({
+                url: '@Url.Action("DeleteComment_Member","Member")',
+                data: { id: data_delid },
+                success: function (data) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("CommentOverview", "Member")',
+                        data: { id: @Model.Restaurant.Res_ID},
+                        success: function (_data) {
+                            $(`#popup${data_delid}`).modal('hide')
+                            setTimeout(function () {
+                                $("#fucom").html(_data);
+                                loadStars();
+                                loadStarEvent();
+                            }, 500);
+                        }
+                    })
+                }
+            })
+        })
+
+
+        $(document).on('click', '#sendcom', function () {
+            console.log(starnum)
+            document.getElementById("Com_RestaurantID").value = @Model.Restaurant.Res_ID;
+            document.getElementById("Com_StarRate").value = starnum;
+            document.getElementById("Com_Content").value = document.getElementById("newcomtext").value;
+            //document.getElementById("MyForm").submit();
+            //console.log($('#MyCom').serialize())
+
+            $.post('@Url.Action("CommentBlock", "Restaurant")', $('#MyCom').serialize(),function (data) {
+
+
+                if (data == "已完成評論") {
+                $.ajax({
+                type: 'GET',
+                url: '@Url.Action("CommentOverview", "Member")',
+                data: { id: @Model.Restaurant.Res_ID}
+                }).done(function (_data) {
+                    SuccessAnimation(data)
+                $("#fucom").html(_data);
+            });
+                }
+            })
+          });
+    </script>
+
+    @*========================登入的使用者評論============================*@
+    <script>
+        var starArray2 = [];
+        var starnum2=0;
+        let content = '';
+        $(document).on('click','#updatecom',function () {
+            let upid = $(this).data('updatecom');
+            content = $(this).data('com');
+            //alert(upid);
+            //alert(content);
+
+
+
+
+
+        function mouseIn() {
+            for (let i = starnum2; i <= this.id.substr(4); i++) {
+                //this.id[¼Æ¦r]¬O«üÅª¨ì³o­Ó¦r¦êªº²Ä´X­Ó¦r¤¸
+                starArray2[i].className = "s";
+
+            }
+        };
+
+        //·Æ¹«Â÷¶}
+        function mouseOut() {
+            for (let i = starnum2; i <= this.id.substr(4); i++) {
+                starArray2[i].className = "n";
+            }
+
+        };
+
+        //·Æ¹«ÂIÀ»
+        function mouseClick() {
+            if (starnum2 - 1 == this.id.substr(4)) {
+                for (let i = 0; i <= this.id.substr(4); i++) {
+                    //¦pªGÂI¨ìªº®æ¤l¸ò¤W¦¸ÂIªº¬Û¦P¡A«h·|¥þ³¡µù¥U¨Æ¥ó¡AÅý®æ¤l³£ÅÜ¦^µL¦â
+                    document.getElementById(starArray2[i].id).addEventListener("mouseover", mouseIn);
+                    document.getElementById(starArray2[i].id).addEventListener("mouseout", mouseOut);
+                    //starArray[i].className = "nocolor";
+                }
+
+
+                starnum2 = 0;
+            }
+            else {
+                for (let i = 0; i <= starArray2.length - 1; i++) {
+                    //¨ú®øµù¥U¡AÂI¨ì¨º®æ¤§«eªº®æ¤l·|¨ú®øµù¥U¨Æ¥ó¡A¨Ã¥BÃC¦âÅÜ¦¨±m¦â
+                    document.getElementById(starArray2[i].id).removeEventListener("mouseover", mouseIn);
+                    document.getElementById(starArray2[i].id).removeEventListener("mouseout", mouseOut);
+                    starArray2[i].className = "s";
+                }
+
+                starnum2 = Number(this.id.substr(4)) + 1;//¦r¦êÂà¼Æ¦r¬Û¥[
+
+                for (let i = starnum2; i <= starArray2.length - 1; i++) {
+                    //ÂI¨ì¨º®æ¤§«áªº®æ¤l·|­«·s¦Aµù¥U¨Æ¥ó¡AµM«á§âÃC¦âÂàªÅ¡A³o®É­Ô·|¨Ï¥Î­ì¥»ªº¤è®×¡A·Æ¨ì­þ«G¨ì­þ
+                    document.getElementById(starArray2[i].id).addEventListener("mouseover", mouseIn);
+                    document.getElementById(starArray2[i].id).addEventListener("mouseout", mouseOut);
+                    starArray2[i].className = "n";
+                }
+            }
+            };
+
+            $(`#divTop_${upid}`).html('')
+            //document.getElementById("divTop").innerHTML("");
+            for (let x = 0; x <= 4; x++) {
+
+                document.getElementById(`divTop_${upid}`).insertAdjacentHTML("beforeend", `<img class="n" id="Star${x}" src="/tasteit/tasteitlogo/comStar.png"/>`);
+                starArray2[x] = document.getElementById(`Star${x}`);
+            }
+            //$(`#divTop_${upid}`).append($(`<span id="Second" style="margin-right:10%;float:right;">¥Ø«e©|¥¼µû¤À</span>`))
+            //document.getElementById(`mysec`).insertAdjacentHTML("afterend", `<span id="Second">¥Ø«e©|¥¼µû¤À</span>`)
+            $(`#comtext_${upid}`).html('');
+            $(`#comtext_${upid}`).append(`<textarea class ="upmytext comment-content" maxlength = "100" id="newcontent">${content}</textarea>`);
+            $('#combuttom').html('');
+            $('#combuttom').append('<a class="btn btn-success button updatebuttom" title="°e¥X" id="upsend"><i class="fas fa-pen-alt"></i></a></br><a class="btn btn-danger button"  title="¨ú®ø" id="back"><i class="fas fa-undo"></i></a>')
+            for (let star of starArray2) {
+                document.getElementById(star.id).addEventListener("mouseover", mouseIn);
+                document.getElementById(star.id).addEventListener("mouseout", mouseOut);
+                document.getElementById(star.id).addEventListener("click", mouseClick);
+            }
+
+
+
+        })
+        $(document).on('click', '#back', function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("CommentOverview", "Member")',
+                data: { id: @Model.Restaurant.Res_ID}
+            }).done(function (_data) {
+                $("#fucom").html(_data);
+            });
+            });
+        $(document).on('click','#upsend',function () {
+            document.getElementById("Com_StarRate").value = starnum2;
+            document.getElementById("Com_Content").value = $('#newcontent').val();
+            //document.getElementById("MyForm").submit();
+
+
+            $.post('@Url.Action("UpdateComment","Member")', $('#ComUP').serialize(),function (data) {
+                alert(data);
+                $.ajax({
+                    type:'GET',
+                    url: '@Url.Action("CommentOverview", "Member")',
+                    data: { id: @Model.Restaurant.Res_ID}
+                }).done(function (_data) {
+                    $("#fucom").html(_data);
+                })
+
+            })
+        });
+    </script>
+
+
+    @*=============================檢舉餐廳的所有評論=========================*@
+    <script>
+        //用on事件幫控制項加入方法
+        $(document).on('click', '#report', function () {
+            var Rep_Content = prompt("請輸入檢舉內容");
+            var commentid = $(this).data('reportid');
+            if (Rep_Content != null && Rep_Content != "") {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        Rep_Content : Rep_Content,
+                        Rep_RestaurantID : @Model.Restaurant.Res_ID,
+                        Rep_CommentID : commentid,
+                    },
+                    url: '@Url.Action("ReportComment_Restaurant","Restaurant")',
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+            }
+            else {
+                alert("取消檢舉");
+            }
+
+        })
+    </script>
+    @*==========================檢舉食記===============================*@
+    <script>
+        //用on事件幫控制項加入方法
+        $(document).on('click', '#reportnews', function () {
+            var Rep_Content = prompt("請輸入檢舉內容");
+            var newsid = $(this).data('reportid');
+            if (Rep_Content != null && Rep_Content != "") {
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        Rep_Content : Rep_Content,
+                        Rep_RestaurantID : @Model.Restaurant.Res_ID,
+                        Rep_NewsID : newsid,
+                    },
+                    url: '@Url.Action("ReportNews_Restaurant", "Restaurant")',
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+            }
+            else {
+                alert("取消檢舉");
+            }
+
+        })
+    </script>
+
+    @*===================食記加入我的最愛=================*@
+    <script>
+        $(document).on('click', '#mylove', function () {
+            var newsid = $(this).data('mylove');
+
+                $.ajax({
+                    type: 'GET',
+                    data: {
+                        id : newsid,
+                    },
+                    url: '@Url.Action("AddBlogToLike", "Home")',
+                    success: function (data) {
+                        alert(data)
+
+                    }
+                })
+
+            $("#btn_defaultview").click();
+        })
+    </script>
+    @*============食記取消最愛==============*@
+    <script>
+        $(document).on('click', '#unlove', function () {
+            var newsid = $(this).data('unlove');
+
+                $.ajax({
+                    type: 'GET',
+                    data: {
+                        id : newsid,
+                    },
+                    url: '@Url.Action("RemoveBlogLike", "Home")',
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+
+            $("#btn_defaultview").click();
+        })
+    </script>
+
+    @*===== 優惠設定新增全體partialView =====*@
+    <script>
+        $('#discountoverview').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DiscountOverview", "Restaurant")',
+                success: function (data) {
+                    $('#newReservation').html(data)
+                    $("html,body").animate({ scrollTop: 0 }, 500);
+                }
+            })
+        })
+
+        $(document).on('click', '#NewDiscount', function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DiscountNew", "Restaurant")',
+                success: function (data) {
+                    $('#newReservation').html(data)
+
+                }
+            })
+        })
+
+        function showImage(src, target) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                target.src = fr.result;
+            }
+            fr.readAsDataURL(src.files[0]);
+        }
+
+        function putImage() {
+            var src = document.getElementById("Picture");
+            var target = document.getElementById("target");
+            showImage(src, target);
+        }
+
+        $(document).on('click', '#NewDiscountSend', function () {
+            event.preventDefault();
+            var c_data = new FormData($('#c_data')[0]);
+            $.ajax({
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("DiscountNew","Restaurant")',
+                data: c_data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    alert('新增成功!!')
+                    $('#discountoverview').click();
+
+                }
+            })
+        })
+
+        $(document).on('click', '.DiscountBlock', function () {
+            event.preventDefault();
+
+            var disID = $(this).data('disid')
+
+            if ($(this).data('manage') == 'False') {
+                location.href = `@Url.Action("DiscountPage","Restaurant")/${disID}`;
+                return false;
+            }
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DiscountManage", "Restaurant")',
+                data: { id: disID},
+                success: function (data) {
+                    $('#newReservation').html(data)
+                }
+            })
+        })
+
+        $(document).on('click', '#ManageDiscountSend', function () {
+            event.preventDefault();
+            var c_data = new FormData($('#c_data')[0]);
+            $.ajax({
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("DiscountManage", "Restaurant")',
+                data: c_data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    $('#discountoverview').click();
+                    $("#loading_gif").hide()
+
+                }
+            })
+        })
+
+
+        $(document).on('click', '#ManageDiscountCancel', function () {
+            event.preventDefault();
+            if (confirm('確認取消優惠?')) {
+                var disID = $(this).data('disid')
+                $.ajax({
+                    type: 'GET',
+                    url: `@Url.Action("DiscountDelete","Restaurant")`,
+                    data: { id: disID},
+                    success: function () {
+                        $('#discountoverview').click();
+                        return false;
+                    }
+                })
+            }
+        })
+
+
+
+    </script>
+    @*===== 優惠設定新增全體partialView =====*@
+    @*===== 訂位設定新增全體partialView =====*@
+    <script>
+        $(document).on('click', '.newbook', function () {
+            event.preventDefault();
+            if ($.cookie('Role') != 'Member') {
+                return;
+            }
+            var openid = $(this).data('id')
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ReservationBooking","Restaurant")',
+                data: { id: openid },
+                success: function (data) {
+                    $('#ReservationModal .modal-body').html(data)
+                    $('#RVBooked_Seats').val(2);
+                    $('#ReservationModal').modal('show')
+                }
+            })
+
+            $('#ReservationModal').modal('show')
+
+        })
+
+
+        //OverView
+        $('#reservationoverview').click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ReservationOverview", "Restaurant")',
+                success: function (data) {
+                    $('#newReservation').html(data)
+                    $("html,body").animate({ scrollTop: 0 }, 500);
+                }
+            })
+        })
+        //New
+        $(document).on('click', '#NewReservation', function () {
+             $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ReservationNew", "Restaurant")',
+                success: function (data) {
+                    $('#newReservation').html(data)
+                }
+            })
+        })
+        //Mange
+        //Delete
+    </script>
+    @*======== SignalR ========*@
+    <script>
+        $(function () {
+            $(document).on('change', '#dateReservation', function () {
+                var target = $(this).val()
+                $('#overlayBlock').load('@Url.Action("ReservationOverviewBlock", "Restaurant")?date=' + target)
+            })
+            NoticeFuntion = function () {
+                $(document).on('click', '.reservation-manage .close', function () {
+                    var key = $(this).data("key")
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("DeleteTeamHeader","Restaurant")',
+                        data: { key: key},
+                        success: function (data) {
+                            $('#overlayBlock').load('@Url.Action("ReservationOverviewBlock", "Restaurant")')
+                            notice.server.send();
+                        }
+                    })
+                })
+            }
+        })
+
+    </script>
+    @*======== SignalR ========*@
+
+    @*======== 訂位簽到 ========*@
+    <script>
+        $(document).on('click', '.membercheck.btn-info', function () {
+            var element = $(this)
+            event.preventDefault()
+            if (confirm(`確認簽到?`)) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReservationBookCheckIn", "Restaurant")',
+                data: { id: element.data('bookid') },
+                success: function () {
+                    element.addClass('btn-success');
+                    element.removeClass('btn-info');
+                }
+            })
+            }
+        })
+        $(document).on('click', '.membercheck.btn-success', function () {
+            var element = $(this)
+            event.preventDefault()
+            if (confirm('取消簽到?')) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReservationBookCheckIn", "Restaurant")',
+                data: { id: element.data('bookid') },
+                success: function () {
+                    element.addClass('btn-info');
+                    element.removeClass('btn-success');
+                }
+            })
+            }
+        })
+    </script>
+    @*======== 訂位簽到 ========*@
+
+    @*======== 過往紀錄 ========*@
+    <script>
+        $(document).on('click', '#PassReservation', function () {
+            if ($(this).hasClass('btn-success')) {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("ReservationOverviewBlockForPass", "Restaurant")',
+                    data: { date: null },
+                    success: function (data) {
+                        $('#overlayBlock').html(data)
+                        $('#PassReservation').addClass('btn-danger')
+                        $('#PassReservation').removeClass('btn-success')
+                    }
+                })
+            }
+            else {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("ReservationOverviewBlock", "Restaurant")',
+                    data: { date: null },
+                    success: function (data) {
+                        $('#overlayBlock').html(data)
+                        $('#PassReservation').addClass('btn-success')
+                        $('#PassReservation').removeClass('btn-danger')
+                    }
+                })
+            }
+        })
+    </script>
+    @*======== 過往紀錄 ========*@
+
+    <script>
+
+        $(document).on('click', '#NewReservationForm input[type="radio"]', function () {
+            //RVOpen_OffPrice
+            $('#NewReservationForm input[type="radio"]').next().prop('disabled', true);
+            $(this).next().prop('disabled', false);
+        })
+
+        $(document).on('click', '#NewReservationSend', function () {
+            event.preventDefault();
+
+            var Flag = false;
+            $.each($('#NewReservationForm :input'), function (key, element) {
+                if ($(element).val() == '') {
+                    Flag = true;
+                    return;
+                }
+            })
+
+            if (Flag) {
+                return;
+            }
+            $('input[type="radio"]').toArray().forEach(function (element, index) {
+                if (element.checked != true) {
+                    $(element).next().attr('name', '')
+                }
+            })
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReservationNew", "Restaurant")',
+                data: $('#NewReservationForm').serialize(),
+                success: function (data) {
+                    alert(data);
+                    $('#reservationoverview').click()
+                }
+            })
+        })
+
+    </script>
+
+    @*===== BookEvent =====*@
+    <script>
+
+        $(document).on('click', '#NewReservationBooking', function () {
+
+            console.log($(this));
+
+            event.preventDefault();
+
+
+            //Reservation_RVOpen_SeatsRemain
+            if (Number($('#RVBooked_Seats').val()) > Number($('#Reservation_RVOpen_Seats').val())) {
+                alert('超過最大訂位人數上限!!');
+                return;
+            }
+
+            var form = $(this).closest('form');
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ReservationBookRepeat", "Restaurant")',
+                data: { openid : $('#Booked_RVBooked_ReservationOpenedID').val() },
+                success: function (data) {
+                    var splitstr = data.split('原有訂位數量:')
+                    if (splitstr.length == 2) {
+                        if (Number(splitstr[1]) + Number($('#RVBooked_Seats').val()) > Number($('#Reservation_RVOpen_Seats').val())) {
+                            alert(`已有原訂位數量 ${splitstr[1]} \n總數將超過最大訂位人數上限!!`);
+                            return;
+                        }
+                    }
+                    if (confirm(data)) {
+                        if (Number($('#RVBooked_Seats').val()) > Number($('#Reservation_RVOpen_SeatsRemain').val())
+                            && !confirm('此次訂位將被列為候補，請問是否繼續?(若有原訂位也將被移至候補)')) {
+                            return;
+                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("ReservationBooking","Restaurant")',
+                            data: $('#ReservationBookingForm').serialize(),
+                            success: function (data) {
+                                SuccessAnimation('訂位成功')
+                                $('#ReservationModal').modal('hide')
+                                $('#ReservationDate').trigger('change')
+                            }
+                        })
+                    }
+                }
+            })
+
+        })
+    </script>
+    @*===== BookEvent =====*@
+
+    @*====== 訂位日期更換 ======*@
+    <script>
+        $(document).on('change','#ReservationDate',function () {
+            var date = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("HomePageReservation","Restaurant")',
+                data: { id:@Model.Restaurant.Res_ID, date: $(this).val() },
+                beforeSend: function () { $('#DailyReservation').html($("#loading_gif").show())},
+                complete: function () { },
+                success: function (data) {
+                    $('#DailyReservation').html(data)
+                }
+            })
+        })
+        var today = new Date().toISOString().split('T')[0];
+        $('#ReservationDate').val(today);
+
+
+    </script>
+
+    @*====== 訂位日期更換 ======*@
+    @*====== 優惠資料載入 ======*@
+    <script>
+        $(document).on('click', '#discountPage', function () {
+            var page = $(this).attr('data-page')
+            var ele = $(this)
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("HomePageDiscounts","Restaurant")',
+                data: { id:@Model.Restaurant.Res_ID, page: page },
+                success: function (data) {
+                    $('#discountDiv').append(data)
+                    $(ele).attr('data-page', Number(page) + 1)
+                    if (Number($(ele).attr('data-page')) * 4 >= Number($(ele).attr('data-maxcount'))) {
+                        $(ele).attr('hidden',true)
+                    }
+                }
+            })
+        })
+    </script>
+    @*====== 優惠資料載入 ======*@
+
+
+    @*===== 訂位設定新增全體partialView =====*@
+
+    @*=====SEO=====*@
+    <script type="application/ld+json">
+        {
+        "@@context": "http://www.schema.org",
+        "@@type": "Restaurant",
+        "name": "@Model.Restaurant.Res_Name",
+        "description": "@Model.Restaurant.Res_IntroductionContext",
+        "telephone": "@Model.Restaurant.Res_Phone",
+        "openingHours": "@Model.Restaurant.Res_WorkingDate",
+        "image": "@Model.Restaurant.Res_HomePagePicture",
+        "address": {
+        "@@type": "PostalAddress",
+        "addressLocality": "@Model.Restaurant.City",
+        "streetAddress": "@Model.Restaurant.Res_Address"
+        },
+        "priceRange": "@Model.Restaurant.Res_MaxConsumption.ToString()",
+        "servesCuisine": [
+        "@Model.Restaurant.Type_Detail"
+        ]
+        }
+    </script>
+
+
+
+    @*===== Demo =====*@
+    <script>
+        $(document).on('click', '#ReservationDemo', function () {
+            event.preventDefault()
+            $('#RVOpen_OffPriceTitle').val('3週年慶 85折起')
+            $('#StepTime').val(60)
+            $('#OpenDate').val('2019-05-22')
+            $('#StartTime').val('11:00')
+            $('#EndTime').val('20:00')
+            $('#折扣').trigger('click')
+            $('.RVOpen_OffPricedis').val('85折')
+            $('#RVOpen_Seats').val(20)
+        })
+        $(document).on('click', '#DiscountNewDemo', function () {
+            event.preventDefault()
+            $('#Dis_Title').val('RAW ~ 3週年慶  限時一週全系列85折起')
+            $('#Dis_Content').val('用餐滿 3000，送500元優惠券(限下次用餐使用)\n\n凡線上訂位者，享有到場結帳85折起')
+            $('#Dis_Start').val('2019-05-29')
+            $('#Dis_End').val('2019-06-04')
+        })
+        $(document).on('click', '#BookingDemo', function () {
+            event.preventDefault()
+            $('#RVBooked_Seats').val('4')
+            $('#Booked_ReminderText').val('我不能吃海鮮')
+        })
+
+    </script>
+}

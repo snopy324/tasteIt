@@ -1,0 +1,252 @@
+﻿@model IEnumerable<Azure_0517.Models.Comment>
+@{
+    ViewBag.Title = "餐廳 - 評論";
+
+}
+
+
+@section styles{
+    <style>
+        .n {
+            filter: grayscale(1);
+        }
+
+        .s {
+            filter: grayscale(0);
+        }
+
+        .mydelt {
+            margin-left: 25%;
+        }
+
+        .mytext {
+            margin-left: 15px;
+            margin-right: 10%;
+            word-break: break-all;
+            text-align: justify;
+            text-justify: inter-ideograph;
+            height: 80px;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .mytextb {
+            width: 100%;
+            resize: none;
+            margin-left: 0;
+            height: 100%;
+            margin-bottom: 10px;
+        }
+
+        .search-sec {
+            background: #1A4668;
+            padding: 2rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .yes {
+            font-weight: 900;
+            text-decoration: none;
+            color: aliceblue;
+            width: 90%;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        .myimg {
+            height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+            .myimg img {
+                width: 50% !important;
+                height: 50% !important;
+                opacity: 1.0 !important;
+            }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+        .popup {
+            margin: 70px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+            .popup h2 {
+                margin-top: 0;
+                color: #333;
+                font-family: Tahoma, Arial, sans-serif;
+            }
+
+            .popup .close {
+                position: absolute;
+                /*top: 20px;
+                right: 30px;*/
+                transition: all 200ms;
+                /*font-size: 20px;*/
+                font-weight: bold;
+                text-decoration: none;
+                color: aliceblue;
+                width: 90%;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+                .popup .close:hover {
+                    color: #06D85F;
+                }
+
+            .popup .content {
+                max-height: 30%;
+                overflow: auto;
+            }
+
+        .button {
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+            .button:hover {
+                background: #06D85F;
+            }
+    </style>
+}
+
+
+<div class="container mb-3">
+    <form id="MyForm" action="~/Restaurant/ReportComment_Restaurant" method="post">
+        @foreach (var com in Model)
+        {
+            <div class="row">
+                <div class="comment col-11" style="margin:0;padding:0">
+                    <div class="comment-img">
+                        <img src="data:imge/jpeg;base64,@Convert.ToBase64String(com.Member.Mem_Photo)" />
+                    </div>
+
+                    <div class="comment-content">
+                        <div style="display:flex;flex-direction:row;justify-content:flex-start;margin-left:30px;">
+
+                            <p class="author" style="display:inline;">
+                                <strong>@com.Member.Mem_NickName</strong>
+                            </p>
+
+                            <div style="display:block;white-space:nowrap;margin-left:auto;padding-right:0" id="divTop_@com.Com_ID">
+                                <div style="position:relative;margin-left:30px">
+                                    @for (var i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= com.Com_StarRate)
+                                        {
+                                            <img src="~/tasteitlogo/comStar.png" id="Star${i}" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/tasteitlogo/comStar.png" id="Star${i}" class="n" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <span class="mytext" style="height:120px;" id="comtext_@com.Com_ID" data-text="@com.Com_ID">
+                            @Html.DisplayFor(n => com.Com_Content, new { @class = "comment-content" })
+                        </span>
+                    </div>
+                    <span style="font-size:small;float:right;margin-right:70px">@Html.DisplayFor(n => com.Com_CreateDate)</span>
+
+                </div>
+                <div class="col-1" id="combuttom" style="padding:0;margin:0;text-align:center">
+                    <div>
+                        @if (Request.Cookies["Role"] == null)
+                        {
+
+                        }
+                        else if (Request.Cookies["Role"].Value == "Member" || Request.Cookies["Role"].Value == "Restaurant")
+                        {
+                            <div class="rbv-btn" style="padding:0;margin:0;text-align:center">
+                                <a data-hover="檢舉" style="width:100%;text-align:center" class="updatebuttom" title="檢舉" id="report" data-reportcom="@com.Com_Content" data-reportid="@com.Com_ID" name="report"><i class="fas fa-exclamation-circle"></i></a>
+                            </div>
+                        }
+                        else if (Request.Cookies["Role"].Value == "Administrator")
+                        {
+                            <div class="blogdel-btn" style="width:100%;text-align:center">
+                                <a data-hover="刪除" data-toggle="modal" data-target="#popup@(com.Com_ID)" title="刪除"><i class="fas fa-trash-alt" style="color:black"></i></a>
+                            </div>
+                            <div class="modal fade" id="popup@(com.Com_ID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">警告</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            確定要刪除評論嗎?
+                                        </div>
+
+                                        <div class="content row" style="margin-bottom:10px;">
+                                            <div class="col-1"></div>
+                                            <div class="col-5">@Html.ActionLink("○", "DeleteComment_Member", "Member", new { id = com.Com_ID }, new { @class = "yes btn btn-danger " })</div>
+                                            <div class="col-5"><a class="btn btn-success delbutton" data-dismiss="modal">X</a></div>
+                                            <div class="col-1"></div>
+                                        </div>
+                                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>*@
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @Html.Hidden("Rep_Content", null, new { Rep_Content = "Rep_Content" })
+                        @Html.Hidden("Rep_CommentID", com.Com_ID, null)
+                    </div>
+                </div>
+            </div>
+
+        }
+    </form>
+</div>

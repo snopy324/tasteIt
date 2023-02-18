@@ -1,0 +1,86 @@
+﻿@model  IPagedList<Azure_0517.Models.Restaurant>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web;
+
+
+<div class="row" id="showarea">
+    @*<input id="savesortstring" type="hidden" value=" @ViewBag.ssstring"/>*@
+    @foreach (var res in Model)
+    {
+        <div class="col-12 col-md-12 pt-3">
+            @Html.Action("RestaurantBlock", "Home", new { id = res.Res_ID })
+        </div>
+    }
+</div>
+@*<div class="container">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item">
+                    <button class="page-link" id="page-@i">@i</button>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>*@
+<br />
+<div class="container">
+    <div class="pagination-container">
+        <ul class="pagination">
+            @if (!Model.IsFirstPage)
+            {
+                <li>
+                    <button id="page-1" class="pagebtn" style="outline:none"><<</button>
+                </li>
+            }
+
+            @{
+                int count = 1;
+
+                if (Model.PageNumber >= 3)
+                {
+                    var p2 = Model.PageNumber - 2;
+                    <li>
+                        <button id="page-@p2" class="pagebtn" style="outline:none">@p2</button>
+                    </li>
+                    count++;
+                }
+                if (Model.PageNumber >= 2)
+                {
+                    var p1 = Model.PageNumber - 1;
+                    <li>
+                        <button id="page-@p1" class="pagebtn" style="outline:none">@p1</button>
+                    </li>
+                    count++;
+
+                }
+
+                <li>
+                    <button id="page-@Model.PageNumber" class="pagebtn" style="outline:none">@Model.PageNumber</button>
+                </li>
+                count++;
+                var num = Model.PageNumber + 1;
+                for (int i = count; i <= 5; i++)
+                {
+                    if (num <= Model.PageCount)
+                    {
+                        <li>
+                            <button id="page-@num" class="pagebtn" style="outline:none">@num</button>
+                        </li>
+                        num++;
+                    }
+                }
+
+            }
+
+            @if (!Model.IsLastPage)
+            {
+                <li>
+                    <button id="page-@Model.PageCount" class="pagebtn" style="outline:none">>></button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

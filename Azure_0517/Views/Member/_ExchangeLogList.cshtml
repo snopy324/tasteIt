@@ -1,0 +1,82 @@
+﻿@model IEnumerable<IGrouping<DateTime,Azure_0517.Models.ViewModel.CartViewModel>>
+
+@{ 
+    var count = 0;
+    
+}
+    @foreach (var list in Model)
+    {
+        count++;
+        var sum = 0;
+        <div class="section">
+            <div class="section-header">
+                <div class="section-text"></div>
+                    <h5 style="text-align:center;margin-left:75px;">@list.Key.ToShortDateString() &nbsp;-&nbsp;&nbsp;@list.Count() 項商品</h5>
+                <button class="toggle-section toggle-btn" style="outline:none;" data-count="@count" data-toggle-content="section-@count">展開</button>
+            </div>
+            <div class="section-content" id="section-@count">
+                <div class="row">
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.First().First().Picture)
+                                    </th>
+                                    <th style="min-width:90px">
+                                        @Html.DisplayNameFor(model => model.First().First().Name)
+                                    </th>
+                                    <th style="min-width:90px">
+                                        @Html.DisplayNameFor(model => model.First().First().Point)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.First().First().GetQuantity)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.First().First().Amount)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in list)
+                                {
+                                    sum += (int)item.Amount;
+                                    <tr data-id="@item.GiftID">
+                                        <td>
+                                            <img class="pic" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Picture)" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Point)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.GetQuantity)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Amount)
+                                        </td>
+                                    </tr>
+
+                                }
+                                <tr style="background-color:darkgray">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="color:white">
+                                        <strong>總計:</strong>
+                                    </td>
+                                    <td style="color:white">
+                                        <strong>@sum</strong>
+                                        <strong>Pt</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+        

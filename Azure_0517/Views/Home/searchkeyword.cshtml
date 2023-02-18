@@ -1,0 +1,38 @@
+﻿@model  IPagedList<Azure_0517.Models.Restaurant>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web;
+
+@try{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xl-4 col-4 text-left" role="alert">
+                <h2>
+                    <span class="badge badge-primary">搜尋結果:共有 @ViewBag.r_count 筆資料符合</span>
+                </h2>
+            </div>
+            <input id="raj" type="hidden" value="@ViewBag.intstring" />
+            @*<input id="sssing" type="hidden" value="@ViewBag.ssstring" />*@
+            <div class="col-md-8 col-lg-8 col-sm-8 col-xl-8 col-8 text-right">
+                @if (ViewBag.r_count != 0)
+                {
+                <div id="chubtngroup">
+                    <button id="desbyprice" name="desbyprice" type="button" class="btn btn-outline-primary chubtng">均消排序(高)</button>
+                    <button id="resbyprice" name="resbyprice" type="button" class="btn btn-outline-primary chubtng">均消排序(低)</button>
+                    <button id="desbycity" name="desbycity" type="button" class="btn btn-outline-success chubtng">星等排序(正)</button>
+                    <button id="resbycity" name="resbycity" type="button" class="btn btn-outline-success chubtng">星等排序(反)</button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="c_showblock">
+        @Html.Partial("as_pagelist")
+    </div>
+}
+catch
+{
+    <h1>查無任何項目!</h1>
+}
+
+

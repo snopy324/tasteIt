@@ -1,0 +1,29 @@
+﻿
+.section {
+    margin-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    border: 1px solid #eee;
+    background-color: lightsteelblue;
+}
+
+
+.section-header {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 10px 0 10px 190px;
+}
+
+.section-header-a:link, .section-header-a:visited {
+    color: #e04545;
+}
+
+.section-content-a {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 10px 0 10px 190px;
+    color: saddlebrown;
+}
+
+.section-list {
+    margin: 5px 0 5px 190px;
+}

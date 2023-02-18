@@ -1,0 +1,32 @@
+﻿@model Azure_0517.Models.Discount
+
+
+
+<div class="col-@(12/(ViewBag.listCount)) tile">
+    <a href="@Url.Action("DiscountPage","Restaurant",new { id = @Model.Dis_ID })" data-manage="@ViewBag.Manage" class="DiscountBlock" data-disid="@Model.Dis_ID">
+        <div class="bo">
+            <div class="">
+                <figure>
+                    <img src='@Url.Action("GetDiscountImg","Restaurant")/@(Model.Dis_ID)' alt="Alternate Text" />
+                </figure>
+            </div>
+            <div class="title">
+
+                <h5 class="card-title">@Model.Dis_Title</h5>
+
+                <footer>
+                    <small>@Model.Restaurant.Res_Name</small>
+                    <small>
+                        @Model.Dis_Start.ToString("MM/dd")
+                        @if (@Model.Dis_End.HasValue)
+                        {
+                            <span> - @Model.Dis_End.Value.ToString("MM/dd")</span>
+                        }
+                    </small>
+                </footer>
+            </div>
+        </div>
+    </a>
+</div>
+
+

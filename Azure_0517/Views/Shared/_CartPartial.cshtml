@@ -1,0 +1,60 @@
+﻿@*@model  IEnumerable<Azure_0517.Models.Gift_Detail>*@
+
+@using Azure_0517.Models.Repository;
+@{
+
+    GiftDetailRepository giftDetailRepository = new GiftDetailRepository();
+    var memID = Convert.ToInt32(Request.Cookies["Key"].Value);
+    var list = giftDetailRepository.SearchList(memID);
+    var sum = 0;
+    var count = 0;
+
+    foreach (var item in list)
+    {
+        sum += (item.Gift.Gift_Point) * (item.GiftDet_GetQuantity);
+        count += item.GiftDet_GetQuantity;
+    }
+
+    <div style="display:inline-block;" class="btn-group">
+        <div style="display:inline-block">
+            <span class="badge badge-danger noticespan">@count</span>
+        </div>
+        <a class="nav-link dropdown-toggle chufornavfont" style="cursor:pointer;float:right" id="CartDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span id="cartword" style="color:#ffffff"><i class="fa fa-shopping-cart" id="icon-cart" data-sum="@sum" aria-hidden="true" style="position:relative;left:2px"></i> : @sum Pt</span>
+        </a>
+    </div>
+}
+
+<ul id="cart" class="dropdown-menu mt-0 cart-ul" aria-labelledby="CartDropdown">
+
+    @if (list.Count() != 0)
+    {
+        foreach (var item in list)
+        {
+            <li id="gift-@item.GiftDet_GiftID" data-id="@item.GiftDet_GiftID" data-count="@item.GiftDet_GetQuantity" class="dropdown-item cart-item">
+                <div class="cart-item-info">
+                    <img class="cart-item-img" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Gift.Gift_Picture)" />
+                    <span class="cart-item-name">@item.Gift.Gift_Name </span>
+                </div>
+                <div class="cart-item-pay">
+                    <span class="cart-item-point">@item.Gift.Gift_Point Pt x @item.GiftDet_GetQuantity &nbsp;</span>
+                    <a onclick="RemoveFromCart(@item.GiftDet_GiftID)" class="btn btn-sm btn-danger LVM cart-item-delete"><i class="fa fa-trash"></i></a>
+                </div>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="dropdown-item">
+            <span>購物車已無獎品</span>
+        </li>
+    }
+    <li class="dropdown-divider"></li>
+    <li class="cart-bottom-li">
+        <a href="~/Member/ShoppingCartList" class="btn btn-success LVM cart-go"><i class="fa fa-shopping-cart"></i>前往購物車</a>
+        <a onclick="ClearCart()" class="btn LVM cart-clear"><i class="fa fa-trash"></i>清空購物車</a>
+    </li>
+</ul>
+
+
+

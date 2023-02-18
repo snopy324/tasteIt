@@ -1,0 +1,77 @@
+﻿@model Azure_0517.Models.ViewModel.AdmQAViewModel
+
+
+
+@if (Request.Cookies["Role"].Value == "Administrator")
+{
+    foreach (var item in Model.qA_SystemsNotice)
+    {
+
+        if (item.QA_MemberID != null)
+        {
+            <button class="btn btn-outline-warning">
+                <div class="ContactPerson" data-id=@item.QA_MemberID data-role="@item.Member.Mem_RoleID">
+                    <img src="@Url.Action("getdbimage", "Member",new { id =item.Member.Mem_ID ,flag="mem"})" class="image" alt="avatar">
+                    <p style="color:black;">@item.Member.Mem_Name</p>
+
+                </div>
+            </button>
+
+
+        }
+        else if (item.QA_RestaurantID != null)
+        {
+            <button class="btn btn-outline-warning">
+                <div class="ContactPerson" data-id=@item.QA_RestaurantID data-role="@item.Restaurant.Res_RoleID">
+                    <img src="@Url.Action("getdbimage", "Restaurant", new { id = item.Restaurant.Res_ID ,table="restaurant"})" class="image" alt="avatar">
+                    <p style="color:black;">@item.Restaurant.Res_Name</p>
+
+                </div>
+            </button>
+
+
+        }
+    }
+}
+else if (Request.Cookies["Role"].Value == "Member")
+{
+    <button class="btn btn-outline-warning">
+        <div class="ContactPerson" data-id="@Model.QA_SystemsNameData.FirstOrDefault().Key" data-role="3">
+            <img src="~/食物照片/餐廳照片/R14.png" class="image" alt="avatar">
+            <p style="color:black;">管理員</p>
+        </div>
+    </button>
+    foreach (var item in Model.qA_SystemsMemNotice)
+    {
+        <button class="btn btn-outline-warning">
+            <div class="ContactPerson" data-id=@item.QA_RestaurantID data-role="@item.Restaurant.Res_RoleID">
+                <img src="@Url.Action("getdbimage", "Restaurant", new { id = item.Restaurant.Res_ID ,table="restaurant"})" class="image" alt="avatar">
+                <p style="color:black;">@item.Restaurant.Res_Name</p>
+
+            </div>
+        </button>
+    }
+}
+else if (Request.Cookies["Role"].Value == "Restaurant")
+{
+    <button class="btn btn-outline-warning">
+        <div class="ContactPerson" data-id="@Model.QA_SystemsNameData.FirstOrDefault().Key" data-role="3">
+            <img src="~/食物照片/餐廳照片/R14.png" class="image" alt="avatar">
+            <p style="color:black;">管理員</p>
+        </div>
+    </button>
+    foreach (var item in Model.qA_SystemsResNotice)
+    {
+        <button class="btn btn-outline-warning">
+            <div class="ContactPerson" data-id=@item.QA_MemberID data-role="@item.Member.Mem_RoleID">
+                <img src="@Url.Action("getdbimage", "Member",new { id =item.Member.Mem_ID ,flag="mem"})" class="image" alt="avatar">
+                <p style="color:black;">@item.Member.Mem_Name</p>
+
+            </div>
+        </button>
+    }
+}
+
+
+
+

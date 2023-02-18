@@ -1,0 +1,148 @@
+﻿@model IEnumerable<Azure_0517.Models.Report>
+@{
+    ViewBag.Title = "檢舉總覽";
+}
+
+<h3 style="margin-bottom:30px">檢舉總覽</h3>
+@Html.ActionLink("全選", "ProsecutionOverview", new { state = "" }, new { @class = "far  btn btn-secondary", data_state = "all" })
+@Html.ActionLink("未處理", "ProsecutionOverview", new { state = "false" }, new { @class = "far  btn btn-danger", data_state = "false" })
+@Html.ActionLink("已處理", "ProsecutionOverview", new { state = "true" }, new { @class = "far  btn btn-primary", data_state = "true" })
+<input type="hidden" id="category" value=all />
+<table id="ProsecutionTable" class="table table-bordered table-hover" style="margin-top:30px">
+
+    <thead>
+        <tr>
+            <th width="6%">檢舉編號</th>
+            <th width="8%">@Html.DisplayNameFor(r => r.FirstOrDefault().Rep_CreatedDate)</th>
+            <th width="8%">檢舉人</th>
+            <th width="10%">@Html.DisplayNameFor(r => r.FirstOrDefault().AccuseType.RepTyp_Content)</th>
+            <th width="50%">@Html.DisplayNameFor(r => r.Rep_Content)</th>
+            <th width="12%">處理狀態</th>
+            <th width="3%">查看</th>
+            <th width="3%">編輯狀態</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*為什麼不直接用導覽屬性就好，要用viewmodel?*@
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(r => report.Rep_ID)</td>
+                <td>@Html.DisplayFor(r => report.Rep_CreatedDate)</td>
+                @if (report.Rep_MemberID != null)
+                {
+                    <td>@Html.DisplayFor(r => report.Member.Mem_Name)</td>
+                }
+                @if (report.Restaurant != null)
+                {
+                    <td>@Html.DisplayFor(r => report.Restaurant.Res_Name)</td>
+                }
+                @if (report.Rep_AdministratorID != null)
+                {
+                    <td>@Html.DisplayFor(r => report.Member.Mem_Name)</td>
+                }
+                <td>@Html.DisplayFor(r => report.AccuseType.RepTyp_Content)</td>
+
+                <td>@Html.DisplayFor(c => report.Rep_Content)</td>
+
+                <td style="color:orangered">
+                    @{
+                        if (report.Rep_SolvedDate.HasValue)
+                        {
+                            <span style="color:blue">已處理 </span>
+                        }
+                        else
+                        {
+                            <span>未處理</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        if (report.Comment != null && report.Comment.News != null)
+                        {
+                            @Html.ActionLink("查看", "BlogPage", "Home", new { id = report.Rep_CommentID }, new { @class = "btn btn-primary" })
+                        }
+                        else if (report.Comment != null && report.Comment.Restaurant != null)
+                        {
+                            @Html.ActionLink("查看", "RestaurantHomePage", "Restaurant", new { id = report.Comment.Com_RestaurantID }, new { @class = "btn btn-primary" })
+                        }
+                        else if (report.News != null)
+                        {
+                            @Html.ActionLink("查看", "BlogPage", "Home", new { id = report.Rep_NewsID }, new { @class = "btn btn-primary" })
+                        }
+                        else
+                        {
+                            <a href="#">Link Lost</a>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        if (report.Rep_SolvedDate.HasValue)
+                        {
+                            @Html.ActionLink("案件重開", "ProsecutionSolved", "Administrator", new { id = report.Rep_ID, Solved = false }, new { @class = "btn  btn-danger restart", data_id = report.Rep_ID })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("處理完成", "ProsecutionSolved", "Administrator", new { id = report.Rep_ID, Solved = true }, new { @class = "btn  btn-info finish", data_id = report.Rep_ID })
+                        }
+                    }
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(document).on('click', '.far', function () {
+            event.preventDefault();
+            if ($(this).data('state') != "all") {
+                $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")?state=' + $(this).data('state'));
+                $("#category").attr("value", $(this).data('state'));
+                //這邊不知道為什麼用{ status: $(this).data('state')}會沒效果，有空回來研究一下
+            }
+            else {
+                $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")')
+                $("#category").attr("value", $(this).data('state'));
+            }
+    })
+    $(document).on('click', '.restart', function () {
+        console.log("restart")
+        event.preventDefault();
+
+        $.get('@Url.Action("ProsecutionSolved")', { id: $(this).data('id'), Solved: false }, function (data) {
+            if ($("#category").val() == "all") {
+                $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")');
+            }
+             if ($("#category").val() == "true") {
+                 $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")?state=' + $("#category").val());
+            }
+             if ($("#category").val() == "false") {
+                 $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")?state=' + $("#category").val());
+            }
+        });
+
+    })
+
+    $(document).on('click', '.finish', function () {
+        console.log("finish")
+        event.preventDefault();
+
+        $.get('@Url.Action("ProsecutionSolved")', { id: $(this).data('id'), Solved: true }, function (data) {
+            if ($("#category").val() == "all") {
+                $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")');
+            }
+            if ($("#category").val() == "true") {
+                $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")?state=' + $("#category").val());
+            }
+            if ($("#category").val() == "false") {
+                $("#ProsecutionTable").load('@Url.Action("PartialProsecutionOverview")?state=' + $("#category").val());
+            }
+            });
+    })
+    </script>
+}

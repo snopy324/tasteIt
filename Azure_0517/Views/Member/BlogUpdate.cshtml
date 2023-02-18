@@ -1,0 +1,59 @@
+﻿@model Azure_0517.Models.News
+@{
+    ViewBag.Title = "編輯 - " + Model.New_Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+       /*h1{
+           height:500px;
+       }*/
+    </style>
+    }
+
+<div class="container" style="margin-bottom:50px;">
+    
+    <form action="~/Member/BlogUpdate" method="post" style="padding:20px" id="MyForm">
+        <h3>編輯</h3>
+        @Html.TextBoxFor(n => Model.New_Title, null, new Dictionary<string, object> { { "style", "width:100%;height:40px;" }, { "placeholder", "請輸入標題" }, { "id", "New_Title" }, { "name", "New_Title" } })
+        @*< input type="text" id="New_Title" name="New_Title" style="width:100%;height:40px;" placeholder="請輸入標題" />*@
+        @*<textarea name="Content" id="Content" style="background-color:orange;"></textarea>*@
+        @Html.TextAreaFor(c => Model.New_Content, new { style = "background-color:orange;height:500px;" })
+        <input type="button" name="button" value="Send" id="button" />
+        @*@Html.Hidden("Content", null, new { id = "Content" })*@
+        @Html.Hidden("New_RestaurantID", (object)@ViewBag.RestID, new { value = "New_RestaurantID" })
+        @Html.Hidden("New_ID",Model.New_ID,new { value= "New_ID"})
+    </form>
+</div>
+
+@*@if (Model != null)
+    {
+        @Html.Raw(Model.New_Content)
+    }*@
+
+
+@section scripts{
+
+    @*<script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>*@
+
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+       /* var editor1 = */CKEDITOR.replace('New_Content', {
+           height: '800px',
+       });
+
+        $('#button').click(function () {
+            if ($('#New_Title').val() != null && $('#New_Title').val() != "") {
+                //alert(editor1.getData());
+                //document.getElementById("New_Content").value = editor1.getData();
+                document.getElementById("MyForm").submit();
+            }
+            else {
+                alert("請輸入標題");
+            }
+        })
+    </script>
+}
+
+

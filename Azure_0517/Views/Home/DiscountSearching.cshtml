@@ -1,0 +1,224 @@
+﻿@model Azure_0517.Models.ViewModel.DisSearchPara
+
+@{
+    ViewBag.Title = "優惠搜尋";
+}
+
+@section styles{
+    <style>
+        figure {
+            height: 250px;
+            margin: 10px;
+        }
+
+            figure img {
+                height: 100%;
+                width: 100%;
+            }
+
+        .bo {
+            border: 2px solid #e5c14d;
+            padding: 5px;
+            height: 100%;
+            box-shadow: 3px 3px 7px #808080;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5em;
+            font-weight: 300;
+        }
+
+        strong {
+            font-weight: 400;
+        }
+
+        .tile {
+            width: 100%;
+            height: 400px;
+            display: inline-block;
+            box-sizing: border-box;
+            background-color: transparent;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+            .tile .card-title {
+                font-weight: 900;
+            }
+
+            .tile .title {
+                margin-left: 10px;
+                margin-top: 0px;
+            }
+
+            .tile footer {
+                width: 100%;
+                text-align: center;
+                position: absolute;
+                bottom: 3%;
+                left: 0;
+            }
+
+            .tile a {
+                color: black;
+            }
+    </style>
+
+}
+
+<h3>優惠搜尋</h3>
+<div class="accordion pt-0 mt-0 border-secondary" id="avdancearea">
+    <div class="card border-secondary">
+        <div class="card-header border-secondary row" id="headingOne">
+            <h2 class="mb-0 col-md-3">
+                <button id="c_btn_ads" class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    進階搜尋
+                </button>
+
+            </h2>
+            <form>
+                <select id="orders" name="orders" class="custom-select custom-select-sm">
+                    <option value="熱門" selected>熱門</option>
+                    <option value="即將到期">即將到期</option>
+                    <option value="即將推出">即將推出</option>
+                </select>
+                <input type="hidden" id="searchBy" name="searchBy" value="" />
+                <input type="hidden" id="scorllTime" name="scorllTime" value="0" />
+            </form>
+
+
+            <div class="col-md-9 form-inline">
+                <div class="container-fluid text-right">
+                    <form>
+                        <input id="u_keyword" name="SearchText" class="form-control mr-sm-2" type="search" placeholder="請輸入關鍵字" aria-label="Search" />
+                        <button id="ksearch" class="btn btn-success my-2 my-sm-0" type="button">搜尋</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="collapseOne" class="collapse border-secondary" aria-labelledby="headingOne" data-parent="#avdancearea">
+            <div class="card-body border-secondary">
+                <div class="row">
+                    <form id="form">
+                        <div class="col-12 col-md-12">
+                            @{ int tcount = 0, scount = 0, ccount = 0; }
+                            <div class="container">
+                                <h1>大標籤</h1>
+                                @foreach (var item in Model.theTypes)
+                                {
+                                    <label for="t@(item.ResType_ID)">
+                                        <input id="t@(item.ResType_ID)" class="forsearch" data-belong="istype" type="checkbox" name="t@(item.ResType_ID)" value="@item.ResType_ID" /> @item.ResType_Style
+                                    </label>
+                                    tcount++;
+                                }
+                            </div>
+                            <div class="container">
+                                <h1>小標籤</h1>
+                                @foreach (var item in Model.subTypes)
+                                {
+                                    <label for="s@(item.SubT_ID)">
+                                        <input id="s@(item.SubT_ID)" class="forsearch" data-belong="issubtupe" type="checkbox" name="s@(item.SubT_ID)" value="@item.SubT_ID" /> @item.SubT_Contect
+                                    </label>
+                                    scount++;
+                                }
+                            </div>
+                            <div class="container">
+                                <h1>城市</h1>
+                                @foreach (var item in Model.cities)
+                                {
+                                    <label for="c@(item.Cit_ID)">
+                                        <input id="c@(item.Cit_ID)" class="forsearch" data-belong="iscity" type="checkbox" name="c@(item.Cit_ID)" value="@item.Cit_ID" /> @item.Cit_Name
+                                    </label>
+                                    ccount++;
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <button id="go" type="button" class="btn btn-primary btn-lg btn-block">開始搜尋</button>
+        </div>
+    </div>
+</div>
+
+<hr class="mt-0 mb-0 mr-0 ml-0 border-secondary" />
+
+
+<div id="searchblock" class="row">
+
+</div>
+
+
+@section scripts{
+
+    @*===== 搜尋&排序 =====*@
+    <script>
+        $(document).on('click', '#go, #ksearch',load)
+        $(document).on('change', '#orders',load)
+        load();
+
+
+
+
+
+
+        function load() {
+            $('input[id="scorllTime"]').val(0)
+
+            switch ($(this).attr('id')) {
+                case 'go':
+                    $('#searchBy').val('Adv')
+                    break;
+                case 'ksearch':
+                    $('#searchBy').val('Text')
+                    break;
+                default:
+                    break;
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DiscountBlockList","Home")',
+                data: $('form').serialize(),
+                success: function (data) {
+
+                    $('#searchblock').html(data);
+                    $('input[id="scorllTime"]').val(Number($('input[id="scorllTime"]').val()) + 1)
+                }
+            })
+         }
+    </script>
+    @*===== 搜尋&排序 =====*@
+    @*===== 卷軸載入 =====*@
+    <script>
+        var flag = true;
+        $(window).scroll(function () {
+            //console.log($('input[id="scorllTime"]').val())
+            //console.log(($(window).scrollTop() - ($(document).height() - $(window).height())))
+
+            if ($(window).scrollTop() - ($(document).height() - $(window).height()) >= -10 && $('input[id="scorllTime"]').val() != '-1') {
+                if (flag) {
+                    flag = !flag;
+                    $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("DiscountBlockList","Home")',
+                    data: $('form').serialize(),
+                    success: function (data) {
+                        flag = !flag
+                        if (data == '') {
+                            $('input[id="scorllTime"]').val('-1')
+                            return false;
+                        }
+                        $('#searchblock').append(data);
+                        $('input[id="scorllTime"]').val(Number($('input[id="scorllTime"]').val()) + 1)
+                    }
+                    })
+                }
+
+            }
+        });
+    </script>
+    @*===== 卷軸載入 =====*@
+
+}

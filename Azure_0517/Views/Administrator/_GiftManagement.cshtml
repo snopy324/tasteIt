@@ -1,0 +1,154 @@
+﻿@model IPagedList<Azure_0517.Models.Gift>
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="row">
+    <div class="col" style="box-shadow:2px 3px 5px 0px #d9d3d3;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.First().Gift_Name)
+                    </th>
+                    <th style="min-width:90px">
+                        @Html.DisplayNameFor(model => model.First().Gift_Point)
+                    </th>
+                    <th style="min-width:90px">
+                        @Html.DisplayNameFor(model => model.First().Gift_Quantity)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.First().Gift_Picture)
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr data-id="@item.Gift_ID">
+                        <td class="text-center">
+                            <span style="margin:0 auto!important;position:relative;top:55px">
+                                @Html.DisplayFor(modelItem => item.Gift_Name)
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span style="margin:0 auto!important;position:relative;top:55px">
+                                @Html.DisplayFor(modelItem => item.Gift_Point)
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span style="margin:0 auto!important;position:relative;top:55px">
+                                @Html.DisplayFor(modelItem => item.Gift_Quantity)
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <img class="pic" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Gift_Picture)" />
+                        </td>
+                        <td style="width:100px;position:relative">
+                            <div style="position:absolute;top:25%;left:25%">
+                                <div class="blogup-btn">
+                                    <a href="~/Administrator/GiftEdit/@item.Gift_ID" title="修改" data-hover="修改"><i class="fas fa-pen-alt" style="color:rgb(121, 161, 181)"></i></a>
+                                </div>
+                                <div class="blogdel-btn">
+                                    <a data-hover="刪除" data-toggle="modal" data-target="#myModal" title="刪除" data-id="@item.Gift_ID" data-name="@item.Gift_Name" data-img="@Convert.ToBase64String(item.Gift_Picture)" data-pt="@item.Gift_Point" data-qty="@item.Gift_Quantity" data-date="@item.Gift_CreatedDate" data-adm="@item.Member.Mem_Name" data-content="@item.Gift_Content"><i class="fas fa-trash-alt" style="color:rgb(160, 101, 101)"></i></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-3">
+    </div>
+</div>
+
+<div class="giftmodal">
+    <!-- Modal -->
+    <div id="myModal" class="modal fade deletemodal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modalname" class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <img id="modalimg" class="pic" />
+                    <p id="modalpt"></p>
+                    <p id="modalqty"></p>
+                    <p id="modaldate"></p>
+                    <p id="modaladm"></p>
+                    <p id="modalcontent"></p>
+                </div>
+                <div class="modal-footer p-0">
+                    <p id="modalid" style="display:none"></p>
+                    <div class="blogdel-btn ml-0">
+                        <a id="deletebtn" data-hover="刪除" title="刪除"><i class="fas fa-trash-alt" style="color:rgb(160, 101, 101);position:absolute;right:20px"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ul class="dropdown-divider"></ul>
+@*@Html.PagedListPager(Model, Page => Url.Action("GiftOverview", new { page = Page, currentFilter = ViewBag.CurrentFilter }), PagedListRenderOptions.ClassicPlusFirstAndLast)*@
+
+<div class="pagination-container">
+    <ul class="pagination">
+        @if (!Model.IsFirstPage)
+        {
+            <li>
+                <button id="page-1" class="pagebtn" style="outline:none"><<</button>
+            </li>
+        }
+
+        @{
+            int count = 1;
+
+            if (Model.PageNumber >= 3)
+            {
+                var p2 = Model.PageNumber - 2;
+                <li>
+                    <button id="page-@p2" class="pagebtn" style="outline:none">@p2</button>
+                </li>
+                count++;
+            }
+            if (Model.PageNumber >= 2)
+            {
+                var p1 = Model.PageNumber - 1;
+                <li>
+                    <button id="page-@p1" class="pagebtn" style="outline:none">@p1</button>
+                </li>
+                count++;
+
+            }
+
+            <li>
+                <button id="page-@Model.PageNumber" class="pagebtn" style="outline:none">@Model.PageNumber</button>
+            </li>
+            count++;
+            var num = Model.PageNumber + 1;
+            for (int i = count; i <= 5; i++)
+            {
+                if (num <= Model.PageCount)
+                {
+                    <li>
+                        <button id="page-@num" class="pagebtn" style="outline:none">@num</button>
+                    </li>
+                    num++;
+                }
+            }
+
+        }
+
+        @if (!Model.IsLastPage)
+        {
+            <li>
+                <button id="page-@Model.PageCount" class="pagebtn" style="outline:none">>></button>
+            </li>
+        }
+    </ul>
+</div>

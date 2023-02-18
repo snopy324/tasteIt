@@ -1,0 +1,34 @@
+﻿@model Azure_0517.Models.News
+
+
+
+<div class="col-3 tile">
+    <a class="" href='@Url.Action("BlogPage","Home",new { id = Model.New_ID})'>
+        <div class="bo">
+            <div class="">
+                <figure>
+                    @if (Model.GetImg.Count != 0)
+                    {
+                        @Html.Raw(Model.GetImg[0])
+                    }
+                    else
+                    {
+                        <img src="~/tasteitlogo/logo.png"/>
+                    }
+                </figure>
+            </div>
+            <div class="title">
+
+                <h5 class="card-title">@Model.New_Title</h5>
+
+                <small>@Model.Restaurant.Res_Name</small>
+                <small>
+                    點擊率: @Model.New_ClickRate 
+                    -- @Model.New_CreateDate
+                </small>
+            </div>
+        </div>
+    </a>
+</div>
+
+

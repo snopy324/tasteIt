@@ -1,0 +1,35 @@
+﻿@model Azure_0517.Models.Picture
+
+<h2>新增相片</h2>
+@using (Html.BeginForm("updatepicture", "Restaurant", FormMethod.Post, new { enctype = "multipart/form-data",name="c_p_createform",id= "c_p_createform",  @class = "mt-5 ml-5" }))
+{
+    <input type="hidden" name="c_r_resid" value="@ViewBag.createphoto_resid" />
+    <div class="form-group">
+        <h6>請選擇想要的照片</h6>
+        <img id="c_target_dataphoto" name="c_target_dataphoto" width="500" height="500" />
+        <input type="file" class="form-control-file" id="c_photo" name="thephoto">
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(t => t.Pic_title)
+        :
+        
+        @Html.EditorFor(t => t.Pic_title, new { htmlattributes = new {id="c_res_create_n_title", @class = "form-control forinput mt-3" , placeholder= "請輸入標題"} })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(c => c.Pic_Content)
+        :
+    </div>
+    <div class="form-group">
+        @Html.TextAreaFor(c => c.Pic_Content, new { id = "c_res_create_n_content", @class = "form-control", @cols = 500, @rows = 7, placeholder = "請輸入描述或介紹" })
+    </div>
+    <div class="form-group">
+        <input id="c_createpicture" class="btn btn-primary forsubmitbtn" type="button" value="確認並送出" />
+        <button id="c_res_create_n_demo" class="btn btn-info forsubmitbtn" type="button">Demo</button>
+    </div>
+}
+
+
+
+
+
+

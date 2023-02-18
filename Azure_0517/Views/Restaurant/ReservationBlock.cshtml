@@ -1,0 +1,55 @@
+﻿@model IGrouping<int, Azure_0517.Models.ReservationOpened>
+
+
+<div class="card text-center">
+
+    <div class="card-body">
+        <a href="@Url.Action("RestaurantHomePage","Restaurant",new {id = Model.First().RVOpen_RestaurantID })">
+            <h5 class="card-title">
+                @Model.First().Restaurant.Res_Name
+            </h5>
+        </a>
+
+        <p class="card-text">
+            <span>@Model.First().RVOpen_OffPriceTitle</span>
+        </p>
+        <p>
+            <span class="fa-align-left">用餐日期: @Model.First().RVOpen_DateTime.Date.ToString("yyyy/MM/dd") </span>
+            <span class="fa-align-right">消費金額: @Model.First().Restaurant.Res_MinConsumption - @Model.First().Restaurant.Res_MaxConsumption</span>
+        </p>
+        
+        @{ if (ViewBag.Manageable == true)
+            {
+                @Html.ActionLink("Manage", "ReservationBlockManage", new { id = Model.Key })
+            }
+        }
+
+    </div>
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills row">
+            @if (ViewBag.Manageable == true)
+            {
+                foreach (var opened in Model)
+                {
+                    <li class="nav-item col-3">
+                        @Html.ActionLink(opened.RVOpen_OffPrice,"ReservationManage", "Restaurant"
+                       , new { id =  opened.RVOpen_ID},new { @class="btn btn-primary" })
+                    </li>
+                }
+            }
+            else
+            {
+                foreach (var opened in Model)
+                {
+                    <li class="nav-item col-3">
+                        @Html.ActionLink($"{opened.RVOpen_DateTime.ToString("HH:mm")}\n{opened.RVOpen_OffPrice}","ReservationBooking", "Restaurant"
+                       , new { id =  opened.RVOpen_ID},new { @class="btn btn-primary" })
+                    </li>
+                }
+            }
+
+
+
+        </ul>
+    </div>
+</div>

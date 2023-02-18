@@ -1,0 +1,131 @@
+﻿@model Azure_0517.Models.ViewModel.AdmQAViewModel
+<div class="card-header msg_head">
+    <div class="d-flex bd-highlight">
+
+        <div class="user_info">
+            <span>@Model.Name</span>
+            <p>@*1767 Messages*@</p>
+        </div>
+        <div class="video_cam">
+            @*<span><i class="fas fa-video"></i></span>
+                <span><i class="fas fa-phone"></i></span>*@
+        </div>
+    </div>
+    @*<span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>*@
+    @*<div class="action_menu">
+            <ul>
+                <li><i class="fas fa-user-circle"></i> View profile</li>
+                <li><i class="fas fa-users"></i> Add to close friends</li>
+                <li><i class="fas fa-plus"></i> Add to group</li>
+                <li><i class="fas fa-ban"></i> Block</li>
+            </ul>
+        </div>*@
+</div>
+<div id="QAChat" class="card-body msg_card_body">
+
+    @if (Model.QA_SystemsData.Count() > 0)
+    {
+        if (Model.QA_SystemsData.FirstOrDefault().QA_MemberID != null)
+        {
+            <input type="hidden" id="MemberIDr" name="QA_MemberID" value=@Model.QA_SystemsData.FirstOrDefault().QA_MemberID />
+            <input type="hidden" id="MemberNamer" name="MemberNamer" value=@Model.QA_SystemsData.FirstOrDefault().Member.Mem_Name />
+        }
+        if (Model.QA_SystemsData.FirstOrDefault().QA_AdministratorID != null)
+        {
+            <input type="hidden" id="AdmIDr" name="QA_AdministratorID" value=3 />
+            <input type="hidden" id="AdmNamer" name="AdmNamer" value=管理員 />
+        }
+        if (Model.QA_SystemsData.FirstOrDefault().QA_RestaurantID != null)
+        {
+            <input type="hidden" id="ResIDr" name="QA_RestaurantID" value=@Model.QA_SystemsData.FirstOrDefault().QA_RestaurantID />
+            <input type="hidden" id="ResNamer" name="ResNamer" value=@Model.QA_SystemsData.FirstOrDefault().Restaurant.Res_Name />
+        }
+
+        foreach (var item in Model.QA_SystemsData)
+        {
+            if (item.QA_ResTalk == true)
+            {
+
+                <div class="d-flex justify-content-end mb-4">
+
+
+                    <div class="msg_cotainer_send">
+                        <span>  @item.QA_Content</span>
+
+                        <span class="msg_time">@*@item.QA_CreateDate*@</span>
+                    </div>
+                </div>
+            }
+            if (item.QA_MemkTalk == true)
+            {
+                <span style="color:aqua"> @Model.Name</span>
+                <div class="d-flex justify-content-start mb-4">
+
+
+                    <div class="msg_cotainer">
+                        <span>  @item.QA_Content</span>
+
+                        <span class="msg_time">@*@item.QA_CreateDate*@</span>
+                    </div>
+                </div>
+            }
+            if (item.QA_AdmTalk == true)
+            {
+                <span style="color:aqua"> @Model.Name</span>
+                <div class="d-flex justify-content-start mb-4">
+
+                    <div class="msg_cotainer">
+
+                        <span>  @item.QA_Content</span>
+
+                        <span class="msg_time">@*@item.QA_CreateDate*@</span>
+                    </div>
+                    @*<span style="color:palevioletred">管理員</span>*@
+                </div>
+            }
+        }
+    }
+    else
+    {
+        if (Model.RoleId == 3)
+        {
+            <input type="hidden" id="AdmIDr" name="QA_AdministratorID" value=3 />
+            <input type="hidden" id="AdmNamer" name="AdmNamer" value=管理員 />
+        }
+
+        if (Model.RoleId == 1)
+        {
+            <input type="hidden" id="MemberIDr" name="QA_MemberID" value=@Model.Id />
+            <input type="hidden" id="MemberNamer" name="MemberNamer" value=@Model.Name />
+        }
+    }
+    @*<div class="d-flex justify-content-start mb-4">
+            <div class="img_cont_msg">
+                <img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img_msg">
+            </div>
+            <div class="msg_cotainer">
+                Hi, how are you samim?
+                <span class="msg_time">8:40 AM, Today</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mb-4">
+            <div class="msg_cotainer_send">
+                Hi Maryam i am good tnx how about you?
+                <span class="msg_time_send">8:55 AM, Today</span>
+            </div>
+            <div class="img_cont_msg">
+            </div>
+        </div>*@
+
+</div>
+<div class="card-footer">
+    <div class="input-group">
+        <div class="input-group-append">
+            <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+        </div>
+        <textarea id="QA_Content" name="QA_Content" class="form-control type_msg" placeholder="Type your message..."></textarea>
+        <div class="input-group-append">
+            <span class="input-group-text send_btn"><input type="button" id="sendmessage" data-id=3 class="btn btn-primary " value="送出" /></span>
+        </div>
+    </div>
+</div>

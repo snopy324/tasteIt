@@ -1,0 +1,143 @@
+﻿@model Azure_0517.Models.Member
+@{
+    ViewBag.Title = "會員註冊";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <title>會員註冊</title>
+    <style>
+        .st1 {
+            width: 450px;
+            margin: 20px;
+            border-bottom: 1px solid #F0F0F0;
+            padding-bottom: 10px;
+        }
+
+        .sub {
+            width: 450px;
+            margin-left: 280px;
+            margin-right: 280px;
+        }
+
+        .t1 {
+            width: 100px;
+            float: left;
+            text-align: left;
+            margin-right: 70px;
+        }
+
+        em {
+            color: red;
+        }
+
+        .container {
+            width: 1000px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        fieldset {
+            width: 800px;
+            border: 2px solid #ACD6FF;
+            margin: 15px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>會員註冊</h3>
+    @using (Html.BeginForm("MemberRegeist", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {<div class="container">
+            <fieldset>
+                <legend style="font-family:微軟正黑體;text-align:center">個人資料<em>(必填)</em></legend>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Name, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Name)
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Account, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Account)
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Password, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Password)
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Gender, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.RadioButtonFor(m => m.Mem_Gender, true, new { @id = "m" })<label for="m">男</label>
+
+                    @Html.RadioButtonFor(m => m.Mem_Gender, false, new { @id = "f" })<label for="f">女</label>
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Birthday, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Birthday, new { htmlAttributes = new { type = "date" } })
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_NickName, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_NickName)
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Mail, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Mail, new { htmlAttributes = new { type = "email" } })
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Phone, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Phone)
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Address, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Address)
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Photo, new { htmlAttributes = new { @class = "t1" } })
+                    <input type="file" name="MemberPhoto" />
+
+                </div>
+
+                <div class="st1">
+                    @Html.LabelFor(m => m.Mem_Introduction, new { htmlAttributes = new { @class = "t1" } })
+                    @Html.EditorFor(m => m.Mem_Introduction)
+                </div>
+
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">
+                    確定
+                </button>
+            </div>
+        </div>
+    }
+
+    <div class="alert alert-warning" role="alert">
+        @ViewBag.message
+    </div>
+</body>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Azure_0517.Models.Restaurant>
+@foreach (var items in Model)
+{
+    <div class="container">
+        @Html.Action("RestaurantBlock", "Home", new { id = items.Res_ID })
+    </div>
+}
+
+    <p class="text-center" style="font-size:x-large;">
+        @for (int i = 0; i <= ViewBag.PageCount - 1; i++)
+        {
+            <a href="#searchResult">@(i + 1)</a>
+        }
+    </p>

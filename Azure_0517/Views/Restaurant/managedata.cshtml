@@ -1,0 +1,157 @@
+﻿@model Azure_0517.Models.Restaurant
+@*<div class="container">
+        <div class="alert alert-primary" role="alert">
+            <h5>資料管理</h5>
+        </div>
+    </div>*@
+<div class="container">
+    <fieldset>
+        @*<legend>資料管理</legend>*@
+        @using (Html.BeginForm("managedata", "Restaurant", FormMethod.Post, new { enctype = "multipart/form-data", @class = "mt-5 ml-5", id = "c_data" }))
+        {
+            <div class="form-group collapse">
+                @Html.LabelFor(t => t.Res_ID)
+                :
+                @Html.EditorFor(t => t.Res_ID, new { htmlattributes = new { @class = "form-control mt-3", value = Model.Res_ID } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Name)
+                :
+                @Html.EditorFor(t => t.Res_Name, new { htmlattributes = new { @class = "form-control mt-3", value = Model.Res_Name } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Address)
+                :
+                @Html.EditorFor(t => t.Res_Address, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_Address } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Phone)
+                :
+                @Html.EditorFor(t => t.Res_Phone, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_Phone } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Email)
+                :
+                @Html.EditorFor(t => t.Res_Email, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_Email } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.City)
+                :
+                @{
+                    var city = new SelectList(ViewBag.citues, "Cit_ID", "Cit_Name");
+                }
+                @Html.DropDownListFor(c => c.Res_City, city, new { @class = "form-control mt-3" })
+
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Account)
+                :
+                @Html.EditorFor(t => t.Res_Account, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_Account } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Password)
+                :
+                @Html.EditorFor(t => t.Res_Password, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_Password } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_MaxConsumption)
+                :
+                @Html.EditorFor(t => t.Res_MaxConsumption, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_MaxConsumption } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_MinConsumption)
+                :
+                @Html.EditorFor(t => t.Res_MinConsumption, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_MinConsumption } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_ParkingSeats)
+                :
+                @Html.EditorFor(t => t.Res_ParkingSeats, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_ParkingSeats } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_Seats)
+                :
+                @Html.EditorFor(t => t.Res_Seats, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_Seats } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_TaxID)
+                :
+                @Html.EditorFor(t => t.Res_TaxID, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_TaxID } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.Res_WorkingDate)
+                :
+                @Html.EditorFor(t => t.Res_WorkingDate, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_WorkingDate } })
+            </div>
+            <div class="form-group">
+                <h6>其他資訊:</h6>
+                <br />
+                <p>
+                    @Html.LabelFor(t => t.Res_TenPercentService)
+                    :
+                    @Html.CheckBoxFor(t => t.Res_TenPercentService, new
+                    {
+                        htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_TenPercentService } })
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @Html.LabelFor(t => t.Res_QAEnable)
+                    :
+                    @Html.CheckBoxFor(t => t.Res_QAEnable, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_QAEnable } })
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    @Html.LabelFor(t => t.Res_StarRate)
+                    :
+                    @if (Model.Res_StarRate != null)
+                    {
+                        @Html.DisplayFor(t => t.Res_StarRate, new { htmlattributes = new { @class = "form-control  mt-3", value = Model.Res_QAEnable } })
+                    }
+                    else
+                    {
+                        <span>尚無評論</span>
+                    }
+                </p>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Res_IntroductionContext)
+                :
+            </div>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.Res_IntroductionContext, new { @class = "form-control", @cols = 500, @rows = 12, value = Model.Res_IntroductionContext })
+            </div>
+            <div class="form-group">
+                <h6>餐廳主頁照片:</h6>
+                <img id="c_target_dataphoto" name="c_target_dataphoto" src="@Url.Action("getdbimage", "Restaurant",new { id =Model.Res_ID ,table="restaurant"})" alt="Preview Image" width="700" height="700" />
+                <label class="btn btn-info">
+                    @*<input id="upload_img" style="display:none;" >*@
+                    <input class="disabled" id="c_photo" name="c_photo" type="file">
+                    <i class="fa fa-photo"></i>.
+                </label>
+            </div>
+            <div class="form-group">
+                <input id="_c_data_sand" class="btn btn-primary btn-block" type="button" value="確認修改並送出" />
+            </div>
+        }
+    </fieldset>
+</div>
+
+
+@section scripts{
+    @*<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("myfile").addEventListener("change", fileviewer);
+            })
+
+            function fileviewer() {
+                var files = document.getElementById("myfile").files;
+                for (var x of files) {
+                    var reader = new FileReader();
+                    reader.addEventListener("load", function (e) {
+                        var fileContent = e.target.result;
+                        document.getElementById("target").setAttribute("src", fileContent);
+                    });
+                    reader.readAsDataURL(x);
+                }
+            }
+
+        </script>*@
+}
+

@@ -1,0 +1,304 @@
+﻿@model IEnumerable<Azure_0517.Models.News>
+@{
+    ViewBag.Title = "我的食記";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mt-3">
+    <form action="#" method="post" novalidate="novalidate" id="MyForm">
+        <section class="search-sec">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" placeholder="請輸入餐廳名稱" name="BlogResturant" id="SearchRestaurant">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <select name="BlogYear" class="form-control search-slt" id="SearchYears">
+                                    <option>請選擇年份</option>
+                                    @foreach (var year in Model.Select(L => L.New_CreateDate.Value.Year).Distinct().OrderBy(l => l))
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <select name="BlogMonth" class="form-control search-slt" id="SearchMonth">
+                                    <option>請選擇月份</option>
+                                    @foreach (var month in Model.Select(L => L.New_CreateDate.Value.Month).Distinct().OrderBy(l => l))
+                                    {
+                                        <option value="@month">@month</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <button type="button" class="btn wrn-btn" id="search_button">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*@Html.Hidden("New_CreateDate", null, new { id = "New_CreateDate" })*@
+
+            </div>
+
+        </section>
+
+        <h2 style="background-color:#B4A582;height:5px;padding-bottom:0;margin-bottom:0"></h2>
+        <div class="row" style="padding:0;margin:0">
+            <div class="col-6" style="padding:0;margin:0"><a class="btn button btn-info" style="font-weight:bold" id="orderup_buttom" data-dir="up"><i class="fas fa-sort-numeric-up"></i>時間</a></div>
+            <div class="col-6" style="padding:0;margin:0"><a class="btn button btn-primary" style="font-weight:bold;" id="orderdown_buttom" data-dir="down"><i class="fas fa-sort-numeric-down"></i></i>時間</a></div>
+        </div>
+        <input type="hidden" id="myorder" name="myorder" value="" />
+    </form>
+</div>
+<div id="myblog">
+    @{
+        Html.RenderAction("BlogOverview");
+    }
+</div>
+
+
+
+@section  scripts{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    @*================================搜尋===========================================*@
+    <script>
+        $('#search_button').click(function () {
+            //document.getElementById("MyForm").submit();
+            //console.log($('#MyForm').serialize())
+            $('#myorder').val("");
+            $.post('@Url.Action("BlogOverview")',$('#MyForm').serialize(),function (data) {
+                //alert(data);
+                $('#myblog').html(data)
+            })
+        });
+    </script>
+    @*==================================排序===========================================*@
+    <script>
+        $('#orderup_buttom').click(function () {
+            //document.getElementById("MyForm").submit();
+            //console.log($('#MyForm').serialize())
+            let a = $('#orderup_buttom').data('dir');
+            $('#myorder').val(a);
+            $.post('@Url.Action("BlogOverview")',$('#MyForm').serialize(),function (data) {
+                //alert(data);
+
+                $('#myblog').html(data)
+            })
+        });
+
+        $('#orderdown_buttom').click(function () {
+            //document.getElementById("MyForm").submit();
+            //console.log($('#MyForm').serialize())
+            let a = $('#orderdown_buttom').data('dir');
+            $('#myorder').val(a);
+            $.post('@Url.Action("BlogOverview")',$('#MyForm').serialize(),function (data) {
+                //alert(data);
+                $('#myblog').html(data)
+            })
+        });
+    </script>
+
+    <script>
+        function load() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("BlogOverview", "Member")',
+                data: {
+                    orderBy: $('#orderBy').val()
+                },
+                success: function (data) {
+                    $('#myblog').html(data)
+                }
+            })
+        }
+        load();
+
+        $(document).on('change', '#orderBy', function () {
+            load();
+        })
+
+        $(document).on('click', 'p>a', function () {
+            var page = $(this).text()
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("BlogOverview", "Member")',
+                data: {
+                    orderBy: $('#orderBy').val(),
+                    Page : page
+                },
+                success: function (data) {
+                    $('#myblog').html(data)
+                }
+            })
+        })
+    </script>
+
+}
+
+@section styles{
+    <link href="~/Content/ReservationSlideBtn.css" rel="stylesheet" />
+    <style>
+        .blogimg {
+            height: 200px;
+        }
+
+            .blogimg > .col-3 {
+                padding: 2px;
+                margin: 0;
+                height: 100%;
+            }
+
+                .blogimg > .col-3 > img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+        .search-sec {
+            background: #D9CD90;
+            padding: 2rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+            background-color: rgb(208, 177, 56)
+        }
+
+        .yes {
+            font-weight: 900;
+            text-decoration: none;
+            color: aliceblue;
+            width: 90%;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        .delbutton {
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            width: 100% !important;
+            border-radius: 5px;
+        }
+
+            .delbutton:hover {
+                background: rgb(0, 185, 77);
+            }
+
+        .myimg {
+            height: 50px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+            .myimg img {
+                width: 50% !important;
+                height: 50% !important;
+                opacity: 1.0 !important;
+            }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+        .popup {
+            margin: 70px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+            .popup h2 {
+                margin-top: 0;
+                color: #333;
+                font-family: Tahoma, Arial, sans-serif;
+            }
+
+            .popup .close {
+                position: absolute;
+                /*top: 20px;
+                right: 30px;*/
+                transition: all 200ms;
+                /*font-size: 20px;*/
+                font-weight: bold;
+                text-decoration: none;
+                color: aliceblue;
+                width: 90%;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+                .popup .close:hover {
+                    color: #06D85F;
+                }
+
+            .popup .content {
+                max-height: 30%;
+                overflow: auto;
+            }
+
+        .button {
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+            .button:hover {
+                background:rgb(122, 190, 208);
+            }
+
+        .pagebtn {
+            width: 50px;
+            height: 50px;
+            line-height: 25px;
+            border: 5px solid #d6bc45;
+            background-color: #f3e7a0;
+            border-radius: 40px; /* 高度 */
+            font-family: 'Sansita One', cursive;
+            box-shadow: 3px 5px 5px #ccc;
+        }
+
+            .pagebtn:hover {
+                background-color: gold;
+                color: white;
+            }
+    </style>
+}

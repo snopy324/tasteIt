@@ -1,0 +1,103 @@
+﻿@model Azure_0517.Models.Discount
+
+
+@section styles{
+    <style>
+        textarea {
+            margin: 0px 0px;
+            padding: 5px;
+            height: 160px !important;
+            line-height: 16px;
+            width: 96%;
+            display: block;
+            margin: 0px auto;
+        }
+    </style>
+}
+
+
+<h3>新增優惠</h3>
+
+
+<div class="container">
+    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "c_data", enctype = "multipart/form-data" }))
+    {
+        @Html.Hidden("Dis_RestaurantID", (object)ViewBag.RestaurantID)
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Dis_Title, new { @class = "col-sm-4 col-form-label col-form-label-sm" })
+                    @Html.EditorFor(m => m.Dis_Title, new { htmlAttributes = new { required = true, placeholder = Html.DisplayNameFor(m => m.Dis_Title), @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Dis_Content, new { @class = "col-sm-4 col-form-label col-form-label-sm" })
+                    @Html.EditorFor(m => m.Dis_Content, new { htmlAttributes = new { resize = false, required = true, placeholder = Html.DisplayNameFor(m => m.Dis_Content), @class = "form-control", wrap = "hard" } })
+                </div>
+            </div>
+            <div class="col-4">
+
+                <img id="target" height=300 />
+                <input type="file" id="Picture" name="Picture" onchange="putImage()" />
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col">
+                @Html.LabelFor(m => m.Dis_Start, new { @class = "col-sm-4 col-form-label col-form-label-sm" })
+                @Html.EditorFor(m => m.Dis_Start, new { htmlAttributes = new { required = true, @Value = DateTime.Now.ToString("yyyy-MM-dd"), placeholder = Html.DisplayNameFor(m => m.Dis_Start), @class = "form-control" } })
+            </div>
+            <div class="form-group col">
+                @Html.LabelFor(m => m.Dis_End, new { @class = "col-sm-4 col-form-label col-form-label-sm" })
+                @Html.EditorFor(m => m.Dis_End, new { htmlAttributes = new { @Value = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd"), placeholder = Html.DisplayNameFor(m => m.Dis_End), @class = "form-control" } })
+            </div>
+        </div>
+
+        <input id="NewDiscountSend" class="btn btn-success" type="submit" value="新增優惠" />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <button id="DiscountNewDemo" class="btn btn-info">Demo</button>
+
+
+    }
+</div>
+
+
+@section scripts{
+    <script>
+      
+        function showImage(src, target) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                target.src = fr.result;
+            }
+            fr.readAsDataURL(src.files[0]);
+        }
+            
+        function putImage() {
+            var src = document.getElementById("Picture");
+            var target = document.getElementById("target");
+            showImage(src, target);
+        }
+
+        $(':submit').click(function () {
+            event.preventDefault();
+            var c_data = new FormData($('#c_data')[0]);
+            $.ajax({
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("DiscountNew","Restaurant")',
+                data: c_data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    location.href = '@Url.Action("DiscountOverview", "Restaurant")'
+                }
+            })
+        })
+
+    </script>
+}

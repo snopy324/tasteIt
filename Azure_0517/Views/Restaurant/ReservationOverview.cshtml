@@ -1,0 +1,113 @@
+﻿@model IEnumerable<IGrouping<int, Azure_0517.Models.ReservationOpened>>
+
+<h2>@ViewBag.Title</h2>
+<a href="#" class="btn btn-primary" id="NewReservation">新增訂位</a>
+<button class="btn btn-success" id="PassReservation">過往紀錄</button>
+<input type="date" id="dateReservation" />
+<br /><br />
+<h4>開設訂位總覽</h4>
+<div id="overlayBlock">
+
+    @Html.Action("ReservationOverviewBlock", "Restaurant")
+
+</div>
+
+
+@section scripts{
+    @*======== SignalR ========*@
+    <script>
+        $(function () {
+            $('input[type=date]').change(function () {
+
+                var target = $(this).val()
+                $('#overlayBlock').load('@Url.Action("ReservationOverviewBlock", "Restaurant")?date=' + target)
+
+
+            })
+            NoticeFuntion = function () {
+                $(document).on('click', '.close', function () {
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("DeleteTeamHeader","Restaurant")',
+                        data: { key: $(this).data("key") },
+                        success: function (data) {
+                            $('#overlayBlock').load('@Url.Action("ReservationOverviewBlock", "Restaurant")')
+                            notice.server.send();
+                        }
+
+                    })
+
+                })
+            }
+        })
+
+    </script>
+    @*======== SignalR ========*@
+
+    @*======== 訂位簽到 ========*@
+    <script>
+        $(document).on('click', '.membercheck.btn-warning', function () {
+            var element = $(this)
+            if (confirm(`確認簽到?`)) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReservationBookCheckIn", "Restaurant")',
+                data: { id: element.data('bookid') },
+                success: function () {
+                    element.addClass('btn-success');
+                    element.removeClass('btn-warning');
+                }
+            })
+            }
+        })
+        $(document).on('click', '.membercheck.btn-success', function () {
+            var element = $(this)
+            if (confirm('取消簽到?')) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReservationBookCheckIn", "Restaurant")',
+                data: { id: element.data('bookid') },
+                success: function () {
+                    element.addClass('btn-warning');
+                    element.removeClass('btn-success');
+                }
+            })
+            }
+        })
+    </script>
+    @*======== 訂位簽到 ========*@
+
+    @*======== 過往紀錄 ========*@
+    <script>
+
+        $('#Pass').click(function () {
+            if ($(this).hasClass('btn-success')) {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("ReservationOverviewBlockForPass", "Restaurant")',
+                    data: { date: null },
+                    success: function (data) {
+                        $('#overlayBlock').html(data)
+                        $('#Pass').addClass('btn-danger')
+                        $('#Pass').removeClass('btn-success')
+                    }
+                })
+            }
+            else {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("ReservationOverviewBlock", "Restaurant")',
+                    data: { date: null },
+                    success: function (data) {
+                        $('#overlayBlock').html(data)
+                        $('#Pass').addClass('btn-success')
+                        $('#Pass').removeClass('btn-danger')
+                    }
+                })
+            }
+        })
+    </script>
+    @*======== 過往紀錄 ========*@
+}
+

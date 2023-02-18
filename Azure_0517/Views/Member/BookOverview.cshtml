@@ -1,0 +1,252 @@
+﻿@model IEnumerable<Azure_0517.Models.ReservationBooked>
+@{
+    ViewBag.Title = "訂位紀錄";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/Pagebtn.css" rel="stylesheet" />
+    <link href="~/Content/BookCard.css" rel="stylesheet" />
+}
+
+<h3>訂位紀錄</h3>
+<p>
+    <button id="all" class="btn btn-primary">全部</button>
+    <button id="expired" class="btn btn-info">已過期</button>
+    <button id="wait" class="btn btn-success">未過期</button>
+    <input type="hidden" name="h" id="h" value="0" />
+</p>
+<div>
+    <div class="container row">
+        @* 使用者頭像 *@
+
+        <div id="overlayBookedBlock" class="col" data-datetime="0">
+
+            @Html.Action("BookedBlock", new { dateTime = 0 })
+
+        </div>
+    </div>
+</div>
+
+
+
+@*===== 訂位跳出框 =====*@
+
+
+<div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">訂位修改</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="popupcontentS" class="modal-body">
+                <label for="RVBooked_Seats">訂位數量</label><br />
+                <input type="number" id="RVBooked_Seats" name="RVBooked_Seats" value="" /><br />
+                <label for="ReminderText">食物敏感備註</label><br />
+                <textarea id="ReminderText" name="ReminderText" class="form-control"></textarea><br />
+                <a href="#" id="ReminderSender" data-bookid="" class="btn btn-secondary">送出</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*===== 訂位跳出框 =====*@
+
+
+
+@section scripts{
+    @*===== Signalr =====*@
+    <script>
+        $(function () {
+
+            notice.client.addNewNotice =function() {
+                $('#overlayBookedBlock').load(`@Url.Action("BookedBlock")?datetime=${$('input[id=h]').val()}`)
+            };
+
+            NoticeFuntion = function () {
+                $(document).on('click', '.text-muted>.badge-danger', function () {
+                    if (confirm('確認取消訂位嗎?')) {
+                        var bookid = $(this).data('bookid');
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DeleteBook", "Member")',
+                            data: { Bookid: bookid },
+                            success: function () {
+                                notice.server.send();
+                            }
+                        })
+                    }
+                })
+            }
+        });
+
+    </script>
+    @*===== Signalr =====*@
+
+    @*===== Reminder =====*@
+    <script>
+        var message = '@TempData["message"]'
+        if(message != '')
+        {
+            alert(message)
+        }
+
+        $(document).on('click', '.text-muted>.badge-secondary', function () {
+            var bookid = $(this).attr('data-bookid');
+
+            var docFrag = $(document.createDocumentFragment())
+            var labS = $('<label/>').attr('for', 'RVBooked_Seats').text('訂位數量')
+            var labT = $('<label/>').attr('for', 'ReminderSender').text('食物敏感備註')
+            var text = $('<textarea/>').attr('id', 'ReminderText')
+                .attr('name', 'ReminderText')
+                .attr('class', 'form-control')
+            var seat = $('<input/>').attr('id', 'RVBooked_Seats')
+                .attr('name', 'RVBooked_Seats')
+                .attr('class', 'form-control')
+                .attr('type', 'number')
+            var a = $('<a/>').attr('id', 'ReminderSender')
+                .attr('href', '#')
+                .text('送出')
+                .attr('class', 'btn btn-primary');
+            var br = $('<br/>')
+
+            docFrag.append(labS);
+            docFrag.append(br);
+            docFrag.append(seat);
+            docFrag.append(br);
+            docFrag.append(labT);
+            docFrag.append(br);
+            docFrag.append(text);
+            docFrag.append(br);
+            docFrag.append(a);
+
+            $('#popupcontentT').html(docFrag);
+
+
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("BookManage","Member")',
+                data: { id: bookid },
+                success: function (data) {
+                    $('#ReminderText').val(data['ReminderText']);
+                    $('#RVBooked_Seats').val(data['RVBooked_Seats']);
+                    $('#ReminderSender').attr('data-bookid', bookid);
+                    $('#popup').modal('show')
+                }
+            })
+
+
+        });
+
+        $(document).on('click','#ReminderSender',function () {
+            var bookid = $(this).attr('data-bookid');
+            var number = $(`#reservation_${bookid}`).find('input[name="book.ReservationOpened.RVOpen_SeatsRemain"]').val()
+            var number2 = $(`#reservation_${bookid}`).find('input[name="book.RVBooked_Seats"]').val()
+            console.log(number)
+            console.log(number2)
+            console.log($('#RVBooked_Seats').val())
+            if (Boolean(Number(($('#RVBooked_Seats').val()) <= Number(number) + Number(number2))) || confirm('增加訂位數量將會導致成為候補，請問是否繼續?')) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: `@Url.Action("BookManage","Member")`,
+                    data: {
+                        ReminderText: $('#ReminderText').val(),
+                        RVBooked_ID: bookid,
+                        RVBooked_Seats: $('#RVBooked_Seats').val()
+                    },
+                    success: function (data) {
+                        if ($('#ReminderText').val() == '') {
+                            $(`#reservation_${bookid}`).find('.reminder').text('')
+                        }
+                        else {
+                            console.log($('#ReminderText').val())
+                            $(`#reservation_${bookid}`).find('.reminder').text(`食物敏感備註:${$('#ReminderText').val()}`)
+                        }
+
+                        if (data['BackUpNo'] != null) {
+                            $(`#reservation_${bookid}`).find('.status-tag').text('候補')
+                            $(`#reservation_${bookid}`).find('.status-tag').addClass('badge-danger')
+                            $(`#reservation_${bookid}`).find('.status-tag').removeClass('badge-info')
+                        }
+                        else {
+                            $(`#reservation_${bookid}`).find('.status-tag').text('等待')
+                            $(`#reservation_${bookid}`).find('.status-tag').addClass('badge-info')
+                            $(`#reservation_${bookid}`).find('.status-tag').removeClass('badge-danger')
+                        }
+                        $(`#reservation_${bookid}`).find('.titleseat').text($('#RVBooked_Seats').val())
+                        $(`#reservation_${bookid}`).find('.titleID').text(data['RVBooked_ID'])
+                        $(`#reservation_${bookid}`).find('.badge-primary').attr('data-bookid', `${data['RVBooked_ID']}`)
+                        $(`#reservation_${bookid}`).find('.badge-danger').attr('data-bookid', `${data['RVBooked_ID']}`)
+                        $(`#reservation_${bookid}`).attr('id', `reservation_${data['RVBooked_ID']}`)
+                        $('#popup').modal('hide')
+                    }
+                })
+
+            }
+        })
+
+    </script>
+    @*===== Reminder =====*@
+
+
+    @*===== 日期切換 =====*@
+    <script>
+        $('#all').click(function () {
+
+            $('input[id=h]').val(0)
+        })
+        $('#expired').click(function () {
+
+            $('input[id=h]').val(1)
+        })
+        $('#wait').click(function () {
+
+            $('input[id=h]').val(2)
+        })
+        $(document).on('click', 'p>:button',function () {
+            datetimeBookedBlock()
+
+            $(this).off('click', 'p>:button', datetimeBookedBlock)
+        })
+
+        function datetimeBookedBlock() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("BookedBlock")',
+                data: { datetime: $('input[id=h]').val()},
+                success: function (htmldata) {
+                    $('#overlayBookedBlock').html(htmldata);
+                }
+            })
+        }
+    </script>
+    @*===== 日期切換 =====*@
+
+    @*===== 換頁 =====*@
+    <script>
+        $(document).on('click', '.pagebtn', function () {
+            event.preventDefault();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("BookedBlock","Member")',
+                data: { dateTime: $('input[id=h]').val(), page: $(this).text() },
+                success: function (data) {
+                    $('#overlayBookedBlock').html(data)
+                }
+
+            })
+        })
+    </script>
+    @*===== 換頁 =====*@
+
+
+}
+
+
+
+

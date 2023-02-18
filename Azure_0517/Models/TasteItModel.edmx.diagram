@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="182f523548994e28968401f3514891a4" Name="Diagram1">
+        <EntityTypeShape EntityType="Taste_ItModel.AccuseType" Width="1.5" PointX="10.5" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.City" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Comment" Width="1.5" PointX="7.5" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Discount" Width="1.5" PointX="8.25" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Gift" Width="1.5" PointX="7.5" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Gift_Detail" Width="1.5" PointX="9.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Member" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.News" Width="1.5" PointX="10.5" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Picture" Width="1.5" PointX="12.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.QA_system" Width="1.5" PointX="7.5" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Report" Width="1.5" PointX="12.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.ReservationBooked" Width="1.5" PointX="10.5" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.ReservationOpened" Width="1.5" PointX="8.25" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Restaurant" Width="1.5" PointX="5.25" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Right" Width="1.5" PointX="0.75" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Role" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.StatusType" Width="1.5" PointX="10.5" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.SubType" Width="1.5" PointX="13.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.TheType" Width="1.5" PointX="11.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Taste_ItModel.Type_Detail" Width="1.5" PointX="15.75" PointY="9" IsExpanded="true" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_Type_report" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Restaurants_City" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Comment_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Comment_News" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Comment_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_Comment" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Discount_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_ReservationBooked_Discount" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Gift_Detail_Gift" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Gift_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Gift_Detail_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Members_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_News_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_QA_system_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_QA_system_Members1" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_Members1" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_ReservationBooked_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_News_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Pictures_News" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_News" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Type_Detail_News" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Pictures_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_QA_system_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Report_StatusType" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_ReservationBooked_ReservationOpened" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_ReservationOpened_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Type_Detail_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_SubType_TheType" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Type_Detail_SubType" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.FK_Type_Detail_TheType1" ManuallyRouted="false" />
+        <AssociationConnector Association="Taste_ItModel.Role_s_Right" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

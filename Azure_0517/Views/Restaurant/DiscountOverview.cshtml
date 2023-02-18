@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Azure_0517.Models.Discount>
+
+@section styles{
+    <style>
+        figure {
+            text-align: center;
+            height: 350px;
+            width: 300px;
+        }
+
+            figure img {
+                height: 100%;
+                width: 100%;
+            }
+
+        .bo {
+            border: 2px solid #e5c14d;
+            padding: 5px;
+            height: 100%;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5em;
+            font-weight: 300;
+        }
+
+        strong {
+            font-weight: 400;
+        }
+
+        .tile {
+            width: 100%;
+            display: inline-block;
+            box-sizing: border-box;
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+            .tile .title {
+                margin-top: 0px;
+            }
+
+    </style>
+
+
+}
+<h3>優惠管理</h3>
+
+<a href="#" class="btn btn-primary" id="NewDiscount">新增優惠</a>
+
+<div class="container">
+
+    <div class="row">
+        @foreach (var disc in Model)
+        {
+            @Html.Action("DiscountBlock", new { discount = disc, Manage = true , listCount = 3})
+        }
+    </div>
+</div>

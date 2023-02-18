@@ -1,0 +1,418 @@
+﻿@model IPagedList<Azure_0517.Models.Gift>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "紅利商品管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <style>
+        .search-sec {
+            background: #1A4668;
+            padding: 2rem;
+            box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.6), inset 0px 1px 3px #fff;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+            box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5) inset;
+        }
+
+            .search-slt:focus {
+                background-color: beige;
+                box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5) inset;
+            }
+
+            .search-slt:hover {
+                background-color: beige;
+            }
+
+        .sec-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            height: calc(3rem + 2px) !important;
+            color: #fff;
+            border-radius: 3px;
+            box-shadow: -1px -3px 3px rgba(20%,20%,40%,0.5) inset;
+            border: 2px solid rgba(20%,20%,40%,0.5);
+        }
+
+            .sec-btn:active {
+                box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+                outline: none;
+            }
+
+            .sec-btn:focus {
+                outline: none;
+            }
+
+            .sec-btn:hover {
+                color: white;
+            }
+        /*=======================================================*/
+
+        .title {
+            text-align: center;
+            color: crimson;
+            margin: 3rem;
+            font-weight: bolder;
+            font-size: 28px;
+            font-weight: bolder;
+        }
+
+        div .col th {
+            background-color: aliceblue;
+        }
+
+        div .col td {
+            max-width: 300px;
+        }
+
+            div .col td img {
+                width: 130px;
+                height: 130px;
+            }
+
+        div .col-3 img {
+            width: 230px;
+            height: 230px;
+        }
+
+        div .pagination-container {
+            text-align: center;
+        }
+
+        #GiftManagement .card-body {
+            background-color: linen;
+        }
+
+        .use {
+            height: 40px;
+            width: 80px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: -3px -5px 3px rgba(20%,20%,40%,0.5) inset;
+        }
+
+        .pic {
+            width: 350px;
+            height: 300px;
+        }
+
+        .giftmodal .modal-backdrop {
+            background: #000000;
+        }
+
+        .giftmodal .modal-content {
+            background-color: beige;
+            /*opacity: 0.95;*/
+            border: ridge 3px goldenrod;
+        }
+
+        .giftmodal .modal-title {
+            color: crimson;
+        }
+
+        .giftmodal .modal-body {
+            color: indianred;
+        }
+
+            .giftmodal .modal-body img {
+                max-width: 500px;
+                border: ridge 2px gold;
+                margin-bottom: 20px;
+            }
+
+        .giftmodal .modal-footer {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+            .giftmodal .modal-footer .btn-default {
+                color: maroon;
+            }
+
+            .giftmodal .modal-footer .btn-danger {
+                color: white;
+                border-style: none;
+                border-radius: 10px;
+                box-shadow: -3px -5px 3px rgba(20%,20%,40%,0.5) inset;
+            }
+
+        .pagebtn {
+            width: 45px;
+            height: 45px;
+            line-height: 25px;
+            border: 5px solid #d6bc45;
+            background-color: #f3e7a0;
+            border-radius: 40px; /* 高度 */
+            font-family: 'Sansita One', cursive;
+            font-weight: bolder;
+            box-shadow: 3px 5px 5px #ccc;
+        }
+
+            .pagebtn:hover {
+                background-color: gold;
+                color: white;
+            }
+    </style>
+    <style>
+        .blogup-btn {
+            height: 40px;
+            overflow: hidden;
+            display: inline-block;
+            margin: 0px 0px;
+            width: 100%;
+            padding: 0;
+            color: #B4A582
+        }
+
+            .blogup-btn a {
+                color: aliceblue;
+                font: bold 20px/40px Arial;
+                display: block;
+                text-align: center;
+                text-decoration: none;
+                width: 100%;
+                height: 40px;
+                position: relative;
+                top: 0;
+                transition: 250ms top, 350ms left;
+            }
+
+                .blogup-btn a:before {
+                    content: attr(data-hover);
+                    position: absolute;
+                    top: 40px;
+                    left: 0;
+                    width: 100%;
+                    background: rgb(105, 135, 115);
+                    height: 40px;
+                    color: #fff;
+                    opacity: 0.85;
+                }
+
+                .blogup-btn a:hover {
+                    top: -40px;
+                }
+
+        .blogdel-btn {
+            height: 40px;
+            overflow: hidden;
+            display: inline-block;
+            margin: 0px 0px;
+            width: 100%;
+            padding: 0;
+            color: #B4A582
+        }
+
+            .blogdel-btn a {
+                font: bold 20px/40px Arial;
+                display: block;
+                text-align: center;
+                text-decoration: none;
+                width: 100%;
+                height: 40px;
+                position: relative;
+                top: 0;
+                transition: 250ms top, 350ms left;
+            }
+
+                .blogdel-btn a:before {
+                    content: attr(data-hover);
+                    position: absolute;
+                    top: 40px;
+                    left: 0;
+                    width: 100%;
+                    background: rgb(233, 91, 91);
+                    height: 40px;
+                    color: #fff;
+                    opacity: 0.85;
+                }
+
+                .blogdel-btn a:hover {
+                    top: -40px;
+                }
+    </style>
+}
+
+<div>
+    <h3 class="title">
+        <i class="fas fa-dice"></i>紅利商品管理
+    </h3>
+</div>
+
+<div class="container">
+    <section class="search-sec">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                    <button id="addgift" class="sec-btn LVA" style="background-color:#30c418;vertical-align:central"><i class="fas fa-folder-plus"></i> 新增</button>
+                </div>
+                <div class="col-lg-6 col-md-3 col-sm-12 p-0">
+                    @Html.TextBox("SearchString", null, new { placeholder = "搜尋關鍵字", @class = "form-control search-slt" })
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                    <button id="search" class="sec-btn" style="background-color:gold;color:black"><i class="fa fa-search"></i>搜尋</button>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-12 p-0" id="sortorder">
+                    <button id="sortdown" class="sec-btn" style="display:none;background-color:#4366ef;"><i class="fa fa-sort-down"></i>點數遞減排序</button>
+                    <button id="sortup" class="sec-btn" style="background-color:#d63131;"><i class="fa fa-sort-up"></i>點數遞增排序</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr />
+    <div id="GiftManagement">
+        @Html.Partial("_GiftManagement")
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function DeleteGift(giftID) {
+            $.ajax({
+                type: 'POST',
+                url:'@Url.Action("DeleteConfirmed", "Administrator")',
+                data: { id: giftID }
+            }).done(function (data) {
+                $('#myModal').modal('hide');
+                alert(data);
+
+                fetchPage(currentpage, sort, search);
+                })
+        }
+
+        var currentpage = 1;
+        var sort = "";
+        var search = "";
+        var gid = @Model.First().Gift_ID;
+        var target_top = $('.search-sec').offset().top - 150;
+
+        //新增獎品
+        $(document).on('click', '#addgift', function () {
+            location.href = '@Url.Action("GiftCreate", "Administrator")';
+        })
+
+        //刪除獎品
+        $(document).on('click', '#deletebtn', function () {
+            var id = $('#modalid').text();
+            console.log("id" + id);
+            DeleteGift(id);
+        })
+
+        //modal 取得資訊
+        $(document).on('mouseover', 'a[data-toggle="modal"]', function () {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var img = $(this).data('img');
+            var pt = $(this).data('pt');
+            var qty = $(this).data('qty');
+            var date = $(this).data('date');
+            var adm = $(this).data('adm');
+            var content = $(this).data('content');
+            $('#modalid').text(id);
+            $('#modalname').text(`是否確認刪除 ${name} ?`);
+            $('#modalimg').attr('src', `data:image/jpeg;base64,${img}`);
+            $('#modalpt').text(`兌換點數: ${pt} Pt`);
+            $('#modalqty').text(`獎品數量: ${qty} 個`);
+            $('#modaldate').text(`創建日期: ${date}`);
+            $('#modaladm').text(`創建人員: ${adm}`);
+            $('#modalcontent').text(`獎品描述: ${content}`);
+        })
+
+        //頁面載入: 右邊出現獎品資訊欄,第一頁頁籤變色
+        $(document).ready(function () {
+            $('div .col-3').load('@Url.Action("_GiftView", "Administrator")/' + gid);
+            $(`#page-1`).css({ 'background-color': 'gold', 'color': 'white' });
+        })
+
+        //滑鼠移入表格改變底色
+        $(document).on('mouseover', '.table>tbody>tr', function () {
+            $(this).css('background-color', 'beige')
+                var id = $(this).data("id");
+                $('div .col-3').load('@Url.Action("_GiftView", "Administrator")/' + id);
+        })
+
+        //滑鼠移出表格改變底色
+        $(document).on('mouseleave', '.table > tbody > tr', function () {
+            $(this).css('background-color', 'transparent');
+        })
+
+        //搜尋按鈕
+        $(document).on('click', '#search', function () {
+            var page = 1;
+            search = $('#SearchString').val();
+            fetchPage(page, sort, search);
+
+            console.log("page= " + page);
+            console.log("sort= " + sort);
+            console.log("search= " + search);
+        })
+        //排序按鈕
+        $(document).on('click', '#sortorder .sec-btn', function () {
+            var page = 1;
+            sort = sort == "" ? "point_desc" : "";
+            search = $('#SearchString').val();
+            fetchPage(page, sort, search);
+
+            //排序按鈕字樣改變
+            if (sort == "") {
+                //$('#sort').text("點數遞增排序");
+                $('#sortdown').hide();
+                $('#sortup').show();
+            }
+            else {
+                //$('#sort').text("點數遞減排序");
+                $('#sortdown').show();
+                $('#sortup').hide();
+            }
+
+            console.log("page= " + page);
+            console.log("sort= " + sort);
+            console.log("search= " + search);
+        })
+
+        //選取頁面
+        $(document).on('click', '#GiftManagement .pagination li button', function () {
+            var page = $(this).attr('id').slice(5);
+            currentpage = page;
+            console.log('currentpage=' + currentpage);
+            search = $('#SearchString').val();
+            fetchPage(page, sort, search);
+
+            console.log("page= " + page);
+            console.log("sort= " + sort);
+            console.log("search= " + search);
+        })
+        //抓取partial view
+        var fetchPage = function (page, sort, search) {
+
+            //叫用partial view url
+            var pagedPartialUrl = '@Url.Action("RefreshList", "Administrator")'
+
+            $.post(pagedPartialUrl, { page: page, sortOrder: sort , searchString: search }, function (data) {
+                    $('#GiftManagement').html(data);
+                }).done(function () {
+                    $(`#page-${page}`).css({ 'background-color': 'gold', 'color': 'white' });
+                    gid = $('tbody tr:first').data('id');
+                    $('div .col-3').load('@Url.Action("_GiftView", "Administrator")/' + gid);
+                    $("html,body").animate({ scrollTop: target_top }, 500);
+                    });
+        };
+    </script>
+}

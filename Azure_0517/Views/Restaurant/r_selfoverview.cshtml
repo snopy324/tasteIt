@@ -1,0 +1,152 @@
+﻿@model IEnumerable<Azure_0517.Models.Picture>
+
+@section styles{
+    <style>
+        .c_test {
+            display: inline;
+            width: 267px !important;
+            height: 267px !important;
+        }
+
+        #c_res_selfphotooverview_imges p {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+            #c_res_selfphotooverview_imges p strong {
+                position: absolute;
+                display: block;
+                z-index: 1;
+                bottom: 0;
+                /*bottom: auto;*/
+                width: 267px;
+                height: 40px;
+                background: rgba(0,0,0,0.5);
+                text-align: center;
+                /*padding-bottom:10px;*/
+                /*padding-bottom:10px;*/
+                /*margin-bottom: 20px;*/
+                /*margin-top: 10px;*/
+                line-height: 35px;
+                opacity: 0;
+                color: white;
+            }
+
+            #c_res_selfphotooverview_imges p span {
+                position: absolute;
+                display: block;
+                z-index: 0;
+                top: 0;
+                /*top: inherit;*/
+                width: 267px;
+                height: 240px;
+                box-shadow: inset 0 0 50px rgba(50,30,0,0.6),inset 0 0 100px rgba(50,30,0,0.3);
+                background: rgba(255,155,0,0.2);
+                opacity: 0;
+            }
+
+        #c_res_selfphotooverview_imges button {
+            padding: 0;
+            margin: 5px;
+            background-color: transparent;
+            border: none;
+        }
+    </style>
+}
+    <div id="chu_c_respo" class="container-fluid mt-3">
+        <div class="container">
+            <button id="c_resphoto_create" data-toggle="modal" data-target="#c_photo_click" class="btn btn-primary btn-lg btn-block">新增相片</button>
+        </div>
+        <div class="container-fluid text-center" id="c_res_selfphotooverview_imges">
+            @foreach (var r_photo in Model)
+            {
+                int pud = @r_photo.Pic_ID;
+                <button type="button" data-toggle="modal" data-target="#c_photo_click">
+                    <p>
+                        <img src="@Url.Action("getdbimage", "Restaurant", new { id =r_photo.Pic_ID ,table="picture"})"
+                             data-pid="@r_photo.Pic_ID" data-title="@r_photo.Pic_title" data-content="@r_photo.Pic_Content" style="width:200px;height:200px">
+                        <strong>@r_photo.Pic_title</strong><span></span>
+                    </p>
+                </button>
+            }
+        </div>
+        @*<div class="modal fade" id="c_photo_click" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5></div>
+                        <form class="p-5 mt-0">
+                            <div>
+                                <img id="target_photo" />
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" readonly="readonly" aria-describedby="emailHelp" placeholder="Enter email">                              
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="text" class="form-control" readonly="readonly" id="exampleInputPassword1" placeholder="Password">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary">修改</button>
+                                <button type="button" class="btn btn-danger">刪除</button>
+                                <button type="button" class="btn btn-info">關閉</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>*@
+    </div>
+
+@section scripts{
+    <script>
+
+        $(function () {
+            var duration = 300;
+            var $x = $('#c_res_selfphotooverview_imges>button>p');
+            console.log($x)
+            $x.on('mouseover', function () {
+                console.log('A')
+                $(this).find('strong, span').stop(true).animate({
+                    opacity: 1
+                }, duration);
+            }).on('mouseout', function () {
+                $(this).find('strong, span').stop(true).animate({
+                    opacity: 0
+                }, duration);
+                }).on('click', () => {
+                    $("#c_photo_click img").attr("src", $(this).find("img").attr("src"));
+                    $("#c_photo_click h5").text('相片檢視');
+                    $("#c_photo_click button:nth-child(1)").text('修改');
+                    $("#c_photo_click button:nth-child(2)").removeClass('collapse');
+                });
+        });
+        
+        $(document).on('click', '#c_resphoto_create', () => {
+            $("#c_photo_click h5").text('新增相片');
+            $("#c_photo_click button:nth-child(1)").text('新增');
+            $("#c_photo_click button:nth-child(2)").addClass('collapse');
+            
+        })
+
+            //$(document).ready(function () {
+            //    $("#c_res_selfphotooverview_selectandsoft>img").addClass("c_test");
+
+            //});
+
+
+            //$("#c_res_selfphotooverview_selectandsoft>img").on('mouseover', function () {
+            //    $(this).css("-webkit-filter", "grayscale(1)")
+            //});
+            //$("#c_res_selfphotooverview_selectandsoft>img").on('mouseleave', function () {
+            //    $(this).css("-webkit-filter", "grayscale(0)")
+            //});
+
+
+    </script>
+}
+
+

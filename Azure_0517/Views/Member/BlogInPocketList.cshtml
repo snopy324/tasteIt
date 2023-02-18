@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Azure_0517.Models.News>
+
+
+<div>
+    <h2 style="background-color:#B4A582;height:5px;margin:0;padding:0"></h2>
+    @foreach (var news in Model)
+    {
+        <div class="row" style="padding-left:1rem;padding-right:1rem">
+            @*<div class="col-4" style="background-color:darkorange;border-bottom-left-radius:15px;border-top-left-radius:15px;">
+                    <p style="text-align:center">施工中</p>
+                </div>*@
+            <div class="col-11" style="background-color:#DAC9A6;text-align:left;">
+
+                <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id" style="margin-top:10px" title="前往食記"><h3 style="margin-top:10px">@Html.DisplayFor(n => news.New_Title)</h3></a>
+                <div style="background-color: #B4A582;height:5px;padding:0;margin:0;height:5px"></div>
+                <a href="~/Restaurant/RestaurantHomePage/@news.New_RestaurantID" title="前往餐廳" style="display:inline;"><h4 style="display:inline">@Html.DisplayFor(n => news.Restaurant.Res_Name)</h4></a>
+
+                @*<div class="myimg">@Html.Raw(news.New_Content)</div>*@
+                <div class="row blogimg">
+                    @for (int i = 0; i <= news.GetImg.Count - 1 && i <= 3; i++)
+                    {
+                        if (news.GetImg[i] != null)
+                        {
+                            <div class="col-3">@Html.Raw(news.GetImg[i])</div>
+                        }
+                    }
+                    @*<div class="col-3">@Html.Raw(news.GetImg[1])</div><div class="col-3">@Html.Raw(news.GetImg[2])</div><div class="col-3">@Html.Raw(news.GetImg[3])</div>*@
+                </div>
+            </div>
+            <div class="col-1" style="padding:0;background-color:#DAC9A6">
+                @*@Html.ActionLink("○", "DeleteNews_Member", "Member", new { id = news.New_ID }, new { @class = "yes btn btn-danger " })*@
+                @*<div class="blogup-btn">
+                    <a href="~/Member/BlogUpdate/@news.New_ID" title="修改" data-hover="修改"><i class="fas fa-pen-alt" style="color:rgb(121, 161, 181)"></i></a>
+                </div>
+                <div class="blogdel-btn">
+                    <a data-hover="刪除" data-toggle="modal" data-target="#popup@(news.New_ID)" title="刪除"><i class="fas fa-trash-alt" style="color:rgb(160, 101, 101)"></i></a>
+                </div>*@
+                @*<a class="btn btn-danger button" href="#popup@(news.New_ID)" title="刪除"><i class="fas fa-trash-alt"></i></a>*@
+                <div class="bloggo-btn" style="position:absolute;bottom:0;">
+                    <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id" title="前往食記" data-hover="前往食記"><i class="fas fa-door-open fa-2x" style="color:aliceblue"></i></a>
+                </div>
+              
+            </div>
+        </div>
+        <h2 style="background-color: #B4A582;height:5px;"></h2>
+    }
+
+
+    <p>
+        @for (int i = 0; i <= ViewBag.PageCount - 1; i++)
+        {
+            <a href="#searchResult">@(i + 1)</a>
+        }
+    </p>
+</div>

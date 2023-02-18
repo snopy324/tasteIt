@@ -1,0 +1,40 @@
+﻿
+@model Azure_0517.Models.ViewModel.AdmQAViewModel
+@if (Model.QA_SystemsNameData != null)
+{
+
+    foreach (var item in Model.QA_SystemsNameData)
+    {
+        @*< li >
+                        < div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img class="rounded-circle user_img" src="https://www.freshmorningquotes.com/wp-content/uploads/2015/11/cute-and-beautifull-girls-profile-pictures.jpg">
+                                <span class="online_icon offline"></span>
+                            </div>
+                            <div class="user_info">
+                                <input type = "hidden" id="MemberID" name="MemberID" value=@item2.Key />
+                                @Html.ActionLink("跳轉對話對象", "AdmQAShow", "Administrator", new { QA_MemberID = @item2.Key
+            }, new { @class = "btn  btn-danger" })
+                                <span>@item2.Value</span>
+                                <p>Khadija left 50 mins ago</p>
+                            </div>
+                        </div>
+                    </li>*@
+
+        <li>
+            @Html.ActionLink(item.Value, "ResQAShow", "Restaurant", new { AdmID = item.Key }, new { @class = "btn  btn-info", data_id = item.Key })
+        </li>
+    }
+}
+
+@if (Model.QA_SystemsResNameData != null)
+{
+
+    foreach (var item in Model.QA_SystemsResNameData)
+    {
+        <li>
+            @Html.ActionLink(item.Value, "ResQAShow", "Restaurant", new { QA_RestaurantID = @item.Key }, new { @class = "btn  btn-danger", data_id = item.Key })
+        </li>
+    }
+}
+

@@ -1,0 +1,43 @@
+﻿@model Azure_0517.Models.News
+@{
+    ViewBag.Title = Model.New_Title;
+}
+@section styles{
+    <style>
+        .absolute {
+            position: absolute;
+            top: 20px;
+            right: -70px;
+        }
+    </style>
+}
+<div class="container">
+    <table class="table table-active">
+        @if (Request.Cookies["Role"] != null && (Request.Cookies["Role"].Value == "Administrator"))
+        {
+            <tr><td><h1>@Html.DisplayFor(c => Model.New_Title)</h1>@Html.ActionLink("刪除食記", "DeleteNews", "Home", new { id = Model.New_ID }, new { @class = "absolute btn btn-danger" })</td></tr>
+        }
+        else
+        {
+            <tr><td><h1>@Html.DisplayFor(c => Model.New_Title)</h1></td></tr>
+        }
+        <tr><td><a href="~/Restaurant/RestaurantHomePage/@Model.New_RestaurantID">@Html.DisplayFor(n => Model.Restaurant.Res_Name)</a></td></tr>
+        <tr><td>@Html.Raw(Model.New_Content)</td></tr>
+    </table>
+
+</div>
+
+@section scripts{
+    <script>
+        $('.absolute.btn.btn-danger').click(function () {
+            if (!confirm('確認刪除?')) {
+                event.preventDefault();
+                return;
+            }
+            alert('本篇食記已刪除，轉回檢舉管理介面');
+        })
+
+
+
+    </script>
+}

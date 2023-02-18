@@ -1,0 +1,11 @@
+﻿@model IGrouping<int, Azure_0517.Models.ReservationOpened>
+
+@if (Model != null)
+{
+    foreach (var opened in Model)
+    {
+        <li class="nav-item col-3">
+            <a href="#" class="btn btn-primary newbook LVM" data-seatremain="@opened.RVOpen_SeatsRemain" data-openid="@opened.RVOpen_ID">@opened.RVOpen_DateTime.ToString("HH:mm") @opened.RVOpen_OffPrice</a>
+        </li>
+    }
+}

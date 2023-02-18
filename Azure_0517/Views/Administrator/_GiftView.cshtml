@@ -1,0 +1,13 @@
+﻿@model Azure_0517.Models.Gift
+
+<div class="card" style="max-width: 540px;height:840px;box-shadow:2px 3px 5px 0px #d9d3d3, inset 0px 1px 3px #fff;">
+    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Gift_Picture)" class="card-img-top" />
+    <div class="card-body" style="overflow:auto;">
+        <h5 class="card-title">@Model.Gift_Name</h5>
+        @Html.DisplayNameFor(p => p.Gift_Point):<p>@Model.Gift_Point</p>
+        @Html.DisplayNameFor(p => p.Gift_Quantity):<p>@Model.Gift_Quantity</p>
+        @Html.DisplayNameFor(p => p.Gift_CreatedDate):<p>@Model.Gift_CreatedDate</p>
+        @Html.DisplayNameFor(p => p.Gift_CreatedAdmini):<p>@Html.DisplayFor(m => m.Member.Mem_Name)</p>
+        @Html.DisplayNameFor(p => p.Gift_Content):<p>@Model.Gift_Content</p>
+    </div>
+</div>

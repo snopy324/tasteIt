@@ -1,0 +1,162 @@
+﻿@model Azure_0517.Models.Member
+@{
+    ViewBag.Title = Model.Mem_Name + " 個人資料修改";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        .forinput {
+            /*width: 500px;*/
+        }
+
+        /*textarea {
+            width: 500px  ;
+            height: 200px !important;
+        }*/
+
+        .forsubmitbtn {
+            width: 100px !important;
+        }
+
+        .memdivicon {
+            width: 130px !important;
+            height: 130px !important;
+            border-radius: 25px 25px;
+        }
+
+        .formemphoto {
+            width: 120px !important;
+            height: 120px !important;
+            border: 1px solid blue !important;
+            border-radius: 50px 50px !important;
+            margin: 0 10px 0 10px;
+        }
+
+        .fortextarea {
+            width: 400px !important;
+            height: 210px !important;
+            resize: none !important;
+        }
+    </style>
+}
+
+<div class="container-fluid row">
+
+    <div class="col-12">
+
+        @using (Html.BeginForm("SelfInfo", "Member", FormMethod.Post, new { enctype = "multipart/form-data", id = "m_form", @class = "mt-5 ml-5" }))
+        {
+            <div class="row">
+                <div class="col-6">
+                    <input type="hidden" name="memid" value="@Model.Mem_ID" />
+                    <div class="form-group">
+                        @Html.LabelFor(t => t.Mem_Name)
+                        :
+                        @Html.EditorFor(t => t.Mem_Name, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_Name } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_NickName)
+                        :
+                        @Html.EditorFor(t => t.Mem_NickName, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_NickName } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_Mail)
+                        :
+                        @Html.EditorFor(t => t.Mem_Mail, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_Mail } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_Phone)
+                        :
+                        @Html.EditorFor(t => t.Mem_Phone, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_Phone } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_Password)
+                        :
+                        @Html.EditorFor(t => t.Mem_Password, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_Password } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_Birthday)
+                        :
+                        @Html.EditorFor(t => t.Mem_Birthday, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_Birthday } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_Address)
+                        :
+                        @Html.EditorFor(t => t.Mem_Address, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_Address } })
+                    </div>
+                    <div class="form-group mt-4">
+                        @Html.LabelFor(t => t.Mem_JoinDate)
+                        :
+                        @Html.EditorFor(t => t.Mem_JoinDate, new { htmlattributes = new { @class = "form-control forinput", value = Model.Mem_JoinDate, @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-11">
+                            <h6>會員照片:</h6>
+                            <div class="form-group mt-3">
+                                <img id="target" name="target" src="@Url.Action("getdbimage", "Member",new { id =Model.Mem_ID ,flag="mem"})" alt="Preview Image" style="width:400px;height:400px;" />
+                                <input type="file" class="form-control-file mt-1" id="myfile" name="myfile">
+                            </div>
+                            <div class="form-group mt-1 mb-0 pb-0">
+                                @Html.LabelFor(m => m.Mem_Introduction)
+                                :
+                            </div>
+                            <div class="form-group mt-0 pt-0">
+                                @Html.TextAreaFor(m => m.Mem_Introduction, new { @class = "form-control fortextarea", value = Model.Mem_Introduction })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3 mb-3">
+                <div class="col-12 text-center">
+                    <button id="c_send" class="btn btn-primary" type="button">確認並送出</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("myfile").addEventListener("change", fileviewer);
+        })
+        $("#c_send").click(function () {
+            event.preventDefault();
+            let f_data = new FormData($('#m_form')[0]);
+            $.ajax({
+        type: 'Post',
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("SelfInfo", "Member")',
+                data: f_data,
+                processData: false,
+                contentType: false,
+                cache: false
+            }).done(function () {
+                SuccessAnimation("修改成功!");
+                $("html,body").animate({ scrollTop: 0 }, 500);
+            })
+        })
+
+
+        function fileviewer() {
+            var files = document.getElementById("myfile").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    document.getElementById("target").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        }
+
+    </script>
+}
+
+

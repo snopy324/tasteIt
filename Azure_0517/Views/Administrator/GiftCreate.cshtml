@@ -1,0 +1,187 @@
+﻿@model Azure_0517.Models.Gift
+@{
+    ViewBag.Title = "新增紅利商品";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+        .section-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .title {
+            text-align: center;
+            color: crimson;
+            margin: 3rem;
+            font-size: 28px;
+            font-weight: bolder;
+        }
+
+        .form-group {
+            margin-left: 150px;
+        }
+
+        .col-md-10 img {
+            margin-left: 160px;
+            max-height: 350px;
+            max-width: 350px;
+        }
+
+        .use {
+            height: 40px;
+            width: 100px;
+            border-radius: 3px;
+            box-shadow: -3px -5px 3px rgba(20%,20%,40%,0.5) inset;
+            border-style: none;
+        }
+
+            .use:active {
+                border-style: none;
+                box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+            }
+
+            .use:focus {
+                border-style: none;
+                box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+            }
+
+        .file-btn {
+            font-size: 14px;
+            background-color: #4b98f8;
+            color: #fff;
+            border: 2px solid #51c9e8;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            position: absolute;
+            left: 580px;
+            box-shadow: -3px -5px 3px rgba(20%,20%,40%,0.5) inset;
+        }
+    </style>
+}
+
+<div class="section-header">
+    <h3 class="title">
+        <i class="fa fa-book"></i>新增紅利商品
+    </h3>
+</div>
+
+@using (Html.BeginForm("GiftCreate", "Administrator", FormMethod.Post, new { enctype = "multipart/form-data", @id = "create" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="col-lg-12">
+            <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gift_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Gift_Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Gift_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gift_Point, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Gift_Point, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Gift_Point, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gift_Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Gift_Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Gift_Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gift_CreatedAdmini, "創建人員", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control" type="text" name="Gift_CreatedAdmini" id="Gift_CreatedAdmini" value="@ViewBag.adm" readonly="readonly" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gift_CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+
+                    <input class="form-control" type="datetime" name="Gift_CreatedDate" id="Gift_CreatedDate" value="@DateTime.Now" readonly="readonly" />
+                </div>
+            </div>
+
+            <!--獎品照片-->
+            <div class="form-group" style="position:relative">
+                <button class="file-btn">選擇照片</button>
+                @Html.LabelFor(model => model.Gift_Picture, new { @class = "control-label col-md-2" })
+                <input class="text-box single-line" style="width:95px;height:45px;margin-left:430px;opacity:0;cursor:pointer" type="file" name="Gift_Picture" id="Gift_Picture" />
+                <div class="col-md-10">
+                    <img id="target" name="target" src="~/tasteitlogo/Gift.jpg" width="350" height="350" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gift_Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Gift_Content, new { @class = "form-control", style = "resize:none;" })
+                    @Html.ValidationMessageFor(model => model.Gift_Content, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10" style="text-align:center">
+                    @*<button id="submit" class="btn btn-success"><i class="fas fa-folder-plus"></i>新增</button>*@
+                    <div class="btn-group">
+                        <input type="submit" value="新增" class="btn btn-success use" style="border-radius:30px 0 0 30px" />
+                        <button id="Demo" class="btn btn-info use" style="color: white;">Demo</button>
+                        <a href="@Url.Action("GiftOverview","Administrator")" class="use btn btn-danger" style="border-radius:0 30px 30px 0">回到首頁</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("Gift_Picture").addEventListener("change", fileviewer);
+        })
+
+        function fileviewer() {
+            var files = document.getElementById("Gift_Picture").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    document.getElementById("target").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        }
+         $("#Demo").click(function () {
+            event.preventDefault();
+            $("#Gift_Name").val("【歐納牛排館】芒果晶球凍兌換券");
+            $("#Gift_Point").val(500);
+            $("#Gift_Quantity").val(100);
+            $("#Gift_Content").val("在一個月期限之內可以憑券至歐納牛排館店內兌換芒果晶球凍一份");
+        })
+
+        $('#submit').click(function () {
+            $("#create").submit();
+        })
+        $('.file-btn').click(function () {
+            event.preventDefault();
+        })
+    </script>
+}

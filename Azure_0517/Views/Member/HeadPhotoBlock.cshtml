@@ -1,0 +1,36 @@
+﻿@model Azure_0517.Models.Member
+@section styles{
+    <style>
+        .memdivicon {
+            width: 130px !important;
+            height: 130px !important;
+            border-radius: 25px 25px;
+        }
+
+        .formemphoto {
+            width: 120px !important;
+            height: 120px !important;
+            border: 1px solid blue !important;
+            border-radius: 50px 50px !important;
+            margin: 0 10px 0 10px;
+        }
+    </style>
+}
+
+@*<div class="memdivicon">
+        <img src="@Url.Action("getdbimage", "Member",new { id =Model.Mem_ID ,flag="mem"})" class="formemphoto" alt="...">
+        <p style="text-align:center">@Model.Mem_Name</p>
+    </div>*@
+@*<div class="card" style="width: 18rem;">
+        <img src="@Url.Action("getdbimage", "Member",new { id =Model.Mem_ID ,flag="mem"})" class="card-img-top">
+        <div class="card-body">
+            <p class="card-title">@Model.Mem_Name</p>
+            <p class="card-text">@Model.Mem_Introduction</p>
+        </div>
+    </div>*@
+
+<img src="@Url.Action("getdbimage", "Member",new { id =Model.Mem_ID ,flag="mem"})" style="width:250px;height:250px">
+
+
+
+

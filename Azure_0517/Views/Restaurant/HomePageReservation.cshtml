@@ -1,0 +1,23 @@
+﻿@model IEnumerable<IGrouping<int, Azure_0517.Models.ReservationOpened>>
+
+
+@foreach (var team in Model)
+{ 
+                foreach (var opened in team)
+                {
+                    <div class="newBookli nav-item col-3">
+                            <div class="slide-btn  hover">
+                                <a href="#" class="LVM newbook" data-hover="訂位" data-id="@opened.RVOpen_ID" data_seatremain="@opened.RVOpen_SeatsRemain">
+                                    @opened.RVOpen_DateTime.ToString("HH:mm")
+                                    <small>@opened.RVOpen_OffPrice</small>
+                                </a>
+                            </div>
+                    </div>
+                }
+}
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-primary text-center" role="alert">
+        尚未開放訂位!敬請期待
+    </div>
+}

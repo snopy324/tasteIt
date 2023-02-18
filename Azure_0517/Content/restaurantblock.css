@@ -1,0 +1,79 @@
+﻿
+.forimage {
+    width: 64px !important;
+    height: 64px !important;
+}
+
+.starshine {
+    -webkit-filter: grayscale(0);
+}
+
+.stargray {
+    -webkit-filter: grayscale(1);
+}
+
+
+
+.chudiv {
+    background-color: white;
+    border-top: 1px solid lightblue;
+    border-bottom: 1px solid lightblue;
+    border-right: 1px solid lightblue;
+    border-left: 1px solid lightblue;
+}
+
+.chubtng {
+}
+
+.lileicon {
+    width: 40px!important;
+    height: 40px!important;
+    border: 1px solid black;
+    border-radius: 45px 45px;
+}
+
+.lileicon > img {
+    width: 40px;
+    height: 40px;
+}
+
+.hidetext {
+    /*white-space:nowrap;
+            overflow: hidden;
+            height: 53px !important;
+            text-overflow: ellipsis;*/
+    width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.pagebtn {
+    width: 45px;
+    height: 45px;
+    line-height: 25px;
+    border: 5px solid #d6bc45;
+    background-color: #f3e7a0;
+    border-radius: 40px; /* 高度 */
+    font-family: 'Sansita One', cursive;
+    font-weight: bolder;
+    box-shadow: 3px 5px 5px #ccc;
+}
+
+.pagebtn:hover {
+    background-color: gold !important;
+    color: white !important;
+}
+
+div .pagination-container {
+    text-align: center !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.introduction {
+    width: 700px !important;
+    height: 53px !important;
+}

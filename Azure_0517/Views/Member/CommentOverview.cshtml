@@ -1,0 +1,180 @@
+﻿@model Azure_0517.Models.Comment
+@{
+    ViewBag.Title = "CommentOverview";
+
+}
+
+<div class="container mb-3">
+    @if (Model != null)
+    {
+        <form id="ComUP" action="~/Restaurant/ReportComment_Restaurant" method="post">
+
+            <div class="row">
+
+                <div class="comment col-11" style="margin:0;padding:0">
+                    <div class="comment-img">
+                        <img src="data:imge/jpeg;base64,@Convert.ToBase64String(Model.Member.Mem_Photo)" />
+                    </div>
+
+                    <div class="comment-content">
+                        <div style="display:flex;flex-direction:row;justify-content:flex-start;margin-left:30px;">
+
+                            <p class="author" style="display:inline;">
+                                <strong>@Model.Member.Mem_NickName</strong>
+                            </p>
+
+                            <div style="display:block;white-space:nowrap;margin-left:auto;padding-right:0" id="divTop_@Model.Com_ID">
+                                <div style="position:relative;margin-left:30px">
+                                    @for (var i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Com_StarRate)
+                                        {
+                                            <img src="~/tasteitlogo/comStar.png" id="Star${i}" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/tasteitlogo/comStar.png" id="Star${i}" class="n" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <span class="mytext" style="height:120px;" id="comtext_@Model.Com_ID" data-text="@Model.Com_ID">
+                            @Html.DisplayFor(n => Model.Com_Content, new { @class = "comment-content" })
+                        </span>
+                    </div>
+                    <span style="font-size:small;float:right;margin-right:70px">@Html.DisplayFor(n => Model.Com_CreateDate)</span>
+
+                </div>
+                <div class="col-1" style="margin:0;padding:0" id="combuttom">
+                    <div class="blogup-btn" style="width:100%;text-align:center">
+                        <a data-hover="修改" class="btn updatebuttom" title="修改" id="updatecom" data-com="@Model.Com_Content" data-updatecom="@Model.Com_ID" name="updatebuttom" style="width:100%;text-align:center"><i class="fas fa-pen-alt"></i></a>
+                    </div>
+                    <div class="blogdel-btn" style="width:100%;text-align:center">
+                        <a data-hover="刪除" class="btn" data-toggle="modal" data-target="#popup@(Model.Com_ID)" title="刪除" style="width:100%;text-align:center"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="popup@(Model.Com_ID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">警告</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            確定要刪除評論嗎?
+                        </div>
+
+                        <div class="content row" style="margin-bottom:10px;">
+                            <div class="col-1"></div>
+                            <div class="col-5">@Html.ActionLink("○", "DeleteComment_Member", "Member", new { id = Model.Com_ID }, new {  @class = "yes btn btn-danger",id="delthiscom" , data_delid=Model.Com_ID})</div>
+                            <div class="col-5"><a class="btn btn-success delbutton" data-dismiss="modal">X</a></div>
+                            <div class="col-1"></div>
+                        </div>
+                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>*@
+
+                    </div>
+                </div>
+            </div>
+            @Html.Hidden("Com_RestaurantID", (object)ViewBag.RestID, null)
+            @Html.Hidden("Com_StarRate", null, new { id = "Com_StarRate" })
+            @Html.Hidden("Com_Content", null, new { id = "Com_Content" })
+            @Html.Hidden("Com_ID", Model.Com_ID, new { id = "Com_ID" })
+        </form>
+
+    }
+    else
+    {
+        <form id="MyCom">
+            <div class="row">
+                <div class="comment col-11" style="margin:0;padding:0">
+                    <div class="comment-img">
+                        <img src="data:imge/jpeg;base64,@Convert.ToBase64String(ViewBag.MyPhoto)" />
+                    </div>
+                    <div class="comment-content">
+                        <div style="display:flex;flex-direction:row;justify-content:flex-start;margin-left:30px;">
+                            <p class="author" style="display:inline;">
+                                <strong>@ViewBag.NickName</strong>
+                            </p>
+                            <div style="display:block;white-space:nowrap;margin-left:auto;padding-right:0" id="divTop">
+
+                            </div>
+                        </div>
+                        <span class="mytext" style="height:120px;">
+                            <textarea class="mytext" style="height:100%" maxlength="100" id="newcomtext"></textarea>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-1" id="combuttom" style="margin:0;padding:0">
+                    <div class="blogup-btn" style="width:100%;text-align:center;">
+                        <a class="btn" data-hover="送出" name="send" id="sendcom" style="width:100%;text-align:center;margin-right:20px"><i class="fas fa-pencil-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            @Html.Hidden("Com_RestaurantID", null, new { id = "Com_RestaurantID" })
+            @Html.Hidden("Com_StarRate", null, new { id = "Com_StarRate" })
+            @Html.Hidden("Com_Content", null, new { id = "Com_Content" })
+        </form>
+    }
+</div>
+
+
+
+
+
+
+
+@*<div>
+    <form id="ComUP" action="~/Restaurant/ReportComment_Restaurant" method="post">
+        <div class="row">
+
+            <div class="col-11" style=";margin:0">
+                <div class="row" style="height:200px;margin-bottom:40px;">
+                    <div class="col-11" style="padding:0;background-color:orange;">
+                        <div style="margin-top:15px;margin-left:15px;font-size:larger">
+                            <h4>@Model.Member.Mem_NickName</h4>
+                        </div>
+                        <div class="fufff" style="margin-top:10px;margin-left:15px;" id="divTop_@Model.Com_ID">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.Com_StarRate)
+                                {
+                                    <img src="~/tasteitlogo/comStar.png" id="Star${i}" />
+                                }
+                                else
+                                {
+                                    <img src="~/tasteitlogo/comStar.png" id="Star${i}" class="n" />
+                                }
+                            }
+                        </div>
+                        <div class="mytext" id="comtext_@Model.Com_ID" data-text="@Model.Com_ID">
+                            <text style="margin-top:10px;font-size:x-large" class="mycont">@Html.DisplayFor(n => Model.Com_Content)</text>
+                        </div>
+                        <div style="margin-left:15px;display:inline;position:absolute;bottom:0;">
+                            <text>@Html.DisplayFor(n => Model.Com_CreateDate)</text>
+                        </div>
+                        @*<div><p>@Html.DisplayFor(n=>news.New_Content)</p></div>*@
+@*</div>
+                        <div class="col-1" style="padding:0;" id="combuttom">
+                            <a class="btn btn-success button updatebuttom" title="修改" id="updatecom" data-com="@Model.Com_Content" data-updatecom="@Model.Com_ID" name="updatebuttom" ><i class="fas fa-pen-alt"></i></a>
+                            <a class="btn btn-danger button" data-toggle="modal" data-target="#popup@(Model.Com_ID)" title="刪除" style="width:42px;"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                        <h2 style="background-color: khaki;height:5px;padding:0;margin:0"></h2>
+                    </div>
+
+
+
+                </div>
+                <div class="col-1"></div>
+            </div>
+            @Html.Hidden("Com_RestaurantID", (object)ViewBag.RestID, null)
+            @Html.Hidden("Com_StarRate", null, new { id = "Com_StarRate" })
+            @Html.Hidden("Com_Content", null, new { id = "Com_Content" })
+            @Html.Hidden("Com_ID", Model.Com_ID, new { id = "Com_ID" })
+        </form>
+    </div>*@

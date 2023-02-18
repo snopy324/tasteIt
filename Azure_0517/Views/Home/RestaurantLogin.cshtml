@@ -1,0 +1,181 @@
+﻿
+@{
+                /**/
+
+                ViewBag.Title = "商家登入";
+}
+
+@section styles{
+
+    <!------ Include the above in your HEAD tag ---------->
+
+    <style>
+        * {
+            font-family: "微軟正黑體";
+        }
+
+        body#LoginForm {
+            background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            padding: 10px;
+        }
+
+        .form-heading {
+            color: #fff;
+            font-size: 23px;
+        }
+
+        .panel h2 {
+            color: #444444;
+            font-size: 18px;
+            margin: 0 0 8px 0;
+        }
+
+        .panel p {
+            color: #777777;
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 24px;
+        }
+
+        .login-form .form-control {
+            background: #f7f7f7 none repeat scroll 0 0;
+            border: 1px solid #d4d4d4;
+            border-radius: 4px;
+            font-size: 14px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .main-div {
+            background: #ffffff none repeat scroll 0 0;
+            border-radius: 2px;
+            margin: 10px auto 30px;
+            max-width: 38%;
+            padding: 50px 70px 70px 71px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 10px;
+        }
+
+        .login-form {
+            text-align: center;
+        }
+
+        .forgot a {
+            color: #777777;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .login-form .btn.btn-primary {
+            background: #f0ad4e none repeat scroll 0 0;
+            border-color: #f0ad4e;
+            color: #ffffff;
+            font-size: 14px;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            padding: 0;
+        }
+
+        .forgot {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .botto-text {
+            color: #ffffff;
+            font-size: 14px;
+            margin: auto;
+        }
+
+        .login-form .btn.btn-primary.reset {
+            background: #ff9900 none repeat scroll 0 0;
+        }
+
+        .back {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+            .back a {
+                color: #444444;
+                font-size: 13px;
+                text-decoration: none;
+            }
+
+        .check {
+            text-align: left;
+            font-size: 13px;
+        }
+    </style>
+
+
+    <!------ Include the above in your HEAD tag ---------->
+}
+
+<div id="LoginForm">
+    <div class="container">
+
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+
+                    <p>商家登入</p>
+                </div>
+                <form role="form" id="Login" action="~/Home/RestaurantLogin" method="post">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="username" name="username" placeholder="帳號">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="密碼">
+                    </div>
+
+
+                    <div class="form-group check">
+                        <input type="checkbox" name="remember" id="remember" />
+                        <label>記住我</label>
+                    </div>
+                    <div class="forgot">
+                        <span>想增加餐廳曝光度?</span>
+                        <a href="@Url.Action("RestaurantRegeist","Home")">點我註冊</a>
+                    </div>
+
+                    <div class="forgot">
+                        <a href="@Url.Action("RestaurantForget","Home")">忘記密碼</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">登入</button>
+                    <button id="RestaurantLoginDemo" class="mt-3 btn btn-info">Demo</button>
+                </form>
+
+                @ViewBag.message
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+@section scripts{
+    <script>
+    
+    $('#RestaurantLoginDemo').click(function () {
+        event.preventDefault()
+        $('#username').val('r0019')
+        $('#password').val('000')
+    })
+    </script>
+}

@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Azure_0517.Models.Discount>
+
+@foreach (var disc in Model)
+{
+    @Html.Action("DiscountBlock", "Restaurant", new { discount = disc, Manage = false })
+}

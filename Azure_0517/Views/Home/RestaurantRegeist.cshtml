@@ -1,0 +1,188 @@
+﻿@model  Azure_0517.Models.Restaurant
+@{
+    ViewBag.Title = "餐廳註冊";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<head>
+    <meta charset="utf-8" />
+    <title>餐廳註冊</title>
+    <style>
+        .st1 {
+            width: 450px;
+            margin: 20px;
+            border-bottom: 1px solid #F0F0F0;
+            padding-bottom: 10px;
+        }
+
+        .sub {
+            width: 450px;
+            margin-left: 280px;
+            margin-right: 280px;
+        }
+
+        .t1 {
+            width: 100px;
+            float: left;
+            text-align: left;
+            margin-right: 70px;
+        }
+
+        em {
+            color: red;
+        }
+
+        .container {
+            width: 1000px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        fieldset {
+            width: 800px;
+            border: 2px solid #ACD6FF;
+            margin: 15px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>餐廳註冊</h3>
+    @using (Html.BeginForm("RestaurantRegeist", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {<div class="container">
+         <fieldset>
+             <legend style="font-family:微軟正黑體;text-align:center">餐廳資料<em>(必填)</em></legend>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Name, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(m => m.Res_Name)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_TaxID, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_TaxID)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Account, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_Account)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Password, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_Password)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Email, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_Email, new { htmlAttributes = new { type = "email" } })
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Phone, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_Phone)
+             </div>
+
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_City, new { htmlAttributes = new { @class = "t1" } })
+                 @{
+                     var cities = new SelectList(ViewBag.cities, "Cit_ID", "Cit_Name");
+                 }
+                 @Html.DropDownListFor(r => r.Res_City, cities, "Please Select")
+
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Address, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_Address)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_WorkingDate, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_WorkingDate, new { htmlAttributes = new { placeholder = "週日至六" } })
+             </div>
+
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_MaxConsumption, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_MaxConsumption)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_MinConsumption, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_MinConsumption)
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_TenPercentService, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.RadioButtonFor(r => r.Res_TenPercentService, true, new { @id = "t" })<label for="t">是</label>
+
+                 @Html.RadioButtonFor(r => r.Res_TenPercentService, false, new { @id = "f" })<label for="f">否</label>
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_QAEnable, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.RadioButtonFor(r => r.Res_QAEnable, true, new { @id = "t" })<label for="t">是</label>
+
+                 @Html.RadioButtonFor(r => r.Res_QAEnable, false, new { @id = "f" })<label for="f">否</label>
+             </div>
+
+
+
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_Seats, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_Seats)
+             </div>
+
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_ParkingSeats, new { htmlAttributes = new { @class = "t1" } })
+                 @Html.EditorFor(r => r.Res_ParkingSeats, new { htmlAttributes = new { min = "0" } })
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_HomePagePicture, new { htmlAttributes = new { @class = "t1" } })
+                 <input type="file" name="RestPhoto" />
+
+             </div>
+
+             <div class="st1">
+                 @Html.LabelFor(r => r.Res_IntroductionContext, new { htmlAttributes = new { @class = "t1" } })
+                 <textarea class="text-box multi-line" id="Res_IntroductionContext" name="Res_IntroductionContext"></textarea>
+             </div>
+
+
+
+
+
+
+         </fieldset>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">
+                    確定
+                </button>
+            </div>
+        </div>
+    }
+
+    <div class="alert alert-warning" role="alert">
+        @ViewBag.message
+    </div>
+</body>
+
+
+
+
+
+
+
+

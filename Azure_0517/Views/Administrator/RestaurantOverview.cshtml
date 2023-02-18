@@ -1,0 +1,77 @@
+﻿@model Azure_0517.Models.Member
+@{
+    ViewBag.Title = "管理餐廳總覽";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/Pagebtn.css" rel="stylesheet" />
+    <link href="~/Content/adm_table_text.css" rel="stylesheet" />
+    <style>
+        .adm_res_fs {
+            font-size: xx-small;
+        }
+    </style>
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 mt-5">
+            <img src="@Url.Action("getimage","Administrator",new {id= Model.Mem_ID,flag="mem"})" style="width:150px;height:150px" />
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">管理員編號: @Model.Mem_ID</li>
+                <li class="list-group-item">姓名: @Model.Mem_Name</li>
+                <li class="list-group-item">別名: @Model.Mem_NickName</li>
+            </ul>
+        </div>
+        <div class="col-10">
+            <div class="container-fluid mt-3" style="display:flex;flex-direction:row;justify-content:space-between">
+                <h5 class="mt-2">共有:@ViewBag.thecount 間餐廳</h5>
+                <h5 id="p_show" class="mt-2">目前頁數:第1頁</h5>
+                <div class="text-right mb-3">
+                    <input id="keyword" class="form-control-sm" placeholder="請輸入頁數" type="number" />
+                    <button id="numbersearch" class="btn btn-outline-primary" type="button">頁數搜尋</button>
+                </div>
+            </div>
+            <div id="showresult">
+                @Html.Action("resoverview", "Administrator")
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).on('click', '#showresult .pagination li button', function () {
+            var route = '@Url.Action("resoverview", "Administrator")';
+            var page = $(this).attr('id').slice(5);
+            console.log('in');
+            console.log(route);
+            console.log(page);
+            $.ajax({
+                type: 'GET',
+                url: route,
+                data: { thepage: page }
+            }).done(function (result) {
+                $("#showresult").html(result);
+                $(`#page-${page}`).css({ 'background-color': 'gold', 'color': 'white' });
+                $("#p_show").text(`目前頁數:第${page}頁`)
+                $("html,body").animate({ scrollTop: 0 }, 500);
+
+            });
+        });
+        $("#numbersearch").click(function () {
+            let target = $("#keyword").val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("resoverview", "Administrator")',
+                data: { thepage: target },
+            }).done(function (result) {
+                $("#showresult").html(result);
+                $("#p_show").text(`目前頁數:第${target}頁`)
+                $(`#page-${target}`).css({ 'background-color': 'gold', 'color': 'white' });
+                $("html,body").animate({ scrollTop: 0 }, 500);
+            })
+        })
+
+    </script>
+}
+

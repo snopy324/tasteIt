@@ -1,0 +1,172 @@
+﻿@model Azure_0517.Models.ViewModel.AdmQAViewModel
+@if (Request.Cookies["Role"].Value == "Administrator")
+{
+    if (Model.QA_SystemsData.Count() > 0)
+    {
+        if (Model.QA_SystemsData.FirstOrDefault().QA_MemberID != null)
+        {
+            <input type="hidden" id="MemberIDr" name="QA_MemberID" value=@Model.QA_SystemsData.FirstOrDefault().QA_MemberID />
+            <input type="hidden" id="MemberNamer" name="MemberNamer" value=@Model.QA_SystemsData.FirstOrDefault().Member.Mem_Name />
+        }
+
+        if (Model.QA_SystemsData.FirstOrDefault().QA_RestaurantID != null)
+        {
+            <input type="hidden" id="ResIDr" name="QA_RestaurantID" value=@Model.QA_SystemsData.FirstOrDefault().QA_RestaurantID />
+            <input type="hidden" id="ResNamer" name="ResNamer" value=@Model.QA_SystemsData.FirstOrDefault().Restaurant.Res_Name />
+        }
+
+        foreach (var item in Model.QA_SystemsData)
+        {
+            if (item.QA_ResTalk == true)
+            {
+                <div class="not-me">
+                    <span>@item.QA_Content</span>
+                </div>
+
+            }
+            if (item.QA_MemkTalk == true)
+            {
+                <div class="not-me">
+                    <span>@item.QA_Content</span>
+                </div>
+            }
+            if (item.QA_AdmTalk == true)
+            {
+                <div class="me">
+                    <span>@item.QA_Content</span>
+                </div>
+
+
+            }
+        }
+    }
+    else
+    {
+        if (Model.RoleId == 1)
+        {
+            <input type="hidden" id="MemberIDr" name="QA_MemberID" value=@Model.Id />
+            <input type="hidden" id="MemberNamer" name="MemberNamer" value=@Model.Name />
+        }
+
+        if (Model.RoleId == 0)
+        {
+            <input type="hidden" id="ResIDr" name="QA_RestaurantID" value=@Model.Id />
+            <input type="hidden" id="ResNamer" name="ResNamer" value=@Model.Name />
+        }
+    }
+
+}
+else if (Request.Cookies["Role"].Value == "Member")
+{
+    if (Model.QA_SystemsData.Count() > 0)
+    {
+        if (Model.QA_SystemsData.FirstOrDefault().QA_AdministratorID != null)
+        {
+            <input type="hidden" id="AdmIDr" name="QA_AdministratorID" value=3 />
+            <input type="hidden" id="AdmNamer" name="AdmNamer" value=管理員 />
+        }
+
+        if (Model.QA_SystemsData.FirstOrDefault().QA_RestaurantID != null)
+        {
+            <input type="hidden" id="ResIDr" name="QA_RestaurantID" value=@Model.QA_SystemsData.FirstOrDefault().QA_RestaurantID />
+            <input type="hidden" id="ResNamer" name="ResNamer" value=@Model.QA_SystemsData.FirstOrDefault().Restaurant.Res_Name />
+        }
+
+        foreach (var item in Model.QA_SystemsData)
+        {
+            if (item.QA_ResTalk == true)
+            {
+                <div class="not-me">
+                    <span>@item.QA_Content</span>
+                </div>
+
+            }
+            if (item.QA_AdmTalk == true)
+            {
+                <div class="not-me">
+                    <span>@item.QA_Content</span>
+                </div>
+            }
+            if (item.QA_MemkTalk == true)
+            {
+                <div class="me">
+                    <span>@item.QA_Content</span>
+                </div>
+
+
+            }
+        }
+    }
+    else
+    {
+        if (Model.RoleId == 3)
+        {
+            <input type="hidden" id="AdmIDr" name="QA_AdministratorID" value=3 />
+            <input type="hidden" id="AdmNamer" name="AdmNamer" value=管理員 />
+        }
+
+        if (Model.RoleId == 0)
+        {
+            <input type="hidden" id="ResIDr" name="QA_RestaurantID" value=@Model.Id />
+            <input type="hidden" id="ResNamer" name="ResNamer" value=@Model.Name />
+        }
+    }
+
+}
+else if (Request.Cookies["Role"].Value == "Restaurant")
+{
+    if (Model.QA_SystemsData.Count() > 0)
+    {
+        if (Model.QA_SystemsData.FirstOrDefault().QA_MemberID != null)
+        {
+            <input type="hidden" id="MemberIDr" name="QA_MemberID" value=@Model.QA_SystemsData.FirstOrDefault().QA_MemberID />
+            <input type="hidden" id="MemberNamer" name="MemberNamer" value=@Model.QA_SystemsData.FirstOrDefault().Member.Mem_Name />
+        }
+
+        if (Model.QA_SystemsData.FirstOrDefault().QA_AdministratorID != null)
+        {
+            <input type="hidden" id="AdmIDr" name="QA_AdministratorID" value=3 />
+            <input type="hidden" id="AdmNamer" name="AdmNamer" value=管理員 />
+        }
+
+        foreach (var item in Model.QA_SystemsData)
+        {
+            if (item.QA_ResTalk == true)
+            {
+                <div class="me">
+                    <span>@item.QA_Content</span>
+                </div>
+
+            }
+            if (item.QA_MemkTalk == true)
+            {
+                <div class="not-me">
+                    <span>@item.QA_Content</span>
+                </div>
+            }
+            if (item.QA_AdmTalk == true)
+            {
+                <div class="not-me">
+                    <span>@item.QA_Content</span>
+                </div>
+
+
+            }
+        }
+    }
+    else
+    {
+        if (Model.RoleId == 1)
+        {
+            <input type="hidden" id="MemberIDr" name="QA_MemberID" value=@Model.Id />
+            <input type="hidden" id="MemberNamer" name="MemberNamer" value=@Model.Name />
+        }
+
+        if (Model.RoleId == 3)
+        {
+            <input type="hidden" id="AdmIDr" name="QA_AdministratorID" value=3 />
+            <input type="hidden" id="AdmNamer" name="AdmNamer" value=管理員 />
+        }
+    }
+
+}

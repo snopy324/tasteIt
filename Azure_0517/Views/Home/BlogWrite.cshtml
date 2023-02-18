@@ -1,0 +1,99 @@
+﻿@model Azure_0517.Models.News
+@{
+    ViewBag.Title = "BlogWrite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container" style="margin-bottom:50px;">
+    <form action="~/Home/BlogWrite" method="post" style="padding:20px" id="MyForm">
+
+        @Html.TextBoxFor(n => Model.New_Title, null, new Dictionary<string, object> { { "style", "width:100%;height:40px;" }, { "placeholder", "請輸入標題" }, { "id", "New_Title" }, { "name", "New_Title" } })
+        @*< input type="text" id="New_Title" name="New_Title" style="width:100%;height:40px;" placeholder="請輸入標題" />*@
+        @*<textarea name="Content" id="Content" style="background-color:orange;"></textarea>*@
+        <div class="X1"> @Html.TextAreaFor(c => c.New_Content)</div>
+
+        <input type="button" name="button" value="Send" id="button" />
+        @*@Html.Hidden("Content", null, new { id = "Content" })*@
+        @Html.Hidden("New_RestaurantID", (object)@ViewBag.RestID, new { value = "New_RestaurantID" })
+
+    </form>
+</div>
+
+<button id="demo">Demo</button>
+
+@*@if (Model != null)
+    {
+        @Html.Raw(Model.New_Content)
+    }*@
+
+
+@section scripts{
+
+
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        $(function () {
+            $('#demo').click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("BlogDemo", "Member")',
+                    data: { id:5162},
+                    success: function (data) {
+                        CKEDITOR.instances['New_Content'].setData(data)
+                        $('#New_Title').val('RAW - 超難訂餐廳!!')
+                    }
+                })
+
+
+            })
+        })
+
+        var editor1 = CKEDITOR.replace('New_Content',
+            {
+                height: '600px',
+
+            });
+        ////var s =
+        //$("#cke_New_Content").addClass("1234");
+        //    $(".1234").closest("#textarea").css("height", "1000px");
+        ////console.log(s);
+
+        $('#button').click(function () {
+            if ($('#New_Title').val() != null && $('#New_Title').val() != "") {
+                //alert(editor1.getData());
+                document.getElementById("New_Content").value = editor1.getData();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("BlogWrite","Home")',
+                    data: $('#MyForm').serialize(),
+                    success: function (data) {
+                        notice.server.send();
+                        location.href = '@Url.Action("BlogSreach","Member")';
+                    }
+                })
+
+            }
+            else {
+                alert("請輸入標題");
+            }
+        })
+        $(document)
+
+        $('#button').click(function () {
+            alert('撰寫完成!! 賺取134Pt!')
+        })
+
+    </script>
+
+}@section styles{
+    <style>
+        .X1 img {
+            opacity: 1 !important;
+        }
+        #cke_1_contents {
+            height: 600px !important;
+        }
+    </style>
+}
+

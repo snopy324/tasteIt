@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Azure_0517.Models.News>
+
+@*====================================搜尋==================================================*@
+@*<section class="search-sec">
+    <div class="container">
+        <form action="#" method="post" novalidate="novalidate" id="MyForm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <input type="text" class="form-control search-slt" placeholder="請輸入餐廳名稱" name="BlogResturant" id="SearchRestaurant">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <select name="BlogYear" class="form-control search-slt" id="SearchYears">
+                                <option>請選擇年份</option>
+                                @foreach (var year in Model.Select(L => L.New_CreateDate.Value.Year).Distinct())
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <select name="BlogMonth"  class="form-control search-slt" id="SearchMonth">
+                                <option>請選擇月份</option>
+                                @foreach (var year in Model.Select(L => L.New_CreateDate.Value.Month).Distinct())
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <button type="button" class="btn btn-danger wrn-btn" id="search_button">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @@Html.Hidden("New_CreateDate", null, new { id = "New_CreateDate" })
+        @*</form>*@
+@*</div>
+    </section>*@
+@*=================================食記(未做摺疊)=================================*@
+<div>
+    <h2 style="background-color:#B4A582;height:5px;margin:0;padding:0"></h2>
+    @foreach (var news in Model)
+    {
+        <div class="row" style="padding-left:1rem;padding-right:1rem">
+            @*<div class="col-4" style="background-color:darkorange;border-bottom-left-radius:15px;border-top-left-radius:15px;">
+                    <p style="text-align:center">施工中</p>
+                </div>*@
+            <div class="col-11" style="background-color:#DAC9A6;text-align:left;">
+
+                <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id" style="margin-top:10px" title="前往食記"><h3 style="margin-top:10px">@Html.DisplayFor(n => news.New_Title)</h3></a>
+                <div style="background-color: #B4A582;height:5px;padding:0;margin:0;height:5px"></div>
+                <a href="~/Restaurant/RestaurantHomePage/@news.New_RestaurantID" title="前往餐廳" style="display:inline;"><h4 style="display:inline">@Html.DisplayFor(n => news.Restaurant.Res_Name)</h4></a>
+
+                @*<div class="myimg">@Html.Raw(news.New_Content)</div>*@
+                <div class="row blogimg">
+                    @for (int i = 0; i <= news.GetImg.Count - 1 && i <= 3; i++) 
+                    {
+                        if (news.GetImg[i] != null)
+                        {
+                            <div class="col-3">@Html.Raw(news.GetImg[i])</div>
+                        }
+                    }
+                    @*<div class="col-3">@Html.Raw(news.GetImg[1])</div><div class="col-3">@Html.Raw(news.GetImg[2])</div><div class="col-3">@Html.Raw(news.GetImg[3])</div>*@
+                </div>
+            </div>
+            <div class="col-1" style="padding:0;background-color:#DAC9A6">
+                @*@Html.ActionLink("○", "DeleteNews_Member", "Member", new { id = news.New_ID }, new { @class = "yes btn btn-danger " })*@
+                <div class="blogup-btn">
+                    <a href="~/Member/BlogUpdate/@news.New_ID" title="修改" data-hover="修改"><i class="fas fa-pen-alt" style="color:rgb(121, 161, 181)"></i></a>
+                </div>
+                <div class="blogdel-btn">
+                    <a data-hover="刪除" data-toggle="modal" data-target="#popup@(news.New_ID)" title="刪除"><i class="fas fa-trash-alt" style="color:rgb(160, 101, 101)"></i></a>
+                </div>
+                @*<a class="btn btn-danger button" href="#popup@(news.New_ID)" title="刪除"><i class="fas fa-trash-alt"></i></a>*@
+                <div class="bloggo-btn" style="position:absolute;bottom:0;">
+                    <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id" title="前往食記" data-hover="前往食記"><i class="fas fa-door-open fa-2x" style="color:aliceblue"></i></a>
+                </div>
+                @*==========================POPUP===========================================*@
+                <div class="modal fade" id="popup@(news.New_ID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">警告</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                確定要刪除食記嗎?
+                            </div>
+
+                            <div class="content row" style="margin-bottom:10px;">
+                                <div class="col-1"></div>
+                                <div class="col-5">
+                                    @Html.ActionLink("○", "DeleteNews_Member", "Member", new { id = news.New_ID }, new { @class = "yes btn btn-danger " })
+                                </div>
+                                <div class="col-5"><a class="btn btn-success delbutton" data-dismiss="modal">X</a></div>
+                                <div class="col-1"></div>
+                            </div>
+                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>*@
+
+                        </div>
+                    </div>
+                </div>
+                @*==========================POPUP===========================================*@
+
+            </div>
+        </div>
+        <h2 style="background-color: #B4A582;height:5px;"></h2>
+    }
+
+
+    <p>
+        @for (int i = 0; i <= ViewBag.PageCount - 1; i++)
+        {
+            <a href="#searchResult">@(i + 1)</a>
+        }
+    </p>
+</div>

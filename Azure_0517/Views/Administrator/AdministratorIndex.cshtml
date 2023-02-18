@@ -1,0 +1,391 @@
+﻿
+@{
+    ViewBag.Title = "工作總表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <style>
+        .title {
+            text-align: center;
+            color: crimson;
+            margin: 3rem;
+            font-weight: bolder;
+            font-size: 28px;
+            font-weight: bolder;
+        }
+
+        .status {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .separation-line {
+            margin-bottom: 0.8px;
+        }
+
+        .divSubtitle {
+            background-color: mediumaquamarine;
+            position: relative;
+        }
+
+            .divSubtitle select {
+                height: 100%;
+                width: 4rem;
+                position: absolute;
+                right: 0px;
+                /*top: 10%;*/
+                background-color: mediumaquamarine;
+                font-size: 20px;
+                font-weight: bold;
+                color: #ef7171;
+                border-style: none;
+            }
+
+                .divSubtitle select:focus {
+                    outline: none !important;
+                }
+
+        .subtitle {
+            color: #e6ed52;
+            font-weight: bolder;
+            line-height: 50px;
+            font-size: 24px;
+            margin-bottom: 0px;
+        }
+
+        .chart1 {
+            height: auto;
+            display: inline-block;
+            float: left;
+            max-height:400px;
+        }
+
+        .chart2 {
+            height: auto;
+            display: inline-block;
+            border-left: 1px solid gray;
+            max-height: 400px;
+        }
+    </style>
+}
+
+    <h3 class="title">
+        <i class="fas fa-user-cog"></i>工作總表
+    </h3>
+
+
+<!-- Icon Cards-->
+<div class="row status">
+    <div class="col-xl-4 col-sm-6 mb-3">
+        <div class="card text-white bg-primary o-hidden h-100">
+            <div class="card-body">
+
+                <div class="mr-5">
+                    <i class="fas fa-fw fa-comments"></i>@ViewBag.NewQA 則新QA!
+                </div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1 newqa" style="cursor:pointer">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 mb-3">
+        <div class="card text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+
+                <div class="mr-5">
+                    <i class="fas fa-fw fa-list"></i>@ViewBag.NewProsecutions 則新檢舉!
+                </div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="@Url.Action("ProsecutionOverview", "Administrator")">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-6 mb-3">
+        <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+
+                <div class="mr-5">
+                    <i class="fas fa-fw fa-life-ring"></i>@ViewBag.NewCase 則新商案申請!
+                </div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="@Url.Action("BusinessCase", "Administrator")">
+                <span class="float-left">View Details</span>
+                <span class="float-right">
+                    <i class="fas fa-angle-right"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Icon Cards-->
+<hr class="separation-line" />
+<div class="text-center divSubtitle">
+    <span class="subtitle">報表分析</span>
+    <select id="selectchart">
+        <option value="member">會員</option>
+        <option value="restaurant">餐廳</option>
+    </select>
+</div>
+<div class="row mb-5">
+    <div id="chart1" class="col-6 pr-0 chart1"></div>
+    <div id="chart2" class="col-6 pl-0 chart2"></div>
+</div>
+
+@section scripts{
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <script>
+        function Member() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GenderPie", "Administrator")',
+            }).done(function (data) {
+                Highcharts.chart('chart1', {
+                    chart: {
+                        backgroundColor: 'beige',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: '會員性別比',
+                        style: {
+                            fontSize: '24px',
+                            color: '#b2800e'
+                        }
+                    },
+                    subtitle: {
+                        text: 'Source: TasteIt.com'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || '#42951d'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '比重',
+                        colorByPoint: true,
+                        data: [{
+                            name: '男性',
+                            y: data.Male
+                        }, {
+                            name: '女性',
+                            y: data.Female, color: '#e77777'
+                        }]
+                    }]
+                });
+                })
+            $.ajax({type: 'POST',
+                url: '@Url.Action("AgeArea", "Administrator")',
+            }).done(function (data) {
+                Highcharts.chart('chart2', {
+                    chart: {
+                        type: 'area',
+                        backgroundColor: 'beige'
+                    },
+                    title: {
+                        text: '會員年齡分布',
+                        style: {
+                            fontSize: '24px',
+                            color: '#b2800e'
+                        }
+                    },
+                    subtitle: {
+                        text: 'Source: TasteIt.com'
+                    },
+                    xAxis: {
+                        categories: ['15-25(歲)', '26-35(歲)', '36-45(歲)', '46-55(歲)', '56-65(歲)', '>65(歲)']
+                    },
+                    yAxis: {
+                        title: {
+                            text: '人數'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value + '(人)';
+                            }
+                        }
+                    },
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true
+                    },
+                    plotOptions: {
+                        spline: {
+                            marker: {
+                                radius: 4,
+                                lineColor: '#666666',
+                                lineWidth: 1
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '會員',
+                        marker: {
+                            symbol: 'square'
+                        },
+                        data: [
+                            { y: data.FifTwe },
+                            { y: data.TweThi },
+                            { y: data.ThiFou },
+                            { y: data.FouFif },
+                            { y: data.FifSix },
+                            { y: data.Elder}
+                        ],
+                        color:'#1bb14f'
+                    }]
+                });
+            })
+        }
+
+        function Restaurant() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("PricePie", "Administrator")',
+            }).done(function (data) {
+                Highcharts.chart('chart1', {
+                    chart: {
+                        backgroundColor: 'beige',
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: '餐廳均價比',
+                        style: {
+                            fontSize: '24px',
+                            color: '#b2800e'
+                        }
+                    },
+                    subtitle: {
+                        text: 'Source: TasteIt.com'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || '#42951d'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '比重',
+                        colorByPoint: true,
+                        data: [{
+                            name: '$200↓',
+                            y: data.Low, color: '#92e25f'
+                        }, {
+                            name: '$201-$500',
+                            y: data.Medium, color: '#f4e352'
+                        }, {
+                            name: '$501-$1000',
+                            y: data.Expensive, color: '#64c1e9'
+                        }, {
+                            name: '$1000↑',
+                            y: data.VeryExpensive, color: '#f67272'
+                        }
+                        ]
+                    }]
+                });
+                })
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("RestaurantColumn", "Administrator")',
+            }).done(function (data) {
+                var Names = []
+                var Qts = []
+                for (var i = 0; i < data.length; i++) {
+                    Names.push(data[i].name);
+                    Qts.push(data[i].count);
+                }
+
+                Highcharts.chart('chart2', {
+                    chart: {
+                        backgroundColor: 'beige',
+                        type: 'column'
+                    },
+                    title: {
+                        text: '餐廳地區分布',
+                        style: {
+                            fontSize: '24px',
+                            color: '#b2800e'
+                        }
+                    },
+                    subtitle: {
+                        text: 'Source: TasteIt.com'
+                    },
+                    xAxis: {
+                        categories: Names
+                    },
+                    yAxis: {
+                        title: {
+                            text: '數量(間)'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },
+                    series: [{
+                        name: '餐廳',
+                        data: Qts, color: '#9b2ddb'
+                    }]
+                });
+                })
+        }
+
+
+        $(document).ready(function(){
+            Member();
+        })
+
+        $('#selectchart').change(function(){
+            console.log($(this).val());
+            if ($(this).val() == 'member') {
+                Member();
+            }
+            else {
+                Restaurant();
+            }
+        })
+
+    </script>
+}

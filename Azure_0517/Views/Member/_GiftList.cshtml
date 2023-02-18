@@ -1,0 +1,142 @@
+﻿@model IPagedList<Azure_0517.Models.Gift>
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="subtitle">
+    <strong>清單中一共有 @Model.TotalItemCount 筆獎品</strong>
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-6 col-lg-3">
+            <div class="single-publication">
+                <figure data-date="@item.Gift_CreatedDate" data-adm="@item.Member.Mem_Name" data-content="@item.Gift_Content">
+                    <img id="@item.Gift_ID" data-num="@item.Gift_Quantity" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Gift_Picture)" />
+                    <ul>
+                        <li>
+                            <a class="info" title="獎品資訊" data-id="@item.Gift_ID" data-toggle="modal" data-target="#info-@item.Gift_ID"><i class="fa fa-search"></i></a>
+                        </li>
+                    </ul>
+                </figure>
+                <div class="publication-content">
+                    <h3 class="publication-content-name">@item.Gift_Name</h3>
+                    <div class="publication-content-pq">
+                        <h4 data-pt="@item.Gift_Point" class="price">@item.Gift_Point Pt </h4>
+                        <h4 data-count="@item.Gift_Quantity" class="price">剩餘數量:@item.Gift_Quantity 個</h4>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    @if (item.Gift_Quantity == 0)
+                    {
+                        <button id="add-@item.Gift_ID" data-toggle="modal" data-target="#tip-@item.Gift_ID" data-id="@item.Gift_ID" data-img="@item.Gift_Picture" data-name="@item.Gift_Name" data-count="@item.Gift_Quantity" class="default-btn LVM" disabled="disabled">尚無存貨</button>
+                    }
+                    else
+                    {
+                        <button id="add-@item.Gift_ID" data-toggle="modal" data-target="#tip-@item.Gift_ID" data-id="@item.Gift_ID" data-img="@item.Gift_Picture" data-name="@item.Gift_Name" data-count="@item.Gift_Quantity" class="default-btn LVM">加入購物車</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!--獎品資訊浮動視窗-->
+    <div class="modal fade giftInfo" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="infoName" class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <div id="infoImg"></div>
+                    <p id="infoPt"></p>
+                    <p id="infoCount"></p>
+                    <p id="infoDate"></p>
+                    <p id="infoAdm"></p>
+                    <p id="infoContent"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加入購物車提示視窗-->
+    <div class="modal addtip" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" style="outline:none">×</button>
+                <div class="modal-body" style="text-align:center">
+                    <div id="tipimg"></div>
+                    <strong><span id="tipname">{物品}</span></strong>
+                    <br />
+                    <br />
+                    <em><span>成功加入購物車！</span></em>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ul class="dropdown-divider"></ul>
+@*@Html.PagedListPager(Model, Page => Url.Action("GiftExchange", new { page = Page}), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "GiftList" }))*@
+
+<div class="pagination-container">
+    <ul class="pagination">
+        @if (!Model.IsFirstPage)
+        {
+            <li>
+                <button id="page-1" class="pagebtn" style="outline:none"><<</button>
+            </li>
+        }
+
+        @{
+            int count = 1;
+
+            if (Model.PageNumber >= 3)
+            {
+                var p2 = Model.PageNumber - 2;
+                <li>
+                    <button id="page-@p2" class="pagebtn" style="outline:none">@p2</button>
+                </li>
+                count++;
+            }
+            if (Model.PageNumber >= 2)
+            {
+                var p1 = Model.PageNumber - 1;
+                <li>
+                    <button id="page-@p1" class="pagebtn" style="outline:none">@p1</button>
+                </li>
+                count++;
+
+            }
+
+            <li>
+                <button id="page-@Model.PageNumber" class="pagebtn" style="outline:none">@Model.PageNumber</button>
+            </li>
+            count++;
+            var num = Model.PageNumber + 1;
+            for (int i = count; i <= 5; i++)
+            {
+                if (num <= Model.PageCount)
+                {
+                    <li>
+                        <button id="page-@num" class="pagebtn" style="outline:none">@num</button>
+                    </li>
+                    num++;
+                }
+            }
+
+        }
+
+        @if (!Model.IsLastPage)
+        {
+            <li>
+                <button id="page-@Model.PageCount" class="pagebtn" style="outline:none">>></button>
+            </li>
+        }
+    </ul>
+</div>

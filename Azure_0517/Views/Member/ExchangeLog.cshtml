@@ -1,0 +1,320 @@
+﻿@model IEnumerable<IGrouping<DateTime, Azure_0517.Models.ViewModel.CartViewModel>>
+
+@{
+    ViewBag.Title = "兌換紀錄";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section styles{
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<style>
+    .title {
+        text-align: center;
+        color: crimson;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bolder;
+    }
+
+    .header i {
+        color: #ff007d;
+        font-size: 50px;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    div .col th {
+        background-color: aliceblue;
+    }
+
+    div .col td {
+        max-width: 300px;
+        min-width: 90px;
+    }
+
+        div .col td img {
+            width: 100px;
+            height: 100px;
+        }
+
+    div .pagination-container {
+        text-align: center;
+    }
+
+    #GiftManagement .card-body {
+        background-color: linen;
+    }
+
+    /*================================================*/
+    .section {
+        margin-bottom: 5px;
+        border-bottom: 1px solid #eee;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6), inset 0px 1px 3px #fff;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+        .section:nth-child(2n+1) {
+            background-color: lemonchiffon;
+        }
+
+        .section:nth-child(2n) {
+            background-color: paleturquoise;
+        }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 5px;
+    }
+
+        .section-header button {
+            justify-content: flex-end;
+        }
+
+    .section-content {
+        margin-bottom: 10px;
+        display: none;
+        padding: 20px;
+        border: 1px solid #eee;
+        background: #f9f9f9;
+        width: 100%;
+        overflow: auto;
+    }
+
+    .section-title {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .toggle-btn {
+        color: #203898;
+        background: transparent;
+        border: 1px solid #d3d3d3;
+        padding: 8px 20px;
+        cursor: pointer;
+        text-align: center;
+        font-family: 微軟正黑體;
+        font-size: 16px;
+        line-height: 24px;
+        border-radius: 25px;
+        text-shadow: 0px 1px 0px #fff;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.6), inset 0px 1px 3px #fff;
+        -webkit-transition: all 0.1s ease-out;
+        -moz-transition: all 0.1s ease-out;
+        -o-transition: all 0.1s ease-out;
+        transition: all 0.1s ease-out;
+    }
+
+        /*.toggle-btn:active {
+                color: #fff;
+                text-shadow: 0px 1px 0px #aaa;
+                background: #ccc;
+                box-shadow: inset 0px 10px 15px rgba(0, 0, 0, 0.4), inset 0px -1px 3px rgba(0, 0, 0, 0.7);
+            }*/
+
+        .toggle-btn:before {
+            /*padding: 0px 3px;*/
+            content: '';
+            width: auto;
+        }
+
+        .toggle-btn:after {
+            /*padding: 0px 3px;*/
+            content: '';
+            width: auto;
+        }
+
+    .toggle-btn-expand {
+        background: transparent;
+        /*border: 2px solid #ff0000;*/
+        padding: 8px 20px;
+        cursor: pointer;
+        text-align: center;
+        font-family: Arial;
+        font-size: 16px;
+        line-height: 24px;
+        border-radius: 25px;
+        text-shadow: 0px 1px 0px #fff;
+        color: #ff0000;
+        font-weight: bolder;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.6), inset 3px 3px 3px rgba(0, 0, 0, 0.6),inset -1px -2px 2px rgba(0, 0, 0, 0.6);
+        -webkit-transition: all 0.1s ease-out;
+        -moz-transition: all 0.1s ease-out;
+        -o-transition: all 0.1s ease-out;
+        transition: all 0.1s ease-out;
+    }
+    /*================================================*/
+    .search-sec {
+        background: #1A4668;
+        padding: 2rem;
+        box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.6), inset 0px 1px 3px #fff;
+        margin-bottom: 10px;
+    }
+
+    .search-slt {
+        display: block;
+        width: 100%;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: #55595c;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        height: calc(3rem + 2px) !important;
+        border-radius: 0;
+        box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5) inset;
+    }
+
+        .search-slt:focus {
+            background-color: beige;
+            box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5) inset;
+        }
+
+        .search-slt:hover {
+            background-color: beige;
+        }
+
+    .sec-btn {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        height: calc(3rem + 2px) !important;
+        color: #fff;
+        border-radius: 3px;
+        box-shadow: -1px -3px 3px rgba(20%,20%,40%,0.5) inset;
+        border: 2px solid rgba(20%,20%,40%,0.5);
+    }
+
+        .sec-btn:active {
+            box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+        }
+
+    .date {
+        width: 45%;
+        height: calc(3rem + 2px) !important;
+        box-shadow: 1px 1px 3px rgba(20%,20%,40%,0.5) inset;
+    }
+</style>
+}
+
+
+<div class="container">
+    <div @*class="header"*@>
+        <h3 class="title">
+            <i class="fas fa-clipboard-list"></i>兌換紀錄
+        </h3>
+        <br />
+    </div>
+    <section class="search-sec">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                    <button id="expand" class="sec-btn" style="background-color:#d63131;"><i class="fas fa-sync-alt fa-spin"></i>展開全部</button>
+                </div>
+                <div class="col-lg-6 col-md-3 col-sm-12 p-0">
+                    <input type="date" class="date" id="date1" value="" />
+                    <span style="color:yellow;font-size:18px">至</span>
+                    <input type="date" class="date" id="date2" value="" />
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-12 p-0" id="sortdiv">
+                    <button type="button" class="sec-btn" id="sort_asc" style="background-color:#30c418;"><i class="fa fa-sort-up"></i>排序(降序)</button>
+                    <button type="button" class="sec-btn" id="sort_des" style="display:none;background-color:#4b98f8;"><i class="fa fa-sort-down"></i>排序(升序)</button>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-12 p-0">
+                    <button type="button" class="sec-btn" id="search_button" style="background-color:gold;color:black"><i class="fa fa-search"></i>搜尋</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="exchangeloglist">
+        @Html.Partial("_ExchangeLogList")
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        //展開.收合按鈕點選
+        $(document).on("click",'.toggle-section', function () {
+            $(this).text((e, text) => text === "收合" ? "展開" : "收合");
+            $(this).toggleClass('toggle-btn-expand');
+            $(`#${$(this).data("toggle-content")}`).stop().slideToggle();
+        })
+
+        //展開全部.收合全部按鈕點選
+        $(document).on('click', '#expand', function () {
+            if ($('#expand').text().slice(0, 2) == "收合") {
+                $('.toggle-btn-expand').each(function (i, element) {
+                    $(element).text("展開");
+                    $(element).toggleClass('toggle-btn-expand');
+                    $(`#${$(element).data("toggle-content")}`).stop().slideToggle();
+                })
+                $('#expand').text("展開全部");
+                $('#expand').prepend('<i class="fas fa-sync-alt fa-spin"></i>');
+            }
+            else {
+                $('.toggle-section').not('.toggle-btn-expand').each(function (i, element) {
+                    $(element).text("收合");
+                    $(element).toggleClass('toggle-btn-expand');
+                    $(`#${$(element).data("toggle-content")}`).stop().slideToggle();
+                })
+                $('#expand').text("收合全部");
+                $('#expand').prepend('<i class="fas fa-sync-alt fa-spin"></i>');
+            }
+        })
+
+        var sort = "";
+        var date1 = null;
+        var date2 = null;
+
+         var fetchList = function (sort, date1, date2) {
+            var PartialUrl = '@Url.Action("RefreshLog", "Member")'
+
+            $.post(PartialUrl, { sortOrder: sort, date1: date1, date2: date2 }, function (data){
+                $('#exchangeloglist').html(data);
+            })
+        };
+
+        //選取時間
+        $('.date').change(function () {
+            date1 = $('#date1').val();
+            date2 = $('#date2').val();
+        })
+
+        //排序按鈕點選
+        $(document).on('click', '#sortdiv .sec-btn', function () {
+            sort = sort == "" ? "date_asc" : "";
+            fetchList(sort, date1, date2);
+
+            //排序按鈕字樣改變
+            if (sort == "") {
+                $('#sort_des').hide();
+                $('#sort_asc').show();
+            }
+            else {
+                $('#sort_des').show();
+                $('#sort_asc').hide();
+            }
+
+            console.log("sort= " + sort);
+            console.log("date1= " + date1);
+            console.log("date2= " + date2);
+        });
+
+        //搜尋按鈕點選
+        $(document).on('click', '#search_button', function () {
+            if (date1 != null && date2 != null) {
+                fetchList(sort, date1, date2)
+            }
+            if(date1==""|| date1==null || date2 =="" || date2==null )
+            {
+                alert("請選擇日期")
+            }
+            console.log("sort= " + sort);
+            console.log("date1= " + date1);
+            console.log("date2= " + date2);
+        })
+    </script>
+}

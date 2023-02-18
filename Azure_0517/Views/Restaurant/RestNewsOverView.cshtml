@@ -1,0 +1,248 @@
+﻿@model IEnumerable<Azure_0517.Models.News>
+
+<div id="myblog">
+    <form id="MyForm">
+
+        <h2 style="background-color:#B4A582;height:5px;padding-bottom:0;margin-bottom:0;"></h2>
+        @foreach (var news in Model)
+        {
+            <div class="row" style="padding-left:1rem;padding-right:1rem">
+                @*<div class="col-4" style="background-color:darkorange;border-bottom-left-radius:15px;border-top-left-radius:15px;">
+                        <p style="text-align:center">施工中</p>
+                    </div>*@
+                <div class="col-11" style="background-color:#DAC9A6;text-align:left;">
+
+                    <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id" style="margin-top:10px" title="前往食記"><h3 style="margin-top:10px">@Html.DisplayFor(n => news.New_Title)</h3></a>
+                    <h2 style="background-color:#B4A582;height:5px;"></h2>
+                    <h4 style="display:inline">@Html.DisplayFor(n => news.Member.Mem_NickName)</h4>
+
+                    @*<div class="myimg">@Html.Raw(news.New_Content)</div>*@
+                    <div class="row blogimg">
+                        @for (int i = 0; i <= news.GetImg.Count - 1 && i <= 3; i++)
+                        {
+                            if (news.GetImg[i] != null)
+                            {
+                                <div class="col-3" style="margin:0;padding:2px;height:100%">@Html.Raw(news.GetImg[i])</div>
+                            }
+                        }
+                        @*<div class="col-3">@Html.Raw(news.GetImg[1])</div><div class="col-3">@Html.Raw(news.GetImg[2])</div><div class="col-3">@Html.Raw(news.GetImg[3])</div>*@
+                    </div>
+                </div>
+                <div class="col-1" style="padding:0;background-color:#DAC9A6">
+                    @*@Html.ActionLink("○", "DeleteNews_Member", "Member", new { id = news.New_ID }, new { @class = "yes btn btn-danger " })*@
+                    @if (news.New_MemberID != ViewBag.MemberID && ViewBag.Guest != "Guest")
+                    {
+                    <div class="rbv-btn">
+                        <a   data-hover="檢舉" title="檢舉" id="reportnews" name="report" data-reportid="@news.New_ID" style="width:100%;text-align:center;"><i class="fas fa-exclamation-circle"></i></a>
+                    </div>
+                    }
+                    @if (ViewBag.MemberID != null)
+                    {
+                        if (Request.Cookies["Role"].Value == "Member" && news.Reports.Where(q => q.Rep_Status == 2 && q.Rep_MemberID == ViewBag.MemberID).FirstOrDefault() == null && news.New_MemberID != ViewBag.MemberID)
+                        {
+                    <div class="rbv-btn">
+                        <a data-hover="收藏" title="收藏" id="mylove" name="report" data-mylove="@news.New_ID" style="width:100%;text-align:center;"><i class="fas fa-heart"></i></a>
+                    </div>
+                        }
+                        else if (Request.Cookies["Role"].Value == "Member" && news.Reports.Where(q => q.Rep_Status == 2 && q.Rep_MemberID == ViewBag.MemberID).FirstOrDefault() != null && news.New_MemberID != ViewBag.MemberID)
+                        {
+                    <div class="rbv-btn">
+                        <a data-hover="取消收藏"  title="取消收藏" id="unlove" name="report" data-unlove="@news.New_ID" style="width:100%;text-align:center;"><i class="fas fa-heart-broken"></i></a>
+                    </div>
+                        }
+                    }
+
+
+                    @Html.Hidden("Rep_Content", null, new { Rep_Content = "Rep_Content" })
+                    @Html.Hidden("Rep_NewsID", news.New_ID, null)
+                    
+                    <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id" style="position:absolute;bottom:0;width:100%;text-align:center;" title="前往食記" class="btn  button"><i class="fas fa-door-open fa-2x"></i></a>
+
+
+                </div>
+            </div>
+            <h2 style="background-color: #B4A582;height:5px;"></h2>
+        }
+    </form>
+</div>
+
+
+@section  scripts{
+    @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">*@
+    @*================================檢舉===========================================*@
+    @*<script>
+        //用on事件幫控制項加入方法
+        $(document).on('click', '#report', function () {
+            var Rep_Content = prompt("請輸入檢舉內容");
+            //if (Rep_Content != null && Rep_Content !="") {
+            //    $('#target').val(Rep_Content);
+            //    alert(Rep_Content);
+            //}
+            //else {
+            //    alert("取消檢舉");
+            //}
+            if (Rep_Content != null && Rep_Content != "") {
+                alert(Rep_Content);
+                document.getElementById("Rep_Content").value = Rep_Content;
+                document.getElementById("MyForm").submit();
+                alert("進入審核階段");
+            }
+            else {
+                alert("取消檢舉");
+            }
+        })
+
+    </script>*@
+}
+
+@section styles{
+    @*<style>
+        .blogimg {
+            height: 200px;
+        }
+
+            .blogimg > .col-3 {
+                padding: 2px;
+                margin: 0;
+                height: 100%;
+            }
+
+                .blogimg > .col-3 > img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+        .search-sec {
+            background: #1A4668;
+            padding: 2rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+            background-color: #ffc107
+        }
+
+        .yes {
+            font-weight: 900;
+            text-decoration: none;
+            color: aliceblue;
+            width: 90%;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        .myimg {
+            height: 50px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+            .myimg img {
+                width: 50% !important;
+                height: 50% !important;
+                opacity: 1.0 !important;
+            }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+        .popup {
+            margin: 70px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+            .popup h2 {
+                margin-top: 0;
+                color: #333;
+                font-family: Tahoma, Arial, sans-serif;
+            }
+
+            .popup .close {
+                position: absolute;
+                /*top: 20px;
+                right: 30px;*/
+                transition: all 200ms;
+                /*font-size: 20px;*/
+                font-weight: bold;
+                text-decoration: none;
+                color: aliceblue;
+                width: 90%;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+                .popup .close:hover {
+                    color: #06D85F;
+                }
+
+            .popup .content {
+                max-height: 30%;
+                overflow: auto;
+            }
+
+        .button {
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+            .button:hover {
+                background: #06D85F;
+            }
+
+        .pagebtn {
+            width: 50px;
+            height: 50px;
+            line-height: 25px;
+            border: 5px solid #d6bc45;
+            background-color: #f3e7a0;
+            border-radius: 40px; /* 高度 */
+            font-family: 'Sansita One', cursive;
+            box-shadow: 3px 5px 5px #ccc;
+        }
+
+            .pagebtn:hover {
+                background-color: gold;
+                color: white;
+            }
+    </style>*@
+}

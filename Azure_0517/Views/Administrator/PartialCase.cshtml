@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Azure_0517.Models.Report>
+
+<thead>
+    <tr>
+        <th width="6%">申請編號</th>
+        <th width="8%">@Html.DisplayNameFor(r => r.FirstOrDefault().Rep_CreatedDate)</th>
+        <th width="10%">申請人</th>
+        <th width="60%">商案需求</th>
+        <th width="8%">處理狀態</th>
+        <th width="4%">查看</th>
+        <th width="4%">編輯狀態</th>
+    </tr>
+</thead>
+<tbody>
+    @*為什麼不直接用導覽屬性就好，要用viewmodel?*@
+    @foreach (var report in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(r => report.Rep_ID)</td>
+            <td>@Html.DisplayFor(r => report.Rep_CreatedDate)</td>
+            <td>@Html.DisplayFor(r => report.Restaurant.Res_Name)</td>
+            <td>@Html.DisplayFor(c => report.Rep_Content)</td>
+            <td style="color:orangered">
+                @{
+                    if (report.Rep_SolvedDate.HasValue)
+                    {
+                        <span style="color:blue">已處理 </span>
+                    }
+                    else
+                    {
+                        <span>未處理</span>
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("商案撰寫", "BlogUpdate", "Member", new { id = report.Rep_NewsID }, new { @class = "btn btn-primary" })
+            </td>
+            <td>
+                @{
+                    if (report.Rep_SolvedDate.HasValue)
+                    {
+                        @Html.ActionLink("案件重開", "ProsecutionSolved", "Administrator", new { id = report.Rep_ID, Solved = false }, new { @class = "btn  btn-danger restart", data_id = report.Rep_ID })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("處理完成", "ProsecutionSolved", "Administrator", new { id = report.Rep_ID, Solved = true }, new { @class = "btn  btn-info finish", data_id = report.Rep_ID })
+                    }
+                }
+            </td>
+        </tr>
+    }
+</tbody>

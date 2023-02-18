@@ -1,0 +1,1829 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TasteIt</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/SuccessAnimation.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="~/Content/SearchBar.css" rel="stylesheet" />
+    <link href="~/Content/Sareicon.css" rel="stylesheet" />
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+
+    @RenderSection("styles", false)
+
+    <style>
+
+
+        .Nav_notice {
+            overflow: hidden;
+            max-width: 250px;
+            text-overflow: ellipsis;
+        }
+
+        .modal textarea {
+            resize: none;
+        }
+
+        nav .dropdown-menu {
+            padding: 1px;
+        }
+
+            nav .dropdown-menu .Nav_Notice_Item a {
+                text-decoration: none;
+                color: black;
+            }
+
+            nav .dropdown-menu .Nav_Notice_Item i {
+                position: relative;
+                right: 10px;
+                color: #dc6686;
+            }
+    </style>
+    <style>
+
+
+        * {
+            font-family: "微軟正黑體";
+        }
+
+        img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        h6.chu {
+            font-family: "微軟正黑體";
+        }
+
+        .chuu {
+            color: blue;
+        }
+
+        .forwhite {
+            color: white;
+        }
+
+        .forwhite2 {
+            color: white;
+            background-color: transparent;
+            text-align: center;
+        }
+
+        .chufornavfont {
+            /*這個選擇器別刪*/
+        }
+
+        .notice {
+            width: 18px;
+            height: 18px;
+            margin: 10px 10px 0 15px;
+            z-index: 1;
+        }
+
+            .notice:hover {
+                -webkit-filter: brightness(1.3);
+            }
+
+        .noticespan {
+            filter: alpha(Opacity=50);
+            margin-right: -12px;
+            z-index: 2;
+        }
+    </style>
+    <style>
+        /*Layout Sam CSS*/
+        nav .dropdown-item:hover {
+            background-color: #cff2b5;
+            color: #212529
+        }
+
+        .cart-ul {
+            width: 300%;
+        }
+
+        .cart-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            padding: 3px 10px;
+        }
+
+        .cart-item-img {
+            height: 40px;
+            width: 40px;
+        }
+
+        .cart-item-info {
+            display: flex;
+            width: 65%;
+        }
+
+        .cart-item-name {
+            line-height: 40px;
+            /*text-align: center;*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .cart-item-pay {
+            display: flex;
+            align-self: center;
+            margin-left: auto
+        }
+
+        .cart-item-point {
+            line-height: 30px;
+            text-align: center;
+            color: crimson;
+            /*margin-left: 10px*/
+        }
+
+        .cart-item-delete {
+            box-shadow: -1px -3px 3px rgba(20%,20%,40%,0.5) inset;
+            border-style: none;
+            cursor: pointer;
+            color: white !important;
+        }
+
+        .cart-bottom-li {
+            display: block;
+            width: 100%;
+            /*padding: 0.25rem 1.5rem;*/
+            padding-bottom: 0.5rem;
+            clear: both;
+            font-weight: 400;
+            color: #212529;
+            text-align: center;
+            white-space: nowrap;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .cart-go {
+            margin: auto 10px;
+            box-shadow: -1px -3px 3px rgba(20%,20%,40%,0.5) inset;
+            border-style: none;
+            color: white !important;
+        }
+
+        .cart-clear {
+            margin: auto 10px;
+            cursor: pointer;
+            box-shadow: -1px -3px 3px rgba(20%,20%,40%,0.5) inset;
+            border-style: none;
+            background-color: #4b98f8;
+            color: white !important;
+        }
+    </style>
+    @*------------------聊天室style----------------------*@
+    <style>
+        @@import url("https://fonts.googleapis.com/css?family=Karla");
+
+
+
+        ::selection {
+            background: #fd0;
+            color: #222;
+        }
+
+
+
+        .chat-box {
+            z-index: 9999;
+            position: relative;
+            width: 250px;
+            /*height: 300px;*/
+            background-color: #eee;
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+            border: 2px orange solid;
+            position: fixed;
+            bottom: 0px;
+            right: 150px;
+        }
+
+        .right-chat-box {
+            z-index: 9999;
+            position: relative;
+            width: 150px;
+            height: 35px;
+            background-color: #eee;
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+            border: 2px orange solid;
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        .chat-box header {
+            background-color: orange;
+            color: white;
+            display: flex;
+            padding: 0 16px;
+            opacity: 0.7;
+        }
+
+            .chat-box header > * {
+                line-height: 40px;
+            }
+
+            .chat-box header h1 {
+                margin: 0;
+                font-size: 1.1em;
+            }
+
+            .chat-box header .close-button {
+                cursor: pointer;
+                user-select: none;
+            }
+
+        .chat-box section {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: calc(100% - 40px - 40px);
+            padding: 12px;
+        }
+
+            .chat-box section div {
+                margin: 12px 0;
+            }
+
+        .right-chat-box section button {
+            width: 129px;
+            height: 100px;
+            border: none;
+            position: relative;
+            left: -10%;
+        }
+
+        .chat-box section span {
+            display: inline-block;
+            padding: 6px 8px;
+            margin: 1px 0;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+
+        .chat-box section div.me {
+            text-align: right;
+        }
+
+            .chat-box section div.me span {
+                background-color: #68c;
+                border-radius: 4px 16px 16px 4px;
+            }
+
+                .chat-box section div.me span:first-of-type {
+                    border-top-left-radius: 16px;
+                }
+
+                .chat-box section div.me span:last-of-type {
+                    border-bottom-left-radius: 16px;
+                }
+
+        .chat-box section div.not-me {
+            text-align: left;
+        }
+
+            .chat-box section div.not-me span {
+                background-color: #bcf;
+                border-radius: 16px 4px 4px 16px;
+            }
+
+                .chat-box section div.not-me span:first-of-type {
+                    border-top-right-radius: 16px;
+                }
+
+                .chat-box section div.not-me span:last-of-type {
+                    border-bottom-right-radius: 16px;
+                }
+
+        .chat-box footer input {
+            font-family: "Karla", sans-serif;
+            outline: 0;
+            padding: 0 12px;
+            height: 40px;
+            width: 100%;
+            font-size: 1em;
+        }
+
+        .ContactPerson {
+            font-size: 14px;
+            margin: 10px auto !important;
+            height: 75%;
+            position: relative;
+            left: 0;
+            top: 10%;
+        }
+
+            .ContactPerson > p {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+        .image {
+            height: 100%;
+            width: 80%;
+        }
+
+        #ChatButton {
+            display: block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            padding: 0 0 35px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: #01b169;
+            background-color: #faee00;
+            border: none;
+            border-radius: 112px;
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+            outline: none
+        }
+
+            #ChatButton img:first-child {
+                position: absolute;
+                bottom: 1px;
+                right: 1px;
+            }
+
+            #ChatButton i {
+                color: orange;
+                position: absolute;
+                bottom: 25px;
+                right: 25px;
+                opacity: 0;
+            }
+    </style>
+    @*------------------聊天室style----------------------*@
+</head>
+<body style="background-color: #EEE1DA ;overflow-x:hidden;overflow-y:auto;">
+    @*#F2F2F2*@
+    <img class="loading_gif" id="loading_gif" hidden src="~/tasteitlogo/Spinner-1s-200px.gif" />
+
+    <div>
+
+        <header>
+
+            <div class="row">
+
+                <img id="headerimage" class="col-lg-12 col-md-12 col-sm-12 col-xl-12" src="~/tasteitlogo/test5.png" width="1200" height="80" />
+
+
+            </div>
+
+            <nav id="nav0" class="navbar fixed-top navbar-expand-lg navbar-light" style="transition:1s;height:80px">
+                <a class="navbar-brand" href="~/Home/Index" style="height:80px">
+                    <img style="width:410px;height:180px;margin-left:-20px;" src="~/tasteitlogo/banner3-1.png" />
+                </a>
+
+                <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" @*style="margin-bottom:-60px"*@>
+                    <ul class="navbar-nav mr-auto" style="position:absolute; top:40px; left:380px;">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle chufornavfont" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="chuu" style="color:white">餐廳</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href='@Url.Action("advancedsearchtemplate", "Home")'>新創餐廳</a>
+                                <a class="dropdown-item" href='@Url.Action("advancedsearchtemplate", "Home")'>獨家推薦</a>
+                                <a class="dropdown-item" href='@Url.Action("DiscountSearching","Home")'>限期優惠</a>
+                                <div class="dropdown-divider"></div>
+                                @Html.ActionLink("中式料理", "advancedsearchtemplate", "Home", new { searchinput = "中式料理" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("日式料理", "advancedsearchtemplate", "Home", new { searchinput = "日式料理" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("法式料理", "advancedsearchtemplate", "Home", new { searchinput = "法式料理" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("美式料理", "advancedsearchtemplate", "Home", new { searchinput = "美式料理" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("泰式料理", "advancedsearchtemplate", "Home", new { searchinput = "泰式料理" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("義式料理", "advancedsearchtemplate", "Home", new { searchinput = "義式料理" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("韓式料理", "advancedsearchtemplate", "Home", new { searchinput = "韓式料理" }, new { @class = "dropdown-item" })
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle chufornavfont" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="chuu" style="color:white">飲食記</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="@Url.Action("NewsSearching","Home")">熱門文章</a>
+                                <a class="dropdown-item" href="@Url.Action("NewsSearching","Home")">嘗鮮資訊</a>
+                                <a class="dropdown-item" href="@Url.Action("NewsSearching","Home")">嘗鮮頭條</a>
+                            </div>
+                        </li>
+                        @if (Request.Cookies["Role"] != null)
+                        {
+                            if (Request.Cookies["Role"].Value == "Member")
+                            {
+                                <li class="nav-item dropdown">
+                                    <div id="Cart">
+                                        @Html.Partial("_CartPartial")
+                                    </div>
+                                </li>
+                                <li class="nav-item " style="margin:auto 3px">
+                                    <span class="forwhite2 myPoint">
+                                        <i class="fas fa-hand-holding-usd"></i> : @Azure_0517.Models._LoginInfo.GetRolePoint(Request) Pt
+                                    </span>
+                                </li>
+
+                            }
+                        }
+                        @*<li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle chufornavfont" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="chuu" style="color:white">商家合作</span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>*@
+                    </ul>
+                    <ul class="navbar-nav mr-auto" style="position:absolute;top:40px; right:10px;">
+
+
+                        @if (Request.Cookies["Role"] != null)
+                        {
+                            if (Request.Cookies["Role"].Value == "Member")
+                            {
+                                @*<li class="nav-item ">
+                                        <a class="nav-link  chufornavfont" href="@Url.Action("MemberIndex","Member")" id="navbarDropdown">
+                                            <span class="chuu" style="color:white">會員專區</span>
+                                        </a>
+                                    </li>*@
+                                @*<li class="nav-item dropdown">
+                                        <div id="Cart">
+                                            @Html.Partial("_CartPartial")
+                                        </div>
+                                    </li>*@
+
+                                <li>
+                                    @*---------------------------------------------------------------------------------------------------------*@
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <div style="display:inline-block" class="noticespan">
+                                            <span class="badge badge-danger noticespan"></span>
+                                        </div>
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/notification.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                        <div class="dropdown-menu" id="Nav_Notices">
+                                            <a class="dropdown-item" href="#">通知1</a>
+                                            <a class="dropdown-item" href="#">通知2</a>
+                                            <a class="dropdown-item" href="#">通知3</a>
+                                        </div>
+                                    </div>
+                                    @*---------------------------------------------------------------------------------------------------------*@
+
+
+
+                                </li>
+
+                                <li>
+
+                                    @*-----------------------------------*@
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <div style="display:inline-block" class="noticespan">
+                                            <span class="badge badge-danger noticespan"></span>
+                                        </div>
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/message.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                        <div class="dropdown-menu" id="Nav_Comments">
+
+                                        </div>
+                                    </div>
+                                    @*-----------------------------------*@
+
+                                </li>
+
+                                <li>
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/user1.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                        <div class="dropdown-menu">
+
+                                            <a class="dropdown-item" href="@Url.Action("SelfInfo", "Member",null)">
+                                                <h6 class="chu">個人資料</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("BookOverview", "Member")">
+                                                <h6 class="chu">訂位紀錄</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("BlogSreach", "Member")">
+                                                <h6 class="chu">我的食記</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("RestaurantInPocket", "Member")">
+                                                <h6 class="chu">我收藏的餐廳</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("BlogInPocket", "Member")">
+                                                <h6 class="chu">我收藏的食記</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("GiftExchange", "Member")">
+                                                <h6 class="chu">紅利兌換</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("exchangelog", "Member")">
+                                                <h6 class="chu">兌換紀錄</h6>
+                                            </a>
+                                            @*<a class="dropdown-item" href="@Url.Action("QAShow", "Member")">
+                                                    <h6 class="chu">我的問題</h6>
+                                                </a>*@
+                                            <a class="dropdown-item" href="@Url.Action("LogOut","Home",null)" onclick="ThirdPartyLogout()">
+                                                <h6 class="chu">登出</h6>
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+                                </li>
+                                <li><div><h6 id="navName" style="color:white;margin-top:10px;margin-left:-10px;">歡迎回來~ @Azure_0517.Models._LoginInfo.GetRoleName(Request)</h6></div></li>
+                            }
+
+
+
+                            else if (Request.Cookies["Role"].Value == "Restaurant")
+                            {
+                                @*<li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle chufornavfont" href="@Url.Action("RestaurantIndex","Restaurant")" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="chuu" style="color:white">餐廳專區</span>
+                                        </a>
+                                    </li>*@
+                                <li style="margin-right:15px">
+
+                                    <div style="display:inline-block" class="noticespan">
+                                        <span class="badge badge-danger noticespan">9+</span>
+                                    </div>
+                                    <img class="notice" src="~/tasteitlogo/notification.png" />
+
+
+                                </li>
+
+                                <li style="margin-right:15px">
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <div style="display:inline-block" class="noticespan">
+                                            <span class="badge badge-danger noticespan"></span>
+                                        </div>
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/message.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                        <div class="dropdown-menu" id="Nav_Comments">
+
+                                        </div>
+                                    </div>
+
+
+                                </li>
+
+                                <li style="margin-right:15px">
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/front-store.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:-5px" />
+                                        <div class="dropdown-menu" style="position:absolute;left:-40px;top:28px;">
+                                            @Html.ActionLink("餐廳主頁", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 0 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("商案申請", "BuyNews", "Restaurant", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("資料管理", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 2 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("標籤管理", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 3 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("新增照片", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 4 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("相片管理", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 5 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("優惠管理", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 6 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("訂位管理", "RestaurantHomePage", "Restaurant", new { id = Request.Cookies["Key"].Value, self = 7 }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("登出", "LogOut", "Home", null, new { @class = "dropdown-item" })
+                                        </div>
+                                    </div>
+
+                                </li>
+                                <li><div><h6 id="navName" style="color:white;margin-top:10px;margin-left:-25px;">@Azure_0517.Models._LoginInfo.GetRoleName(Request)</h6></div></li>
+                                @*<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @Html.ActionLink("餐廳管理", "RestaurantIndex", "Restaurant", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("我的主頁", "RestaurantHomePage", "Restaurant", new { id = Convert.ToInt32(Request.Cookies["Key"].Value) }, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("相片總覽", "PhotoOverview", "Restaurant", new { id = Convert.ToInt32(Request.Cookies["Key"].Value) }, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("食記總覽", "RestaurantBlogOverview", "Restaurant", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("評論總覽", "RestaurantCommentOverview", "Restaurant", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("優惠總覽", "DiscountOverview", "Restaurant", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("訂位總覽", "ReservationOverview", "Restaurant", null, new { @class = "dropdown-item" })
+
+                                    </div>*@
+
+                            }
+                            else if (Request.Cookies["Role"].Value == "Administrator")
+                            {
+                                @*<li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle chufornavfont" href="@Url.Action("AdministratorIndex","Administrator")" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="chuu" style="color:white">管理專區</span>
+                                        </a>
+                                    </li>*@
+                                <li style="margin-right:15px">
+
+                                    <div style="display:inline-block" class="noticespan">
+                                        <span class="badge badge-danger noticespan">9+</span>
+                                    </div>
+                                    <img class="notice" src="~/tasteitlogo/notification.png" />
+
+
+                                </li>
+
+                                <li>
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <div style="display:inline-block" class="noticespan">
+                                            <span class="badge badge-danger noticespan"></span>
+                                        </div>
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/message.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                        <div class="dropdown-menu" id="Nav_Comments">
+
+                                        </div>
+                                    </div>
+
+                                </li>
+
+                                <li style="margin-right:15px">
+                                    <div style="display:inline-block" class="noticespan">
+
+                                    </div>
+                                    <div style="display:inline-block;" class="btn-group">
+                                        <img class="notice dropdown-toggle" src="~/tasteitlogo/admin.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" width="45" />
+                                        <div class="dropdown-menu" style="position:absolute;left:-40px;top:28px;">
+
+                                            <a class="dropdown-item" href="@Url.Action("AdministratorIndex", "Administrator")">
+                                                <h6 class="chu">工作總表</h6>
+                                            </a>
+
+                                            @*<a class="dropdown-item" href="@Url.Action("AdmQAShow","Administrator")">
+            <h6 class="chu">訪客QA</h6>
+        </a>*@
+                                            <a class="dropdown-item" href="@Url.Action("ProsecutionOverview", "Administrator")">
+                                                <h6 class="chu">檢舉清單</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("MemberOverview","Administrator")">
+                                                <h6 class="chu">會員管理</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("RestaurantOverview","Administrator")">
+                                                <h6 class="chu">餐廳管理</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("GiftOverview", "Administrator")">
+                                                <h6 class="chu">紅利商品管理</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("BusinessCase","Administrator",null)">
+                                                <h6 class="chu">商案申請清單</h6>
+                                            </a>
+                                            <a class="dropdown-item" href="@Url.Action("LogOut","Home",null)">
+                                                <h6 class="chu">登出</h6>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </li>
+                                <li><div><h6 id="navName" style="color:white;margin-top:10px;margin-left:-25px;">管理員</h6></div></li>
+                                @*<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @Html.ActionLink("管理台", "AdministratorIndex", "Administrator", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("QA系統", "AdmQAShow", "Administrator", new { id = "ROUTE" }, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("獎品管理", "GiftOverview", "Administrator", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("會員管理", "MemberOverview", "Administrator", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("餐廳管理", "RestaurantOverview", "Administrator", null, new { @class = "dropdown-item" })
+                                    </div>*@
+
+                            }
+                        }
+
+                    </ul>
+
+                    <div style="position:absolute;top:5px;right:10px;">
+                        <form id="searchform" action="~/Home/advancedsearchtemplate" method="get" class="form-inline my-2 my-lg-0">
+                            <div>
+                                <input id="searchinput" name="searchinput" type="text" size="40" placeholder="Search..." />
+                                @*<input id="searchinput" name="searchinput" class="form-control mr-sm-2" type="search" placeholder="請輸入關鍵字" aria-label="Search">*@
+                                @*<button id="searchbtn_1" class="btn btn-outline-warning my-2 my-sm-0 mr-1" type="submit">搜尋</button>*@
+
+                            </div>
+                            <a style="margin-left:5px; background-color:transparent; color:orange;" title="等等要吃啥!?" id="searchbtn_3" href='@Url.Action("GoogleMap","Home")'><i class="fas fa-utensils fa-2x"></i></a>
+                        </form>
+                    </div>
+
+
+                    @if (Request.Cookies["Role"] == null)
+                    {
+                        <div class="" style="position:absolute; top:40px;right:10px;background-color:transparent;">
+                            <img style="background-color:transparent;" id="loginbtn" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="~/tasteitlogo/user1.png" />
+                            <div class="dropdown-menu" style="position:relative; left:25%; top:38px;">
+                                <a class="dropdown-item" href="~/Home/MemberLogin">
+                                    <h6 class="chu">會員登入</h6>
+                                </a>
+                                <a class="dropdown-item" href="~/Home/RestaurantLogin">
+                                    <h6 class="chu">商家登入</h6>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </nav>
+        </header>
+        <article>
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xl-10">
+                    @RenderBody()
+
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
+                </div>
+            </div>
+        </article>
+        <footer>
+            <div class="row">
+                @*<img id="footerimage" class="col-lg-12 col-md-12 col-sm-12 col-xl-12" style="height:300px" src="~/食物照片/餐廳照片/R15.png" />*@
+            </div>
+            <div class="container-fluid">
+                <div class="row" style="background-color:#212121">
+                    <div class="col-md-8" style="border-bottom:1px solid white;">
+                        <div class="media pt-3 pb-3">
+                            <img src="~/tasteitlogo/logo.png" class="align-self-start mr-3" alt="..." style="height:250px;width:250px">
+                            <div class="media-body" style="width:800px">
+
+                                <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                                    <h5 class="mt-0 forwhite d-inline-flex" style="">關於我們</h5>
+                                    <div class="d-inline-flex" style="margin-left:auto">
+                                        <div class="line-it-button" data-lang="zh_Hant" data-type="share-c" data-ver="3" data-url='@Url.Action("Index","Home")' data-color="default" data-size="small" data-count="false" style="display: none;"></div>
+                                        <a style="position:relative;left:2px;" class="share__button share__button--fb" title="可將此頁面的資訊分享至Facebook。" href=""><i class="fab fa-facebook-f"></i></a>
+                                        <a style="position:relative;" class="share__button share__button--tw" title="可將此頁面的資訊分享至Twitter。" href=""><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                                <p class="forwhite" style="font-weight:600">Eat&nbsp;&nbsp;x&nbsp;&nbsp;Share&nbsp;&nbsp;x&nbsp;&nbsp;Discount</p>
+                                <p class="forwhite">身為一名專業的吃貨，在到處吃透透之餘，也想和大家分享品嚐食物的感想，如果還能因此得到折扣，那就太棒了（︿ω︿）</p>
+                                <p class="forwhite">於是—Taste It誕生了！</p>
+                                <p class="forwhite">Taste It致力於打造一個方便美食同好們與餐廳商家交流的平台，會員能夠分享食記與評論並得到各式優惠；而商家能夠透過平台行銷自己，提高曝光率，透過會員評論也能即時修正餐廳經營策略，達到雙贏局面。</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+
+
+                    <div class="col-md-4" style="border-bottom:1px solid white;">
+                        <div class="list-group pt-5 pb-5">
+                            <a href="@Url.Action("MemberRegeist","Home")" class="list-group-item list-group-item-action forwhite2">加入會員</a>
+                            <a href="@Url.Action("RestaurantRegeist","Home")" class="list-group-item list-group-item-action forwhite2">商家登錄</a>
+                            <a href="@Url.Action("NewsSearching","Home")" class="list-group-item list-group-item-action forwhite2">查詢食記</a>
+                            <a href="@Url.Action("advancedsearchtemplate","Home")" class="list-group-item list-group-item-action forwhite2">搜尋餐廳</a>
+                            @if (Request.Cookies["Role"] != null && (Request.Cookies["Role"].Value == "Restaurant" || Request.Cookies["Role"].Value == "Member"))
+                            {
+                                @Html.ActionLink("線上客服", "QAShow", "Member", new { AdmID = 3 }, new { @class = "list-group-item list-group-item-action forwhite2 AdmQA", data_id = 3 })
+                            }
+                        </div>
+                    </div>
+                    <div class="container">
+                        <p class="forwhite2">
+                            <span class="forwhite mb-5 ml-5">公司地址:台北市復興南路11段13號</span>
+                            <span class="forwhite mb-5 ml-5">聯絡電話:02-3324-7762</span>
+                            <span class="forwhite mb-5  ml-5">E-Mail:msit121@gmail.com</span>
+                        </p>
+                        <p class="text-center"><span class="forwhite mb-5">TASTE IT|版權所有，侵權必究</span></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    @*=================================Popup========================================*@
+    <div class="modal fade" id="popupM" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">會員登入</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="LoginForm">
+                        <div class="container">
+
+                            <div class="login-form">
+                                <div class="main-div">
+
+                                    <label>Hi~今天過得好嗎?</label>
+
+
+                                    @*fb login*@
+                                    <div id="fb-root" style="margin:10px auto"></div>
+                                    <div style="margin:10px auto" class="fb-login-button" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="true" scope="public_profile,email"
+                                         onlogin="checkLoginState();"></div>
+
+                                    <div id="status">
+                                    </div>
+                                    @*fb login*@
+
+                                    <form role="form" id="Login" action="~/Home/MemberLogin" method="post">
+                                        <div class="form-group">
+
+                                            <input type="text" class="form-control" id="username" name="username" placeholder="帳號">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="密碼">
+                                        </div>
+                                        <div class="form-group check">
+                                            <input type="checkbox" name="remember" id="remember" />
+                                            <label>記住我</label>
+                                        </div>
+
+                                        <div class="forgot">
+                                            <span>還不是會員?</span>
+                                            <a href="@Url.Action("MemberRegeist","Home")">點我註冊</a>
+                                        </div>
+
+                                        <div class="forgot">
+                                            <a href="@Url.Action("MemberForget","Home")">忘記密碼</a>
+                                        </div>
+                                        <button type="submit" id="Mlogin" class="btn btn-primary">登入</button>
+                                        <button type="button" id="Mlogin_demo" class="btn btn-info">會員A</button>
+
+                                    </form>
+
+                                    @ViewBag.message
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="popupR" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">商家登入</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="LoginForm">
+                        <div class="container">
+
+                            <div class="login-form">
+                                <div class="main-div">
+                                    <form role="form" id="Login" action="~/Home/RestaurantLogin" method="post">
+                                        <div class="form-group">
+
+                                            <input type="text" class="form-control" id="username" name="username" placeholder="帳號">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="密碼">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" name="remember" id="remember" class="check" />
+                                            <label class="check">記住我</label>
+                                            <a href="@Url.Action("RestaurantForget","Home")" class="forgot">忘記密碼</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <span>想增加餐廳曝光度? </span>
+                                            <a href="@Url.Action("RestaurantRegeist","Home")">點我註冊</a>
+                                        </div>
+
+                                        <button type="submit" id="Rlogin" class="btn btn-primary">登入</button>
+                                    </form>
+
+                                    @ViewBag.message
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @*==============================================================================*@
+    @*===== Success Animation (pure CSS) =====*@
+    <div class="modal fade" id="successAnimationdiv" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <svg id="successAnimation" class="animated" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70">
+                            <path id="successAnimationResult" fill="#ff6a00" d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z" />
+                            <circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#ff6a00" stroke-width="2" stroke-linecap="round" fill="transparent" />
+                            <polyline id="successAnimationCheck" stroke="#ff6a00" stroke-width="2" points="23 34 34 43 47 27" fill="transparent" />
+                        </svg>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <p style="color:#ff6a00;">成功</p>
+                    </div>
+                    <div class="apply-btn" style="color:#fff;background-color:#ff6a00;">OK</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @*===== Success Animation (pure CSS) =====*@
+
+
+    @*=================================聊天室主體========================================*@
+    @if (Request.Cookies["Role"] != null)
+    {
+
+        <div id="chatbox" style="display:  none;" class="chat-box">
+            <header id="header">
+                <h1></h1>
+                <span style="flex:1"></span>
+                <span id="close" class="close-button">Ⅹ</span>
+            </header>
+            <section id="message-list"></section>
+            <footer>
+                <input id="message-input" autocomplete="off" type="text" placeholder="Type a message...">
+            </footer>
+        </div>
+        <div id="right-chatbox" style="display: none;" class="chat-box right-chat-box Admchatbox">
+            <header id="right-header">
+                <h1>聯絡人</h1>
+                <span style="flex:1"></span>
+                <span id="right-close" class="close-button"></span>
+            </header>
+            <section id="right-message-list"></section>
+
+        </div>
+        <button id="ChatButton" style="z-index:2">
+            <span>
+
+                <img src="~/favicon.ico" />
+                <i class="fas fa-utensils fa-2x"></i>
+            </span>
+        </button>
+    }
+
+    @*=================================聊天室主體========================================*@
+
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.cookie-1.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    @RenderSection("scripts", false)
+
+    @*===== 勾勾動畫 =====*@
+    <script>
+
+        var animation = document.getElementById('successAnimation');
+        var animationdiv = $('#successAnimationdiv');
+        var successAnimationResult = $('#successAnimationResult');
+        var successAnimationCircle = $('#successAnimationCircle');
+        var successAnimationCheck = $('#successAnimationCheck');
+        var successAnimationP = $(animationdiv).find('p');
+        var successAnimationbtn = $(animationdiv).find('.apply-btn').first();
+        console.log(successAnimationbtn)
+        function SuccessAnimation(content, color, btnColor) {
+            if (content === 'undefine') {
+                content = '成功';
+            }
+            if (color === 'undefine') {
+                color = '#ff6a00';
+            }
+            if (btnColor === 'undefine') {
+                btnColor = '#fff';
+            }
+
+            $(animationdiv).find('p').text(content)
+            $(successAnimationResult).attr('fill', color)
+            $(successAnimationCircle).attr('stroke', color)
+            $(successAnimationCheck).attr('stroke', color)
+            $(successAnimationP).css('color', color)
+            $(successAnimationbtn).css('background-color', color)
+            $(successAnimationbtn).css('color', btnColor)
+
+            $(animationdiv).modal('show');
+            animation.classList.remove('animated');
+            void animation.parentNode.offsetWidth;
+            animation.classList.add('animated');
+        }
+        $('.apply-btn').click(function () {
+            $(animationdiv).modal('hide');
+        })
+
+
+    </script>
+    @*===== 勾勾動畫 =====*@
+
+
+    @*===== 滾輪動畫 =====*@
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $("#nav0").css("background-color", "transparent");
+            $(".nav-link").css("color", "#ffffff");
+            $("#nav0").css("border-bottom", "1px hidden black")
+            $(".chuu").css("color", "#ffffff")
+        });
+
+        $(window).scroll(function () {
+            var pageheight = $("body").height();
+            var scrolltop = $(this).scrollTop();
+            var windowheight = $(window).height();
+            var scrollpercent = Math.round((scrolltop / (pageheight - windowheight)) * 100);
+            alert
+            //this.console.log("pageheight:" + pageheight + "    scrolltop:" + scrolltop + "    windowheight:" + windowheight + "    scrollpercent:" + scrollpercent);
+            if (scrollpercent > 0.8) {
+                var x = $("body").css("background-color");
+                $("#nav0").css("background-color", String(x));
+                $(".nav-link").css("color", "#000000");
+                $("#cartword").css("color", "#000000");
+                $("#nav0").css("border-bottom", "1px solid black");
+                $(".chuu").css("color", "#000000");
+
+                $("#loginbtn").addClass("btn-success").removeClass("btn-outline-success")
+
+                $("#searchinput").css("border", "1px solid black")
+                $('#navName').css('color', 'black')
+                $(".myPoint").css("color", "#000000");
+            } else {
+                $("#nav0").css("background-color", "transparent");
+                $(".nav-link").css("color", "#ffffff");
+                $("#cartword").css("color", "#ffffff");
+                $("#nav0").css("border-bottom", "1px hidden black")
+                $(".chuu").css("color", "#ffffff")
+                $('#navName').css('color', 'white')
+
+                $("#loginbtn").addClass("btn-outline-success").removeClass("btn-success")
+                $(".myPoint").css("color", "#ffffff");
+                $("#searchinput").css("border", "hidden")
+
+            }
+        });
+
+        $('.loading_gif').hide();
+
+    </script>
+    @*===== 滾輪動畫 =====*@
+    @*------------------------------------------------------------------ ShoppingCart ------------------------------------------------------------------*@
+    <script>
+    //刪除購物車項目
+        function RemoveFromCart(GiftDet_GiftID) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteCartItem","Member")',
+                data: { id: GiftDet_GiftID}
+            }).done(function (data) {
+                if ($(`#gift-${GiftDet_GiftID}`).data('count') == $(`#${GiftDet_GiftID}`).data('num')) {
+                    $(`#add-${GiftDet_GiftID}`).attr('disabled', false).text("加入購物車");
+                }
+                $(`tr[data-id=${GiftDet_GiftID}]`).contents().remove();
+                $('#Cart').html(data);
+                $(window).scroll();
+                $('#total').text($('#icon-cart').data('sum'));
+                })
+        }
+        //清空購物車項目
+        function ClearCart() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ClearCart", "Member")'
+            }).done(function (data) {
+                $('li[data-count]').each(function (i, element) {
+                    var id = $(element).attr('id').slice(-1);
+                    if ($(`button[data-id=${id}]`).text() == "尚無存貨") {
+                        $(`button[data-id=${id}]`).attr('disabled', false).text("加入購物車");
+                    }
+                })
+                $("tr[data-id]").contents().remove();
+                $('#Cart').html(data);
+                $(window).scroll();
+                $('#total').text($('#icon-cart').data('sum'));
+                if ($('#total').text() == "0") {
+                    alert('購物車已無獎品,前往兌換清單');
+                    location.href = '@Url.Action("GiftExchange","Member")';
+                }
+                })
+        }
+    </script>
+    @*------------------------------------------------------------------ ShoppingCart ------------------------------------------------------------------*@
+
+
+    @*------------------------------------------------------------------ signalR ------------------------------------------------------------------*@
+    <script>
+
+        notice = $.connection.signalRHub;
+
+
+           //-------------QANotice--------------------------------------------------------------
+        function LoadQAComments() {
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("QACommentsCount", "Home")',
+                dataType: 'JSON',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (data) {
+
+                    var docFrag = $(document.createDocumentFragment())
+                    var count = '';
+
+                    $.each(data, function (key, value) {
+                        var SolvedDate = value.QA_AnswerdDate
+                        var content = value.QA_Content
+                        var MemID = value.QA_MemberID
+                        var ResID = value.QA_RestaurantID
+                        var AdmID = value.QA_AdministratorID
+                        var ResName = value.Res_Name
+                        var MebName = value.Meb_Name
+                        var role=value.role
+                        if (role == "Member") {
+                            //身分為Member
+                            if (AdmID != null) {
+                                var tmp = $('<a/>').addClass('Nav_notice').addClass('dropdown-item').addClass('AdmQA').text("管理員:" + content).attr('title', content).attr('MemID', MemID).attr('data-id', AdmID)
+                                    .attr('id', value['QA_ID'])
+                            }
+                            else if (ResID != null) {
+                                var tmp = $('<a/>').addClass('Nav_notice').addClass('dropdown-item').addClass('ResQA').text(ResName + ":" + content).attr('title', content).attr('data-id', ResID).attr('AdmID', AdmID)
+                                    .attr('id', value['QA_ID'])
+                            }
+
+                            if (value['QA_AdministratorID'] != null) {
+                                tmp.attr('href', `@Url.Action("QAShow", "Member")?AdmID=${AdmID}`)
+                            }
+                            else if (value['QA_RestaurantID'] != null) {
+                                tmp.attr('href', `@Url.Action("QAShow", "Member")?ResID=${ResID}`)
+                            }
+
+                        }
+                        else if (role == "Restaurant") {
+                            //身分為Restaurant
+                            if (AdmID != null) {
+                                var tmp = $('<a/>').addClass('Nav_notice').addClass('dropdown-item').addClass('AdmQA').text("管理員:" + content).attr('title', content).attr('ResID', ResID).attr('data-id', AdmID)
+                                    .attr('id', value['QA_ID'])
+                            }
+                            else if (MemID != null) {
+                                var tmp = $('<a/>').addClass('Nav_notice').addClass('dropdown-item').addClass('MemQA').text(MebName + ":" + content).attr('title', content).attr('data-id', MemID).attr('AdmID', AdmID)
+                                    .attr('id', value['QA_ID'])
+                            }
+
+                            if (value['QA_AdministratorID'] != null) {
+                                tmp.attr('href', `@Url.Action("ResQAShow", "Restaurant")?AdmID=${AdmID}`)
+                            }
+                            else if (value['QA_MemberID'] != null) {
+                                tmp.attr('href', `@Url.Action("ResQAShow", "Restaurant")?MemID=${MemID}`)
+                            }
+                        }
+                        else if (role == "Administrator") {
+                            //身分為Administrator
+                            if (ResID != null) {
+                                var tmp = $('<a/>').addClass('Nav_notice').addClass('dropdown-item').addClass('ResQA').text(ResName + ":" + content).attr('title', content).attr('data-id', ResID).attr('AdmID', AdmID)
+                                    .attr('id', value['QA_ID'])
+                            }
+                            else if (MemID != null) {
+                                var tmp = $('<a/>').addClass('Nav_notice').addClass('dropdown-item').addClass('MemQA').text(MebName + ":" + content).attr('title', content).attr('data-id', MemID).attr('AdmID', AdmID)
+                                    .attr('id', value['QA_ID'])
+                            }
+
+                            if (value['QA_MemberID'] != null) {
+                                tmp.attr('href', `@Url.Action("AdmQAShow", "Administrator")?QA_MemberID=${MemID}`)
+                            }
+                            else if (value['QA_RestaurantID'] != null) {
+                                tmp.attr('href', `@Url.Action("AdmQAShow", "Administrator")?QA_RestaurantID=${ResID}`)
+                            }
+                        }
+
+
+
+
+                        if (!SolvedDate) {
+                            count++;
+                            tmp.css('background-color', 'skyblue')
+                        }
+
+                        docFrag.append(tmp)
+                    })
+
+
+
+                    $('#Nav_Comments').html(docFrag);
+                    $('#Nav_Comments').parent('div').find('span').text(count)
+                }
+             })
+
+        }
+        $(function () {
+            notice.client.messageLoad = function () {
+                LoadQAComments();
+            }
+        })
+        $(document).on('click', '#Nav_Comments a', function () {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("QANoticeRead", "Home")',
+                data: { QA_ID: $(this).attr('id') },
+                success: LoadNotice,
+            })
+        })
+        $(document).ready(function () {
+
+            LoadQAComments();
+
+        });
+        //-------------QANotice--------------------------------------------------------------
+
+
+        function LoadNotice() {
+             $.ajax({
+                    type:   'GET',
+                    url:    '@Url.Action("NavNoticeCount", "Home")',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function (data) {
+                        var docFrag = $(document.createDocumentFragment())
+                        var count = '';
+                        $.each(data, function (key, value) {
+                            var SolvedDate = value['Rep_SolvedDate']
+                            var content = value['Rep_Content']
+                            var rest = value['Rep_RestaurantID']
+                            var inline = $('<div/>')
+                            var marker = $('<i style="opacity:0" class="fas fa-exclamation"></i>')
+                                .css('display', 'inline')
+                            var tmp = $('<a/>')
+                                .text(content)
+                                .attr('title', content)
+                                .attr('id', value['Rep_ID'])
+                                .css('display', 'inline')
+                            if (value['Rep_AccuseTypeID'] == 9) {
+                                tmp.attr('href', `@Url.Action("BookOverview", "Member")#Block_${content.split(' ')[1]}`)
+                            }
+                            else if (value['Rep_AccuseTypeID'] == 10) {
+								tmp.attr('href', `@Url.Action("RestaurantHomePage", "Restaurant",new { id = "" })/${rest}`)
+								}
+							else if (value['Rep_AccuseTypeID'] == 11) {
+                                tmp.attr('href', `@Url.Action("BusinessCase", "Administrator")`)
+                            }
+                            var inline = $('<div/>').append(marker, tmp)
+                                .mouseenter(function () {
+                                    $(this).css('opacity', '0.8')
+                                })
+                                .mouseleave(function () {
+                                    $(this).css('opacity', '1')
+                                }).addClass('Nav_notice')
+                                .addClass('dropdown-item')
+
+                            if (!SolvedDate) {
+                                count++;
+                                marker.css('opacity', 1).css('padding','auto')
+                                inline.css('background-color', 'skyblue')
+                            }
+
+                            docFrag.append(inline.addClass('Nav_Notice_Item'))
+                        })
+
+
+
+
+                        $('#Nav_Notices').html(docFrag);
+                        $('#Nav_Notices').parent('div').find('span').text(count)
+                    }
+                })
+        }
+
+        $(function () {
+            notice.client.noticeLoad =function () {
+                LoadNotice();
+
+            };
+
+            $.connection.hub.start().done(function () {
+                if (!(typeof NoticeFuntion === 'undefined')) {
+                    NoticeFuntion();
+                }
+            });
+        });
+
+        $(document).on('click', 'nav .dropdown-menu .Nav_Notice_Item a', function () {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("NavNoticeRead", "Home")',
+                data: { Rep_id : $(this).attr('id') },
+                success: LoadNotice,
+            })
+        })
+
+
+        LoadNotice();
+    </script>
+    @*------------------------------------------------------------------ signalR ------------------------------------------------------------------*@
+
+    @*------------------------------------------------------------------ >聊天室script ------------------------------------------------------------------*@
+    <script>
+        function scrollWindow() {
+           var messageList = document.getElementById("message-list");
+            messageList.scrollTop = messageList.scrollHeight;
+            var messageinput = document.getElementById("message-input");
+            messageinput.focus();
+        }
+               function Contactpersons() {
+
+                   $("#right-message-list").load('@Url.Action("Contactpersons", "Home")');
+                   @*$("#header").load('@Url.Action("ContactTitle", "Home")');
+                   $("#message-list").load('@Url.Action("ContactMessange", "Home")', scrollWindow);*@
+
+                   //if ($("#chatbox").height() > 35) {
+                   //    $("#chatbox").height(35);
+                   //    $("#message-list").hide();
+                   //    $("#message-input").hide();
+
+                   //}
+                   //if ($("#right-chatbox").height() > 35) {
+                   //    $("#right-chatbox").height(35);
+                   //    $("#right-message-list").hide();
+                   //    $("#right-message-input").hide();
+
+                   //}
+        }
+        $(document).ready(function () {
+
+            Contactpersons();
+
+        });
+        $(document).on('click', '#close', function (event) {
+            //$("#chatbox").stop(true).animate({
+            //  //style:"display: none"
+            //    style: "color: red"
+            //}, 300);
+            //$("#chatbox").attr("style","display:  none");
+            event.stopPropagation()
+            $("#chatbox").fadeOut('fast');
+
+        });
+        $(document).on('click', '#right-close', function () {
+            $("#right-chatbox").attr("style", "display:  none");
+        });
+
+        $(document).on('click', '#header', function (event) {
+
+            if ($("#chatbox").height() > 35) {
+              //  $("#chatbox").stop(true).animate({
+              ////style:"display: none"
+              //   height:'35px'
+              //  }, 300);
+              //  $("#message-list").stop(true).animate({
+              //      style:"display: none"
+              //      display:"none"
+              //  }, 300);
+              //  $("#message-input").stop(true).animate({
+              //      style:"display: none"
+              //      display:"none"
+              //  }, 300);
+                event.stopPropagation()
+                $("#chatbox").height(35);
+                $("#message-list").fadeOut('fast');
+                $("#message-input").fadeOut('fast');
+
+
+            } else {
+                //$(this).stop(true).animate({
+                //    style:"display: none"
+                //   backgroundColor: "red"
+                //}, 300);
+                event.stopPropagation()
+                $("#chatbox").height(300);
+                $("#message-list").fadeIn('fast');
+                $("#message-input").fadeIn('fast');
+
+                scrollWindow()
+
+            }
+        });
+        $(document).on('click', '#right-header', function () {
+            $("#right-chatbox").fadeOut(300);
+            //if ($("#right-chatbox").height() > 35) {
+
+            //    $("#right-chatbox").height(35);
+            //    $("#right-message-list").hide();
+            //    $("#right-message-input").hide();
+
+            //} else {
+            //    $("#right-chatbox").height(550);
+            //    $("#right-message-list").show();
+            //    $("#right-message-input").show();
+
+            //}
+        });
+             $(document).on('click', '.AdmQA', function () {
+                   event.preventDefault();
+                $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_AdministratorID: $(this).data('id') });
+                 $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_AdministratorID: $(this).data('id') }, scrollWindow, $("#chatbox").fadeIn('fast'), $("#chatbox").height(300), $("#message-list").show(), $("#message-input").show());
+            notice.server.send();
+        }),
+            $(document).on('click', '.ResQA', function () {
+            event.preventDefault();
+                     $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_RestaurantID: $(this).data('id') });
+                 $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_RestaurantID: $(this).data('id') }, scrollWindow, $("#chatbox").fadeIn('fast'), $("#chatbox").height(300), $("#message-list").show(), $("#message-input").show());
+            notice.server.send();
+            }),
+            $(document).on('click', '.MemQA', function () {
+            event.preventDefault();
+                       $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_MemberID: $(this).data('id') });
+                 $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: $(this).data('id') }, scrollWindow, $("#chatbox").fadeIn('fast'), $("#chatbox").height(300), $("#message-list").show(), $("#message-input").show());
+            notice.server.send();
+            }),
+             $(document).on('click', ".ContactMember", function () {
+            event.preventDefault();
+            $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_MemberID: $(this).data('id') });
+                 $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: $(this).data('id') }, scrollWindow, $("#chatbox").fadeIn('fast'), $("#chatbox").height(300), $("#message-list").show(), $("#message-input").show());
+            notice.server.send();
+  });
+        $(document).on('click', ".ContactRestaurant", function () {
+            event.preventDefault();
+                $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_RestaurantID: $(this).data('id') });
+            $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_RestaurantID: $(this).data('id') }, scrollWindow, $("#chatbox").fadeIn('fast'), $("#chatbox").height(300), $("#message-list").show(), $("#message-input").show());
+            notice.server.send();
+     });
+        $(document).on('click', ".ContactPerson", function () {
+            if ($.cookie('Role') == "Administrator") {
+                if ($(this).data('role') == 0) {
+
+                    $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_RestaurantID: $(this).data('id') });
+                    $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_RestaurantID: $(this).data('id') }, scrollWindow, $("#chatbox").height(300), $("#chatbox").fadeIn('fast'), $("#message-list").show(), $("#message-input").show());
+
+                }
+                else if ($(this).data('role') == 1) {
+
+                    $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_MemberID: $(this).data('id') });
+                    $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: $(this).data('id') }, scrollWindow, $("#chatbox").height(300), $("#chatbox").fadeIn('fast'), $("#message-list").show(), $("#message-input").show());
+
+                }
+                //if ($("#chatbox").height() <= 35) {
+                //    $("#chatbox").height(300);
+                //    $("#message-list").show();
+                //    $("#message-input").show();
+                //    //scrollWindow()
+                //}
+            }
+            else if ($.cookie('Role') == "Member") {
+                if ($(this).data('role') == 0) {
+
+
+                    $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_RestaurantID: $(this).data('id') });
+                    $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_RestaurantID: $(this).data('id') }, scrollWindow, $("#chatbox").height(300), $("#chatbox").fadeIn('fast') , $("#message-list").show(), $("#message-input").show());
+
+                }
+                else if ($(this).data('role') == 3) {
+
+                    $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_AdministratorID: $(this).data('id') });
+                    $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_AdministratorID: $(this).data('id') }, scrollWindow, $("#chatbox").height(300),  $("#chatbox").fadeIn('fast'), $("#message-list").show(), $("#message-input").show());
+
+                }
+            }
+            else if ($.cookie('Role') == "Restaurant") {
+                   if ($(this).data('role') == 1) {
+                    $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_MemberID: $(this).data('id') });
+                       $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: $(this).data('id') }, scrollWindow, $("#chatbox").height(300), $("#chatbox").fadeIn('fast'), $("#message-list").show(), $("#message-input").show());
+                     }
+                else if ($(this).data('role') == 3) {
+                    $("#header").load('@Url.Action("ContactTitle", "Home")', { QA_AdministratorID: $(this).data('id') });
+                       $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_AdministratorID: $(this).data('id') }, scrollWindow, $("#chatbox").height(300), $("#chatbox").fadeIn('fast'), $("#message-list").show(), $("#message-input").show());
+                }
+            }
+        });
+        $(function () {
+            notice.client.addNewMessage = function () {
+                var QA_RestaurantID = $("#ResIDr").val(),
+                    QA_MemberID = $("#MemberIDr").val(),
+                    QA_AdministratorID = $("#AdmIDr").val();
+                    $("#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_AdministratorID: QA_AdministratorID, QA_MemberID: QA_MemberID, QA_RestaurantID: QA_RestaurantID }, scrollWindow);
+            @*$("#right-message-list").load('@Url.Action("Contactpersons", "Home")');*@
+            }
+        });
+                $(document).on('keypress', '#message-input', function () {
+            if (event.which == 13) {
+                var QA_RestaurantID = $("#ResIDr").val(),
+                    QA_MemberID = $("#MemberIDr").val(),
+                    QA_Content = $("#message-input").val(),
+                    QA_AdministratorID = $("#AdmIDr").val();
+
+                if ($("#message-input").val().trim() == '') {
+                    return;
+                }
+                if ($.cookie('Role') == "Administrator") {
+                    $.post('@Url.Action("AdmAddToQa", "Administrator")', { QA_Content: QA_Content, QA_MemberID: QA_MemberID, QA_RestaurantID: QA_RestaurantID }, function (data) {
+                        $("#message-list").append("<div class='me'><span>" + QA_Content + "</span></div>")
+                        $("#message-input").val("");
+                        scrollWindow()
+                        $("#right-message-list").load('@Url.Action("Contactpersons", "Home")');
+                    @*$(".#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: QA_MemberID, QA_RestaurantID: QA_RestaurantID }, scrollWindow);*@
+                    });
+
+                }
+                else if ($.cookie('Role') == "Member") {
+                    $.post('@Url.Action("AddToQa","Member")', { QA_Content: QA_Content, QA_AdministratorID: QA_AdministratorID, QA_RestaurantID: QA_RestaurantID }, function (data) {
+                        $("#message-list").append("<div class='me'><span>" + QA_Content + "</span></div>")
+                        $("#message-input").val("");
+                        scrollWindow()
+                        $("#right-message-list").load('@Url.Action("Contactpersons", "Home")');
+                    @*$(".#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: QA_MemberID, QA_RestaurantID: QA_RestaurantID }, scrollWindow);*@
+                    });
+                }
+                else if ($.cookie('Role') == "Restaurant") {
+
+                    $.post('@Url.Action("ResAddToQa","Restaurant")', { QA_Content: QA_Content, QA_AdministratorID: QA_AdministratorID, QA_MemberID: QA_MemberID }, function (data) {
+                        $("#message-list").append("<div class='me'><span>" + QA_Content + "</span></div>")
+                        $("#message-input").val("");
+                        scrollWindow()
+                        $("#right-message-list").load('@Url.Action("Contactpersons", "Home")');
+                    @*$(".#message-list").load('@Url.Action("ContactMessange", "Home")', { QA_MemberID: QA_MemberID, QA_RestaurantID: QA_RestaurantID }, scrollWindow);*@
+                    });
+                }
+                notice.server.send();
+            }
+        });
+        //聊天室縮下來後的那隻狼
+        $(function () {
+            var duration = 300;
+            $('#ChatButton')
+                .on('mouseover', function () {
+                    var $btn = $(this).stop(true).animate({
+                        backgroundColor: '#faee00',
+                        color: '#000'
+                    }, duration);
+                    $btn.find('img:first-child').stop(true).animate({
+                        opacity: 0
+                    }, duration);
+                    $btn.find('i').stop(true).animate({
+                        opacity: 1
+                    }, duration);
+
+                })
+                .on('mouseout', function () {
+                    var $btn = $(this).stop(true).animate({
+                        backgroundColor: '#fff',
+                        color: '#01b169',
+                    }, duration);
+                    $btn.find('img:nth-child(1)').stop(true).animate({
+                        opacity: 1
+                    }, duration);
+                    $btn.find('i').stop(true).animate({
+                        opacity: 0
+                    }, duration);
+
+                });
+        });
+        $(document).on('click', '#ChatButton,.newqa', function () {
+
+            //$("#right-chatbox").show();
+            //$("#right-message-list").show();
+            $("#right-chatbox").height(550);
+            $("#right-chatbox").fadeIn('fast');
+        });
+
+
+
+    </script>
+    @*------------------------------------------------------------------ 聊天室< ------------------------------------------------------------------*@
+
+    @*------------------------------------------------------------------ Popup ------------------------------------------------------------------*@
+    <script>
+        $(document).on('click', '.LVM, .LVR, .LVA', function () {
+
+
+            if ($(this).hasClass('LVM')) {
+                if (getCookiebyName('Role') != 'Member') {
+                    event.preventDefault();
+                    $('#popupM').modal('show')
+
+                }
+            }
+            else if ($(this).hasClass('LVR')) {
+                if (getCookiebyName('Role') != 'Restaurant') {
+                    event.preventDefault();
+                    $('#popupM').modal('show')
+                }
+            }
+            else if ($(this).hasClass('LVA')) {
+                if (getCookiebyName('Role') != 'Administrator') {
+                    event.preventDefault();
+                    $('#popupM').modal('show')
+                }
+            }
+
+        })
+
+        function getCookiebyName(name) {
+            var cookies = '; ' + document.cookie
+            var result = cookies.split(`; ${name}=`);
+            if (result.length == 2) {
+                return (result[1].split(';')[0])
+            }
+            return null
+
+        }
+
+        $(document).on('click', '#Mlogin', function () {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("MemberLogin","Home")',
+                data: $(this).closest('form').serialize(),
+                success: function (data) {
+                    alert('登入成功');
+                    $('#popupM').modal('hide')
+                    location.reload();
+                }
+            })
+
+        })
+        $(document).on('click', '#Rlogin', function () {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("RestaurantLogin", "Home")',
+                data: $(this).closest('form').serialize(),
+                success: function (data) {
+                    alert('登入成功');
+                    $('#popupR').modal('hide')
+                    location.reload();
+                }
+            })
+
+        })
+
+
+        $(document).on('mouseup','body', function () {
+
+
+
+            if ($(event.target).hasClass('overlay')) {
+                location.href = '#'
+            }
+
+        })
+
+    </script>
+    @*------------------------------------------------------------------ Popup ------------------------------------------------------------------*@
+
+    @*FB SDK*@
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.2&appId=578343129323239&autoLogAppEvents=1"></script>
+
+    <script>
+
+        var obj = { counter: 1 };
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '578343129323239',
+                cookie: true,
+                xfbml: true,
+                version: 'v3.2'
+            });
+        };
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        // This is called with the results from from FB.getLoginStatus().
+        function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                testAPI();
+            } else if (response.status === 'not_authorized') {
+                // The person is logged into Facebook, but not your app.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this app.';
+            } else {
+                // The person is not logged into Facebook, so we're not sure if
+                // they are logged into this app or not.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into Facebook.';
+            }
+        }
+
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState() {
+            console.log(arguments);
+            FB.getLoginStatus(function (response) {
+                console.log('AUTHINFO', JSON.stringify(response));
+                obj.thirdParty = 'FB';
+                obj.thirdPartyUserID = response.authResponse.userID;
+
+                if (obj.counter === 1) {
+                    obj.counter++;
+                    statusChangeCallback(response);
+                }
+            });
+        }
+
+        // Here we run a very simple test of the Graph API after login is
+        // successful.  See statusChangeCallback() for when this call is made.
+        function testAPI() {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', function (response) {
+                console.log('Successful login for: ' + response.name);
+                document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.name + '!';
+                obj.name = response.name;
+                console.log('complete', obj);
+                let path = window.location.href.split('/');
+                path.pop();
+                path.push('Index');
+                console.log('path', path);
+                window.location.href = path.join('/') + `?from=${obj.thirdParty}&id=${obj.thirdPartyUserID}&name=${obj.name}`;
+            });
+
+        }
+
+        function ThirdPartyLogout() {
+
+            console.log('execute logout');
+            FB.logout(function (reponse) {
+                FB.init({ appId: '578343129323239' });
+                FB.getLoginStatus(handleSessionResponse);
+                console.log("FB Logout", reponse);
+            });
+        }
+
+
+
+        function handleSessionResponse(response) {
+            if (response.status == 'connected') {
+                FB.logout();
+            }
+        }
+
+    </script>
+
+    @*=====SEO=====*@
+    <script type="application/ld+json">
+        {
+        "@@context": "http://schema.org/",
+        "@@type": "Organization",
+        "name": "Taset It",
+        "description": "TasteIt, tasteit, 餐廳,食記, 評論, 吃啥, 台灣,優惠,訂位, 搜尋, 營業時間, 餐廳經營, 平台行銷, 推薦, 精選, 熱門,商案,吃貨,吃",
+        "logo":"https://tasteit.eastasia.cloudapp.azure.com/tasteit/tasteitlogo/logo.png",
+        "url":"https://tasteit.eastasia.cloudapp.azure.com/tasteit/",
+        "brand":
+        {
+        "@@type": "Brand",
+        "name": "Taset It",
+        "image":"https://tasteit.eastasia.cloudapp.azure.com/tasteit/tasteitlogo/logo.png",
+        "url":"https://tasteit.eastasia.cloudapp.azure.com/tasteit/",
+        "sameAs":"https://tasteit.eastasia.cloudapp.azure.com/tasteit/"
+        }
+        }
+    </script>
+    <script>
+        $("#Mlogin_demo").click(function () {
+            $("#username").val('demo01');
+            $("#password").val('123');
+        });
+    </script>
+
+
+</body>
+</html>
+

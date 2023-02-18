@@ -1,0 +1,2009 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Taste_ItModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccuseType">
+          <Key>
+            <PropertyRef Name="RepTyp_ID" />
+          </Key>
+          <Property Name="RepTyp_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RepTyp_Content" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Cit_ID" />
+          </Key>
+          <Property Name="Cit_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cit_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Com_ID" />
+          </Key>
+          <Property Name="Com_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Com_MemberID" Type="int" Nullable="false" />
+          <Property Name="Com_RestaurantID" Type="int" Nullable="false" />
+          <Property Name="Com_NewsID" Type="int" />
+          <Property Name="Com_Content" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Com_CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="Com_StarRate" Type="int" Nullable="false" />
+          <Property Name="Com_Vaild" Type="bit" />
+        </EntityType>
+        <EntityType Name="Discount">
+          <Key>
+            <PropertyRef Name="Dis_ID" />
+          </Key>
+          <Property Name="Dis_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dis_Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Dis_RestaurantID" Type="int" Nullable="false" />
+          <Property Name="Dis_Content" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Dis_Start" Type="datetime" Nullable="false" />
+          <Property Name="Dis_End" Type="datetime" />
+          <Property Name="Dis_Picture" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Gift">
+          <Key>
+            <PropertyRef Name="Gift_ID" />
+          </Key>
+          <Property Name="Gift_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Gift_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gift_Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Gift_Point" Type="int" Nullable="false" />
+          <Property Name="Gift_CreatedAdmini" Type="int" Nullable="false" />
+          <Property Name="Gift_CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Gift_Quantity" Type="int" />
+          <Property Name="Gift_Picture" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Gift_Detail">
+          <Key>
+            <PropertyRef Name="GiftDet_ID" />
+          </Key>
+          <Property Name="GiftDet_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GiftDet_MemberID" Type="int" Nullable="false" />
+          <Property Name="GiftDet_GiftID" Type="int" Nullable="false" />
+          <Property Name="GiftDet_GetDate" Type="datetime" />
+          <Property Name="GiftDet_GetQuantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="Mem_ID" />
+          </Key>
+          <Property Name="Mem_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mem_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Mem_Account" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Mem_Password" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Mem_Gender" Type="bit" />
+          <Property Name="Mem_Birthday" Type="datetime" Nullable="false" />
+          <Property Name="Mem_NickName" Type="nvarchar" MaxLength="18" Nullable="false" />
+          <Property Name="Mem_Mail" Type="varchar" MaxLength="50" />
+          <Property Name="Mem_Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mem_Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="Mem_JoinDate" Type="datetime" Nullable="false" />
+          <Property Name="Mem_Exp" Type="int" Nullable="false" />
+          <Property Name="Mem_Point" Type="int" Nullable="false" />
+          <Property Name="Mem_Photo" Type="varbinary(max)" />
+          <Property Name="Mem_Introduction" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Mem_RoleID" Type="int" Nullable="false" />
+          <Property Name="Mem_Source" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mem_SourceID" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="New_ID" />
+          </Key>
+          <Property Name="New_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="New_Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="New_Content" Type="nvarchar(max)" />
+          <Property Name="New_CreateDate" Type="datetime" />
+          <Property Name="New_MemberID" Type="int" />
+          <Property Name="New_RestaurantID" Type="int" Nullable="false" />
+          <Property Name="New_ClickRate" Type="int" />
+          <Property Name="New_OrderDate" Type="datetime" />
+          <Property Name="New_OrderContent" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Pictures">
+          <Key>
+            <PropertyRef Name="Pic_ID" />
+          </Key>
+          <Property Name="Pic_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pic_NewsID" Type="int" />
+          <Property Name="Pic_Restaurant" Type="int" />
+          <Property Name="Pic_Picture" Type="varbinary(max)" />
+          <Property Name="Pic_Content" Type="nvarchar" MaxLength="100" />
+          <Property Name="Pic_title" Type="nchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="QA_system">
+          <Key>
+            <PropertyRef Name="QA_ID" />
+          </Key>
+          <Property Name="QA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QA_MemberID" Type="int" />
+          <Property Name="QA_AdministratorID" Type="int" />
+          <Property Name="QA_RestaurantID" Type="int" />
+          <Property Name="QA_CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="QA_AnswerdDate" Type="datetime" />
+          <Property Name="QA_Content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="QA_Answer" Type="nvarchar(max)" />
+          <Property Name="QA_MemkTalk" Type="bit" />
+          <Property Name="QA_ResTalk" Type="bit" />
+          <Property Name="QA_AdmTalk" Type="bit" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="Rep_ID" />
+          </Key>
+          <Property Name="Rep_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rep_MemberID" Type="int" />
+          <Property Name="Rep_AdministratorID" Type="int" />
+          <Property Name="Rep_RestaurantID" Type="int" />
+          <Property Name="Rep_NewsID" Type="int" />
+          <Property Name="Rep_CommentID" Type="int" />
+          <Property Name="Rep_AccuseTypeID" Type="int" />
+          <Property Name="Rep_Content" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Rep_CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Rep_Status" Type="int" />
+          <Property Name="Rep_SolvedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ReservationBooked">
+          <Key>
+            <PropertyRef Name="RVBooked_ID" />
+          </Key>
+          <Property Name="RVBooked_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RVBooked_BookedDate" Type="datetime" Nullable="false" />
+          <Property Name="RVBooked_DiscountID" Type="int" />
+          <Property Name="RVBooked_ReservationOpenedID" Type="int" />
+          <Property Name="RVBooked_MemberID" Type="int" Nullable="false" />
+          <Property Name="RVBooked_Seats" Type="int" Nullable="false" />
+          <Property Name="RVBooked_ReminderContext" Type="nvarchar" MaxLength="100" />
+          <Property Name="RVBooked_CheckinTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ReservationOpened">
+          <Key>
+            <PropertyRef Name="RVOpen_ID" />
+          </Key>
+          <Property Name="RVOpen_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RVOpen_OffPriceTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RVOpen_RestaurantID" Type="int" Nullable="false" />
+          <Property Name="RVOpen_Seats" Type="int" Nullable="false" />
+          <Property Name="RVOpen_DateTime" Type="datetime" Nullable="false" />
+          <Property Name="RVOpen_OffPrice" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RVOpen_TeamHeader" Type="int" Nullable="false" />
+          <Property Name="RVOpen_SeatsRemain" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Restaurants">
+          <Key>
+            <PropertyRef Name="Res_ID" />
+          </Key>
+          <Property Name="Res_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Res_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Res_Account" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Res_Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Res_Address" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Res_Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Res_City" Type="int" />
+          <Property Name="Res_Phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Res_MaxConsumption" Type="int" />
+          <Property Name="Res_MinConsumption" Type="int" />
+          <Property Name="Res_StarRate" Type="numeric" Precision="2" Scale="1" />
+          <Property Name="Res_IntroductionContext" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Res_WorkingDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Res_PayBy" Type="binary" MaxLength="50" />
+          <Property Name="Res_Seats" Type="int" />
+          <Property Name="Res_ParkingSeats" Type="int" />
+          <Property Name="Res_TenPercentService" Type="bit" Nullable="false" />
+          <Property Name="Res_HomePagePicture" Type="varbinary(max)" />
+          <Property Name="Res_RoleID" Type="int" Nullable="false" />
+          <Property Name="Res_CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="Res_QAEnable" Type="bit" Nullable="false" />
+          <Property Name="Res_TaxID" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Right">
+          <Key>
+            <PropertyRef Name="Right_ID" />
+          </Key>
+          <Property Name="Right_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Right_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Role_ID" />
+          </Key>
+          <Property Name="Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Role_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role's_Right">
+          <Key>
+            <PropertyRef Name="RR_RoleID" />
+            <PropertyRef Name="RR_RightID" />
+          </Key>
+          <Property Name="RR_RoleID" Type="int" Nullable="false" />
+          <Property Name="RR_RightID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatusType">
+          <Key>
+            <PropertyRef Name="Sta_ID" />
+          </Key>
+          <Property Name="Sta_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sta_Context" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubType">
+          <Key>
+            <PropertyRef Name="SubT_ID" />
+          </Key>
+          <Property Name="SubT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubT_Contect" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubT_ResTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TheType">
+          <Key>
+            <PropertyRef Name="ResType_ID" />
+          </Key>
+          <Property Name="ResType_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResType_Style" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Type_Detail">
+          <Key>
+            <PropertyRef Name="ResTypeDet_ID" />
+          </Key>
+          <Property Name="ResTypeDet_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResTypeDet_RestaurantID" Type="int" />
+          <Property Name="ResTypeDet_NewsID" Type="int" />
+          <Property Name="ResTypeDet_ResTypeID" Type="int" />
+          <Property Name="ResTypeDet_SubTypeID" Type="int" />
+        </EntityType>
+        <Association Name="FK_Comment_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Com_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Com_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Com_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Discount_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
+          <End Role="Discount" Type="Self.Discount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Discount">
+              <PropertyRef Name="Dis_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gift_Detail_Gift">
+          <End Role="Gift" Type="Self.Gift" Multiplicity="1" />
+          <End Role="Gift_Detail" Type="Self.Gift_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gift">
+              <PropertyRef Name="Gift_ID" />
+            </Principal>
+            <Dependent Role="Gift_Detail">
+              <PropertyRef Name="GiftDet_GiftID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gift_Detail_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="Gift_Detail" Type="Self.Gift_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Gift_Detail">
+              <PropertyRef Name="GiftDet_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gift_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="Gift" Type="Self.Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="Gift_CreatedAdmini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Members_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Members" Type="Self.Members" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Role_ID" />
+            </Principal>
+            <Dependent Role="Members">
+              <PropertyRef Name="Mem_RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="0..1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="New_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="New_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pictures_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Pictures" Type="Self.Pictures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Pictures">
+              <PropertyRef Name="Pic_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pictures_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
+          <End Role="Pictures" Type="Self.Pictures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Pictures">
+              <PropertyRef Name="Pic_Restaurant" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QA_system_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="0..1" />
+          <End Role="QA_system" Type="Self.QA_system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="QA_system">
+              <PropertyRef Name="QA_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QA_system_Members1">
+          <End Role="Members" Type="Self.Members" Multiplicity="0..1" />
+          <End Role="QA_system" Type="Self.QA_system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="QA_system">
+              <PropertyRef Name="QA_AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QA_system_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
+          <End Role="QA_system" Type="Self.QA_system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="QA_system">
+              <PropertyRef Name="QA_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Comment">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="Com_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Members1">
+          <End Role="Members" Type="Self.Members" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_StatusType">
+          <End Role="StatusType" Type="Self.StatusType" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusType">
+              <PropertyRef Name="Sta_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Type_report">
+          <End Role="AccuseType" Type="Self.AccuseType" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccuseType">
+              <PropertyRef Name="RepTyp_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_AccuseTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationBooked_Discount">
+          <End Role="Discount" Type="Self.Discount" Multiplicity="0..1" />
+          <End Role="ReservationBooked" Type="Self.ReservationBooked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discount">
+              <PropertyRef Name="Dis_ID" />
+            </Principal>
+            <Dependent Role="ReservationBooked">
+              <PropertyRef Name="RVBooked_DiscountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationBooked_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="ReservationBooked" Type="Self.ReservationBooked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="ReservationBooked">
+              <PropertyRef Name="RVBooked_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationBooked_ReservationOpened">
+          <End Role="ReservationOpened" Type="Self.ReservationOpened" Multiplicity="0..1" />
+          <End Role="ReservationBooked" Type="Self.ReservationBooked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReservationOpened">
+              <PropertyRef Name="RVOpen_ID" />
+            </Principal>
+            <Dependent Role="ReservationBooked">
+              <PropertyRef Name="RVBooked_ReservationOpenedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationOpened_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
+          <End Role="ReservationOpened" Type="Self.ReservationOpened" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="ReservationOpened">
+              <PropertyRef Name="RVOpen_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurants_City">
+          <End Role="City" Type="Self.City" Multiplicity="0..1" />
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Cit_ID" />
+            </Principal>
+            <Dependent Role="Restaurants">
+              <PropertyRef Name="Res_City" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role's_Right_Right">
+          <End Role="Right" Type="Self.Right" Multiplicity="1" />
+          <End Role="Role's_Right" Type="Self.Role's_Right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Right">
+              <PropertyRef Name="Right_ID" />
+            </Principal>
+            <Dependent Role="Role's_Right">
+              <PropertyRef Name="RR_RightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role's_Right_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Role's_Right" Type="Self.Role's_Right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Role_ID" />
+            </Principal>
+            <Dependent Role="Role's_Right">
+              <PropertyRef Name="RR_RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubType_TheType">
+          <End Role="TheType" Type="Self.TheType" Multiplicity="1" />
+          <End Role="SubType" Type="Self.SubType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TheType">
+              <PropertyRef Name="ResType_ID" />
+            </Principal>
+            <Dependent Role="SubType">
+              <PropertyRef Name="SubT_ResTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_SubType">
+          <End Role="SubType" Type="Self.SubType" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubType">
+              <PropertyRef Name="SubT_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_SubTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_TheType1">
+          <End Role="TheType" Type="Self.TheType" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TheType">
+              <PropertyRef Name="ResType_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_ResTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Taste_ItModelStoreContainer">
+          <EntitySet Name="AccuseType" EntityType="Self.AccuseType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Discount" EntityType="Self.Discount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gift_Detail" EntityType="Self.Gift_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pictures" EntityType="Self.Pictures" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QA_system" EntityType="Self.QA_system" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReservationBooked" EntityType="Self.ReservationBooked" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReservationOpened" EntityType="Self.ReservationOpened" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Right" EntityType="Self.Right" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role's_Right" EntityType="Self.Role's_Right" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusType" EntityType="Self.StatusType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubType" EntityType="Self.SubType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TheType" EntityType="Self.TheType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type_Detail" EntityType="Self.Type_Detail" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Comment_Members" Association="Self.FK_Comment_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_News" Association="Self.FK_Comment_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Restaurants" Association="Self.FK_Comment_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Discount_Restaurants" Association="Self.FK_Discount_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Discount" EntitySet="Discount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_Detail_Gift" Association="Self.FK_Gift_Detail_Gift">
+            <End Role="Gift" EntitySet="Gift" />
+            <End Role="Gift_Detail" EntitySet="Gift_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_Detail_Members" Association="Self.FK_Gift_Detail_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Gift_Detail" EntitySet="Gift_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_Members" Association="Self.FK_Gift_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Gift" EntitySet="Gift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Members_Role" Association="Self.FK_Members_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Members" EntitySet="Members" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_Members" Association="Self.FK_News_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_Restaurants" Association="Self.FK_News_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pictures_News" Association="Self.FK_Pictures_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Pictures" EntitySet="Pictures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pictures_Restaurants" Association="Self.FK_Pictures_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Pictures" EntitySet="Pictures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QA_system_Members" Association="Self.FK_QA_system_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="QA_system" EntitySet="QA_system" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QA_system_Members1" Association="Self.FK_QA_system_Members1">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="QA_system" EntitySet="QA_system" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QA_system_Restaurants" Association="Self.FK_QA_system_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="QA_system" EntitySet="QA_system" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Comment" Association="Self.FK_Report_Comment">
+            <End Role="Comment" EntitySet="Comment" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Members" Association="Self.FK_Report_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Members1" Association="Self.FK_Report_Members1">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_News" Association="Self.FK_Report_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Restaurants" Association="Self.FK_Report_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_StatusType" Association="Self.FK_Report_StatusType">
+            <End Role="StatusType" EntitySet="StatusType" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Type_report" Association="Self.FK_Report_Type_report">
+            <End Role="AccuseType" EntitySet="AccuseType" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationBooked_Discount" Association="Self.FK_ReservationBooked_Discount">
+            <End Role="Discount" EntitySet="Discount" />
+            <End Role="ReservationBooked" EntitySet="ReservationBooked" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationBooked_Members" Association="Self.FK_ReservationBooked_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="ReservationBooked" EntitySet="ReservationBooked" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationBooked_ReservationOpened" Association="Self.FK_ReservationBooked_ReservationOpened">
+            <End Role="ReservationOpened" EntitySet="ReservationOpened" />
+            <End Role="ReservationBooked" EntitySet="ReservationBooked" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationOpened_Restaurants" Association="Self.FK_ReservationOpened_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="ReservationOpened" EntitySet="ReservationOpened" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurants_City" Association="Self.FK_Restaurants_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role's_Right_Right" Association="Self.FK_Role's_Right_Right">
+            <End Role="Right" EntitySet="Right" />
+            <End Role="Role's_Right" EntitySet="Role's_Right" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role's_Right_Role" Association="Self.FK_Role's_Right_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Role's_Right" EntitySet="Role's_Right" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubType_TheType" Association="Self.FK_SubType_TheType">
+            <End Role="TheType" EntitySet="TheType" />
+            <End Role="SubType" EntitySet="SubType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_News" Association="Self.FK_Type_Detail_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_Restaurants" Association="Self.FK_Type_Detail_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_SubType" Association="Self.FK_Type_Detail_SubType">
+            <End Role="SubType" EntitySet="SubType" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_TheType1" Association="Self.FK_Type_Detail_TheType1">
+            <End Role="TheType" EntitySet="TheType" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Taste_ItModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccuseType">
+          <Key>
+            <PropertyRef Name="RepTyp_ID" />
+          </Key>
+          <Property Name="RepTyp_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RepTyp_Content" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Type_report" FromRole="AccuseType" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Cit_ID" />
+          </Key>
+          <Property Name="Cit_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cit_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Restaurants" Relationship="Self.FK_Restaurants_City" FromRole="City" ToRole="Restaurants" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Com_ID" />
+          </Key>
+          <Property Name="Com_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Com_MemberID" Type="Int32" Nullable="false" />
+          <Property Name="Com_RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="Com_NewsID" Type="Int32" />
+          <Property Name="Com_Content" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Com_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Com_StarRate" Type="Int32" Nullable="false" />
+          <Property Name="Com_Vaild" Type="Boolean" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_Comment_Members" FromRole="Comment" ToRole="Members" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Comment_News" FromRole="Comment" ToRole="News" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Comment_Restaurants" FromRole="Comment" ToRole="Restaurants" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Comment" FromRole="Comment" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="Discount">
+          <Key>
+            <PropertyRef Name="Dis_ID" />
+          </Key>
+          <Property Name="Dis_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dis_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Dis_RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="Dis_Content" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Dis_Start" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Dis_End" Type="DateTime" Precision="3" />
+          <Property Name="Dis_Picture" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Discount_Restaurants" FromRole="Discount" ToRole="Restaurants" />
+          <NavigationProperty Name="ReservationBookeds" Relationship="Self.FK_ReservationBooked_Discount" FromRole="Discount" ToRole="ReservationBooked" />
+        </EntityType>
+        <EntityType Name="Gift">
+          <Key>
+            <PropertyRef Name="Gift_ID" />
+          </Key>
+          <Property Name="Gift_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Gift_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gift_Content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gift_Point" Type="Int32" Nullable="false" />
+          <Property Name="Gift_CreatedAdmini" Type="Int32" Nullable="false" />
+          <Property Name="Gift_CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Gift_Quantity" Type="Int32" />
+          <Property Name="Gift_Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Gift_Detail" Relationship="Self.FK_Gift_Detail_Gift" FromRole="Gift" ToRole="Gift_Detail" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_Gift_Members" FromRole="Gift" ToRole="Members" />
+        </EntityType>
+        <EntityType Name="Gift_Detail">
+          <Key>
+            <PropertyRef Name="GiftDet_ID" />
+          </Key>
+          <Property Name="GiftDet_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GiftDet_MemberID" Type="Int32" Nullable="false" />
+          <Property Name="GiftDet_GiftID" Type="Int32" Nullable="false" />
+          <Property Name="GiftDet_GetDate" Type="DateTime" Precision="3" />
+          <Property Name="GiftDet_GetQuantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Gift" Relationship="Self.FK_Gift_Detail_Gift" FromRole="Gift_Detail" ToRole="Gift" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_Gift_Detail_Members" FromRole="Gift_Detail" ToRole="Members" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="Mem_ID" />
+          </Key>
+          <Property Name="Mem_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mem_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mem_Account" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mem_Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mem_Gender" Type="Boolean" />
+          <Property Name="Mem_Birthday" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Mem_NickName" Type="String" MaxLength="18" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mem_Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mem_Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mem_Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Mem_JoinDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Mem_Exp" Type="Int32" Nullable="false" />
+          <Property Name="Mem_Point" Type="Int32" Nullable="false" />
+          <Property Name="Mem_Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Mem_Introduction" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Mem_RoleID" Type="Int32" Nullable="false" />
+          <Property Name="Mem_Source" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mem_SourceID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Members" FromRole="Members" ToRole="Comment" />
+          <NavigationProperty Name="Gifts" Relationship="Self.FK_Gift_Members" FromRole="Members" ToRole="Gift" />
+          <NavigationProperty Name="Gift_Detail" Relationship="Self.FK_Gift_Detail_Members" FromRole="Members" ToRole="Gift_Detail" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Members_Role" FromRole="Members" ToRole="Role" />
+          <NavigationProperty Name="News" Relationship="Self.FK_News_Members" FromRole="Members" ToRole="News" />
+          <NavigationProperty Name="QA_system" Relationship="Self.FK_QA_system_Members" FromRole="Members" ToRole="QA_system" />
+          <NavigationProperty Name="QA_system1" Relationship="Self.FK_QA_system_Members1" FromRole="Members" ToRole="QA_system" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Members" FromRole="Members" ToRole="Report" />
+          <NavigationProperty Name="Reports1" Relationship="Self.FK_Report_Members1" FromRole="Members" ToRole="Report" />
+          <NavigationProperty Name="ReservationBookeds" Relationship="Self.FK_ReservationBooked_Members" FromRole="Members" ToRole="ReservationBooked" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="New_ID" />
+          </Key>
+          <Property Name="New_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="New_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="New_Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="New_CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="New_MemberID" Type="Int32" />
+          <Property Name="New_RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="New_ClickRate" Type="Int32" />
+          <Property Name="New_OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="New_OrderContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_News" FromRole="News" ToRole="Comment" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_News_Members" FromRole="News" ToRole="Members" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_News_Restaurants" FromRole="News" ToRole="Restaurants" />
+          <NavigationProperty Name="Pictures" Relationship="Self.FK_Pictures_News" FromRole="News" ToRole="Pictures" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_News" FromRole="News" ToRole="Report" />
+          <NavigationProperty Name="Type_Detail" Relationship="Self.FK_Type_Detail_News" FromRole="News" ToRole="Type_Detail" />
+        </EntityType>
+        <EntityType Name="Picture">
+          <Key>
+            <PropertyRef Name="Pic_ID" />
+          </Key>
+          <Property Name="Pic_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pic_NewsID" Type="Int32" />
+          <Property Name="Pic_Restaurant" Type="Int32" />
+          <Property Name="Pic_Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Pic_Content" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Pic_title" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Pictures_News" FromRole="Pictures" ToRole="News" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Pictures_Restaurants" FromRole="Pictures" ToRole="Restaurants" />
+        </EntityType>
+        <EntityType Name="QA_system">
+          <Key>
+            <PropertyRef Name="QA_ID" />
+          </Key>
+          <Property Name="QA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QA_MemberID" Type="Int32" />
+          <Property Name="QA_AdministratorID" Type="Int32" />
+          <Property Name="QA_RestaurantID" Type="Int32" />
+          <Property Name="QA_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QA_AnswerdDate" Type="DateTime" Precision="3" />
+          <Property Name="QA_Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QA_Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QA_MemkTalk" Type="Boolean" />
+          <Property Name="QA_ResTalk" Type="Boolean" />
+          <Property Name="QA_AdmTalk" Type="Boolean" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_QA_system_Members" FromRole="QA_system" ToRole="Members" />
+          <NavigationProperty Name="Member1" Relationship="Self.FK_QA_system_Members1" FromRole="QA_system" ToRole="Members" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_QA_system_Restaurants" FromRole="QA_system" ToRole="Restaurants" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="Rep_ID" />
+          </Key>
+          <Property Name="Rep_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rep_MemberID" Type="Int32" />
+          <Property Name="Rep_AdministratorID" Type="Int32" />
+          <Property Name="Rep_RestaurantID" Type="Int32" />
+          <Property Name="Rep_NewsID" Type="Int32" />
+          <Property Name="Rep_CommentID" Type="Int32" />
+          <Property Name="Rep_AccuseTypeID" Type="Int32" />
+          <Property Name="Rep_Content" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rep_CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Rep_Status" Type="Int32" />
+          <Property Name="Rep_SolvedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AccuseType" Relationship="Self.FK_Report_Type_report" FromRole="Report" ToRole="AccuseType" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK_Report_Comment" FromRole="Report" ToRole="Comment" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_Report_Members" FromRole="Report" ToRole="Members" />
+          <NavigationProperty Name="Member1" Relationship="Self.FK_Report_Members1" FromRole="Report" ToRole="Members" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Report_News" FromRole="Report" ToRole="News" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Report_Restaurants" FromRole="Report" ToRole="Restaurants" />
+          <NavigationProperty Name="StatusType" Relationship="Self.FK_Report_StatusType" FromRole="Report" ToRole="StatusType" />
+        </EntityType>
+        <EntityType Name="ReservationBooked">
+          <Key>
+            <PropertyRef Name="RVBooked_ID" />
+          </Key>
+          <Property Name="RVBooked_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RVBooked_BookedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RVBooked_DiscountID" Type="Int32" />
+          <Property Name="RVBooked_ReservationOpenedID" Type="Int32" />
+          <Property Name="RVBooked_MemberID" Type="Int32" Nullable="false" />
+          <Property Name="RVBooked_Seats" Type="Int32" Nullable="false" />
+          <Property Name="RVBooked_ReminderContext" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RVBooked_CheckinTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Discount" Relationship="Self.FK_ReservationBooked_Discount" FromRole="ReservationBooked" ToRole="Discount" />
+          <NavigationProperty Name="Member" Relationship="Self.FK_ReservationBooked_Members" FromRole="ReservationBooked" ToRole="Members" />
+          <NavigationProperty Name="ReservationOpened" Relationship="Self.FK_ReservationBooked_ReservationOpened" FromRole="ReservationBooked" ToRole="ReservationOpened" />
+        </EntityType>
+        <EntityType Name="ReservationOpened">
+          <Key>
+            <PropertyRef Name="RVOpen_ID" />
+          </Key>
+          <Property Name="RVOpen_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RVOpen_OffPriceTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RVOpen_RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="RVOpen_Seats" Type="Int32" Nullable="false" />
+          <Property Name="RVOpen_DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RVOpen_OffPrice" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RVOpen_TeamHeader" Type="Int32" Nullable="false" />
+          <Property Name="RVOpen_SeatsRemain" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ReservationBookeds" Relationship="Self.FK_ReservationBooked_ReservationOpened" FromRole="ReservationOpened" ToRole="ReservationBooked" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_ReservationOpened_Restaurants" FromRole="ReservationOpened" ToRole="Restaurants" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="Res_ID" />
+          </Key>
+          <Property Name="Res_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Res_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Res_Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Res_Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Res_Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Res_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Res_City" Type="Int32" />
+          <Property Name="Res_Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Res_MaxConsumption" Type="Int32" />
+          <Property Name="Res_MinConsumption" Type="Int32" />
+          <Property Name="Res_StarRate" Type="Decimal" Precision="2" Scale="1" />
+          <Property Name="Res_IntroductionContext" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Res_WorkingDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Res_PayBy" Type="Binary" MaxLength="50" FixedLength="true" />
+          <Property Name="Res_Seats" Type="Int32" />
+          <Property Name="Res_ParkingSeats" Type="Int32" />
+          <Property Name="Res_TenPercentService" Type="Boolean" Nullable="false" />
+          <Property Name="Res_HomePagePicture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Res_RoleID" Type="Int32" Nullable="false" />
+          <Property Name="Res_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Res_QAEnable" Type="Boolean" Nullable="false" />
+          <Property Name="Res_TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="City" Relationship="Self.FK_Restaurants_City" FromRole="Restaurants" ToRole="City" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Restaurants" FromRole="Restaurants" ToRole="Comment" />
+          <NavigationProperty Name="Discounts" Relationship="Self.FK_Discount_Restaurants" FromRole="Restaurants" ToRole="Discount" />
+          <NavigationProperty Name="News" Relationship="Self.FK_News_Restaurants" FromRole="Restaurants" ToRole="News" />
+          <NavigationProperty Name="Pictures" Relationship="Self.FK_Pictures_Restaurants" FromRole="Restaurants" ToRole="Pictures" />
+          <NavigationProperty Name="QA_system" Relationship="Self.FK_QA_system_Restaurants" FromRole="Restaurants" ToRole="QA_system" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Restaurants" FromRole="Restaurants" ToRole="Report" />
+          <NavigationProperty Name="ReservationOpeneds" Relationship="Self.FK_ReservationOpened_Restaurants" FromRole="Restaurants" ToRole="ReservationOpened" />
+          <NavigationProperty Name="Type_Detail" Relationship="Self.FK_Type_Detail_Restaurants" FromRole="Restaurants" ToRole="Type_Detail" />
+        </EntityType>
+        <EntityType Name="Right">
+          <Key>
+            <PropertyRef Name="Right_ID" />
+          </Key>
+          <Property Name="Right_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Right_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.Role_s_Right" FromRole="Right" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Role_ID" />
+          </Key>
+          <Property Name="Role_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Role_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Members" Relationship="Self.FK_Members_Role" FromRole="Role" ToRole="Members" />
+          <NavigationProperty Name="Rights" Relationship="Self.Role_s_Right" FromRole="Role" ToRole="Right" />
+        </EntityType>
+        <EntityType Name="StatusType">
+          <Key>
+            <PropertyRef Name="Sta_ID" />
+          </Key>
+          <Property Name="Sta_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sta_Context" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_StatusType" FromRole="StatusType" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="SubType">
+          <Key>
+            <PropertyRef Name="SubT_ID" />
+          </Key>
+          <Property Name="SubT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubT_Contect" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubT_ResTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TheType" Relationship="Self.FK_SubType_TheType" FromRole="SubType" ToRole="TheType" />
+          <NavigationProperty Name="Type_Detail" Relationship="Self.FK_Type_Detail_SubType" FromRole="SubType" ToRole="Type_Detail" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TheType">
+          <Key>
+            <PropertyRef Name="ResType_ID" />
+          </Key>
+          <Property Name="ResType_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResType_Style" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="SubTypes" Relationship="Self.FK_SubType_TheType" FromRole="TheType" ToRole="SubType" />
+          <NavigationProperty Name="Type_Detail" Relationship="Self.FK_Type_Detail_TheType1" FromRole="TheType" ToRole="Type_Detail" />
+        </EntityType>
+        <EntityType Name="Type_Detail">
+          <Key>
+            <PropertyRef Name="ResTypeDet_ID" />
+          </Key>
+          <Property Name="ResTypeDet_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResTypeDet_RestaurantID" Type="Int32" />
+          <Property Name="ResTypeDet_NewsID" Type="Int32" />
+          <Property Name="ResTypeDet_ResTypeID" Type="Int32" />
+          <Property Name="ResTypeDet_SubTypeID" Type="Int32" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Type_Detail_News" FromRole="Type_Detail" ToRole="News" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Type_Detail_Restaurants" FromRole="Type_Detail" ToRole="Restaurants" />
+          <NavigationProperty Name="SubType" Relationship="Self.FK_Type_Detail_SubType" FromRole="Type_Detail" ToRole="SubType" />
+          <NavigationProperty Name="TheType" Relationship="Self.FK_Type_Detail_TheType1" FromRole="Type_Detail" ToRole="TheType" />
+        </EntityType>
+        <Association Name="FK_Report_Type_report">
+          <End Role="AccuseType" Type="Self.AccuseType" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccuseType">
+              <PropertyRef Name="RepTyp_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_AccuseTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurants_City">
+          <End Role="City" Type="Self.City" Multiplicity="0..1" />
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Cit_ID" />
+            </Principal>
+            <Dependent Role="Restaurants">
+              <PropertyRef Name="Res_City" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Com_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Com_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Com_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Comment">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="Com_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Discount_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="Discount" Type="Self.Discount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Discount">
+              <PropertyRef Name="Dis_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationBooked_Discount">
+          <End Role="Discount" Type="Self.Discount" Multiplicity="0..1" />
+          <End Role="ReservationBooked" Type="Self.ReservationBooked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discount">
+              <PropertyRef Name="Dis_ID" />
+            </Principal>
+            <Dependent Role="ReservationBooked">
+              <PropertyRef Name="RVBooked_DiscountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gift_Detail_Gift">
+          <End Role="Gift" Type="Self.Gift" Multiplicity="1" />
+          <End Role="Gift_Detail" Type="Self.Gift_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gift">
+              <PropertyRef Name="Gift_ID" />
+            </Principal>
+            <Dependent Role="Gift_Detail">
+              <PropertyRef Name="GiftDet_GiftID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gift_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="Gift" Type="Self.Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="Gift_CreatedAdmini" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Gift_Detail_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="Gift_Detail" Type="Self.Gift_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Gift_Detail">
+              <PropertyRef Name="GiftDet_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Members_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Members" Type="Self.Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Role_ID" />
+            </Principal>
+            <Dependent Role="Members">
+              <PropertyRef Name="Mem_RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="New_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QA_system_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="QA_system" Type="Self.QA_system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="QA_system">
+              <PropertyRef Name="QA_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QA_system_Members1">
+          <End Role="Members" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="QA_system" Type="Self.QA_system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="QA_system">
+              <PropertyRef Name="QA_AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Members1">
+          <End Role="Members" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationBooked_Members">
+          <End Role="Members" Type="Self.Member" Multiplicity="1" />
+          <End Role="ReservationBooked" Type="Self.ReservationBooked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Mem_ID" />
+            </Principal>
+            <Dependent Role="ReservationBooked">
+              <PropertyRef Name="RVBooked_MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="New_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pictures_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Pictures" Type="Self.Picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Pictures">
+              <PropertyRef Name="Pic_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_News">
+          <End Role="News" Type="Self.News" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="New_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_NewsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pictures_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Pictures" Type="Self.Picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Pictures">
+              <PropertyRef Name="Pic_Restaurant" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QA_system_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="QA_system" Type="Self.QA_system" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="QA_system">
+              <PropertyRef Name="QA_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_StatusType">
+          <End Role="StatusType" Type="Self.StatusType" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusType">
+              <PropertyRef Name="Sta_ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="Rep_Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationBooked_ReservationOpened">
+          <End Role="ReservationOpened" Type="Self.ReservationOpened" Multiplicity="0..1" />
+          <End Role="ReservationBooked" Type="Self.ReservationBooked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReservationOpened">
+              <PropertyRef Name="RVOpen_ID" />
+            </Principal>
+            <Dependent Role="ReservationBooked">
+              <PropertyRef Name="RVBooked_ReservationOpenedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReservationOpened_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="ReservationOpened" Type="Self.ReservationOpened" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="ReservationOpened">
+              <PropertyRef Name="RVOpen_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_Restaurants">
+          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurants">
+              <PropertyRef Name="Res_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubType_TheType">
+          <End Role="TheType" Type="Self.TheType" Multiplicity="1" />
+          <End Role="SubType" Type="Self.SubType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TheType">
+              <PropertyRef Name="ResType_ID" />
+            </Principal>
+            <Dependent Role="SubType">
+              <PropertyRef Name="SubT_ResTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_SubType">
+          <End Role="SubType" Type="Self.SubType" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubType">
+              <PropertyRef Name="SubT_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_SubTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Type_Detail_TheType1">
+          <End Role="TheType" Type="Self.TheType" Multiplicity="0..1" />
+          <End Role="Type_Detail" Type="Self.Type_Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TheType">
+              <PropertyRef Name="ResType_ID" />
+            </Principal>
+            <Dependent Role="Type_Detail">
+              <PropertyRef Name="ResTypeDet_ResTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Role_s_Right">
+          <End Role="Right" Type="Self.Right" Multiplicity="*" />
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Taste_ItEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccuseTypes" EntityType="Self.AccuseType" />
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Discounts" EntityType="Self.Discount" />
+          <EntitySet Name="Gifts" EntityType="Self.Gift" />
+          <EntitySet Name="Gift_Detail" EntityType="Self.Gift_Detail" />
+          <EntitySet Name="Members" EntityType="Self.Member" />
+          <EntitySet Name="News" EntityType="Self.News" />
+          <EntitySet Name="Pictures" EntityType="Self.Picture" />
+          <EntitySet Name="QA_system" EntityType="Self.QA_system" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <EntitySet Name="ReservationBookeds" EntityType="Self.ReservationBooked" />
+          <EntitySet Name="ReservationOpeneds" EntityType="Self.ReservationOpened" />
+          <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+          <EntitySet Name="Rights" EntityType="Self.Right" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="StatusTypes" EntityType="Self.StatusType" />
+          <EntitySet Name="SubTypes" EntityType="Self.SubType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TheTypes" EntityType="Self.TheType" />
+          <EntitySet Name="Type_Detail" EntityType="Self.Type_Detail" />
+          <AssociationSet Name="FK_Report_Type_report" Association="Self.FK_Report_Type_report">
+            <End Role="AccuseType" EntitySet="AccuseTypes" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurants_City" Association="Self.FK_Restaurants_City">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Members" Association="Self.FK_Comment_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_News" Association="Self.FK_Comment_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Restaurants" Association="Self.FK_Comment_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Comment" Association="Self.FK_Report_Comment">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Discount_Restaurants" Association="Self.FK_Discount_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Discount" EntitySet="Discounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationBooked_Discount" Association="Self.FK_ReservationBooked_Discount">
+            <End Role="Discount" EntitySet="Discounts" />
+            <End Role="ReservationBooked" EntitySet="ReservationBookeds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_Detail_Gift" Association="Self.FK_Gift_Detail_Gift">
+            <End Role="Gift" EntitySet="Gifts" />
+            <End Role="Gift_Detail" EntitySet="Gift_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_Members" Association="Self.FK_Gift_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Gift" EntitySet="Gifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_Detail_Members" Association="Self.FK_Gift_Detail_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Gift_Detail" EntitySet="Gift_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Members_Role" Association="Self.FK_Members_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Members" EntitySet="Members" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_Members" Association="Self.FK_News_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QA_system_Members" Association="Self.FK_QA_system_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="QA_system" EntitySet="QA_system" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QA_system_Members1" Association="Self.FK_QA_system_Members1">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="QA_system" EntitySet="QA_system" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Members" Association="Self.FK_Report_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Members1" Association="Self.FK_Report_Members1">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationBooked_Members" Association="Self.FK_ReservationBooked_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="ReservationBooked" EntitySet="ReservationBookeds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_Restaurants" Association="Self.FK_News_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pictures_News" Association="Self.FK_Pictures_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Pictures" EntitySet="Pictures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_News" Association="Self.FK_Report_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_News" Association="Self.FK_Type_Detail_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pictures_Restaurants" Association="Self.FK_Pictures_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Pictures" EntitySet="Pictures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QA_system_Restaurants" Association="Self.FK_QA_system_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="QA_system" EntitySet="QA_system" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Restaurants" Association="Self.FK_Report_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_StatusType" Association="Self.FK_Report_StatusType">
+            <End Role="StatusType" EntitySet="StatusTypes" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationBooked_ReservationOpened" Association="Self.FK_ReservationBooked_ReservationOpened">
+            <End Role="ReservationOpened" EntitySet="ReservationOpeneds" />
+            <End Role="ReservationBooked" EntitySet="ReservationBookeds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReservationOpened_Restaurants" Association="Self.FK_ReservationOpened_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="ReservationOpened" EntitySet="ReservationOpeneds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_Restaurants" Association="Self.FK_Type_Detail_Restaurants">
+            <End Role="Restaurants" EntitySet="Restaurants" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubType_TheType" Association="Self.FK_SubType_TheType">
+            <End Role="TheType" EntitySet="TheTypes" />
+            <End Role="SubType" EntitySet="SubTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_SubType" Association="Self.FK_Type_Detail_SubType">
+            <End Role="SubType" EntitySet="SubTypes" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Type_Detail_TheType1" Association="Self.FK_Type_Detail_TheType1">
+            <End Role="TheType" EntitySet="TheTypes" />
+            <End Role="Type_Detail" EntitySet="Type_Detail" />
+          </AssociationSet>
+          <AssociationSet Name="Role_s_Right" Association="Self.Role_s_Right">
+            <End Role="Right" EntitySet="Rights" />
+            <End Role="Role" EntitySet="Roles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Taste_ItModelStoreContainer" CdmEntityContainer="Taste_ItEntities">
+          <EntitySetMapping Name="AccuseTypes">
+            <EntityTypeMapping TypeName="Taste_ItModel.AccuseType">
+              <MappingFragment StoreEntitySet="AccuseType">
+                <ScalarProperty Name="RepTyp_ID" ColumnName="RepTyp_ID" />
+                <ScalarProperty Name="RepTyp_Content" ColumnName="RepTyp_Content" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="Taste_ItModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Cit_ID" ColumnName="Cit_ID" />
+                <ScalarProperty Name="Cit_Name" ColumnName="Cit_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="Taste_ItModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Com_ID" ColumnName="Com_ID" />
+                <ScalarProperty Name="Com_MemberID" ColumnName="Com_MemberID" />
+                <ScalarProperty Name="Com_RestaurantID" ColumnName="Com_RestaurantID" />
+                <ScalarProperty Name="Com_NewsID" ColumnName="Com_NewsID" />
+                <ScalarProperty Name="Com_Content" ColumnName="Com_Content" />
+                <ScalarProperty Name="Com_CreateDate" ColumnName="Com_CreateDate" />
+                <ScalarProperty Name="Com_StarRate" ColumnName="Com_StarRate" />
+                <ScalarProperty Name="Com_Vaild" ColumnName="Com_Vaild" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Discounts">
+            <EntityTypeMapping TypeName="Taste_ItModel.Discount">
+              <MappingFragment StoreEntitySet="Discount">
+                <ScalarProperty Name="Dis_ID" ColumnName="Dis_ID" />
+                <ScalarProperty Name="Dis_Title" ColumnName="Dis_Title" />
+                <ScalarProperty Name="Dis_RestaurantID" ColumnName="Dis_RestaurantID" />
+                <ScalarProperty Name="Dis_Content" ColumnName="Dis_Content" />
+                <ScalarProperty Name="Dis_Start" ColumnName="Dis_Start" />
+                <ScalarProperty Name="Dis_End" ColumnName="Dis_End" />
+                <ScalarProperty Name="Dis_Picture" ColumnName="Dis_Picture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gifts">
+            <EntityTypeMapping TypeName="Taste_ItModel.Gift">
+              <MappingFragment StoreEntitySet="Gift">
+                <ScalarProperty Name="Gift_ID" ColumnName="Gift_ID" />
+                <ScalarProperty Name="Gift_Name" ColumnName="Gift_Name" />
+                <ScalarProperty Name="Gift_Content" ColumnName="Gift_Content" />
+                <ScalarProperty Name="Gift_Point" ColumnName="Gift_Point" />
+                <ScalarProperty Name="Gift_CreatedAdmini" ColumnName="Gift_CreatedAdmini" />
+                <ScalarProperty Name="Gift_CreatedDate" ColumnName="Gift_CreatedDate" />
+                <ScalarProperty Name="Gift_Quantity" ColumnName="Gift_Quantity" />
+                <ScalarProperty Name="Gift_Picture" ColumnName="Gift_Picture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gift_Detail">
+            <EntityTypeMapping TypeName="Taste_ItModel.Gift_Detail">
+              <MappingFragment StoreEntitySet="Gift_Detail">
+                <ScalarProperty Name="GiftDet_ID" ColumnName="GiftDet_ID" />
+                <ScalarProperty Name="GiftDet_MemberID" ColumnName="GiftDet_MemberID" />
+                <ScalarProperty Name="GiftDet_GiftID" ColumnName="GiftDet_GiftID" />
+                <ScalarProperty Name="GiftDet_GetDate" ColumnName="GiftDet_GetDate" />
+                <ScalarProperty Name="GiftDet_GetQuantity" ColumnName="GiftDet_GetQuantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="Taste_ItModel.Member">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="Mem_ID" ColumnName="Mem_ID" />
+                <ScalarProperty Name="Mem_Name" ColumnName="Mem_Name" />
+                <ScalarProperty Name="Mem_Account" ColumnName="Mem_Account" />
+                <ScalarProperty Name="Mem_Password" ColumnName="Mem_Password" />
+                <ScalarProperty Name="Mem_Gender" ColumnName="Mem_Gender" />
+                <ScalarProperty Name="Mem_Birthday" ColumnName="Mem_Birthday" />
+                <ScalarProperty Name="Mem_NickName" ColumnName="Mem_NickName" />
+                <ScalarProperty Name="Mem_Mail" ColumnName="Mem_Mail" />
+                <ScalarProperty Name="Mem_Phone" ColumnName="Mem_Phone" />
+                <ScalarProperty Name="Mem_Address" ColumnName="Mem_Address" />
+                <ScalarProperty Name="Mem_JoinDate" ColumnName="Mem_JoinDate" />
+                <ScalarProperty Name="Mem_Exp" ColumnName="Mem_Exp" />
+                <ScalarProperty Name="Mem_Point" ColumnName="Mem_Point" />
+                <ScalarProperty Name="Mem_Photo" ColumnName="Mem_Photo" />
+                <ScalarProperty Name="Mem_Introduction" ColumnName="Mem_Introduction" />
+                <ScalarProperty Name="Mem_RoleID" ColumnName="Mem_RoleID" />
+                <ScalarProperty Name="Mem_Source" ColumnName="Mem_Source" />
+                <ScalarProperty Name="Mem_SourceID" ColumnName="Mem_SourceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="Taste_ItModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="New_ID" ColumnName="New_ID" />
+                <ScalarProperty Name="New_Title" ColumnName="New_Title" />
+                <ScalarProperty Name="New_Content" ColumnName="New_Content" />
+                <ScalarProperty Name="New_CreateDate" ColumnName="New_CreateDate" />
+                <ScalarProperty Name="New_MemberID" ColumnName="New_MemberID" />
+                <ScalarProperty Name="New_RestaurantID" ColumnName="New_RestaurantID" />
+                <ScalarProperty Name="New_ClickRate" ColumnName="New_ClickRate" />
+                <ScalarProperty Name="New_OrderDate" ColumnName="New_OrderDate" />
+                <ScalarProperty Name="New_OrderContent" ColumnName="New_OrderContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pictures">
+            <EntityTypeMapping TypeName="Taste_ItModel.Picture">
+              <MappingFragment StoreEntitySet="Pictures">
+                <ScalarProperty Name="Pic_ID" ColumnName="Pic_ID" />
+                <ScalarProperty Name="Pic_NewsID" ColumnName="Pic_NewsID" />
+                <ScalarProperty Name="Pic_Restaurant" ColumnName="Pic_Restaurant" />
+                <ScalarProperty Name="Pic_Picture" ColumnName="Pic_Picture" />
+                <ScalarProperty Name="Pic_Content" ColumnName="Pic_Content" />
+                <ScalarProperty Name="Pic_title" ColumnName="Pic_title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QA_system">
+            <EntityTypeMapping TypeName="Taste_ItModel.QA_system">
+              <MappingFragment StoreEntitySet="QA_system">
+                <ScalarProperty Name="QA_ID" ColumnName="QA_ID" />
+                <ScalarProperty Name="QA_MemberID" ColumnName="QA_MemberID" />
+                <ScalarProperty Name="QA_AdministratorID" ColumnName="QA_AdministratorID" />
+                <ScalarProperty Name="QA_RestaurantID" ColumnName="QA_RestaurantID" />
+                <ScalarProperty Name="QA_CreateDate" ColumnName="QA_CreateDate" />
+                <ScalarProperty Name="QA_AnswerdDate" ColumnName="QA_AnswerdDate" />
+                <ScalarProperty Name="QA_Content" ColumnName="QA_Content" />
+                <ScalarProperty Name="QA_Answer" ColumnName="QA_Answer" />
+                <ScalarProperty Name="QA_MemkTalk" ColumnName="QA_MemkTalk" />
+                <ScalarProperty Name="QA_ResTalk" ColumnName="QA_ResTalk" />
+                <ScalarProperty Name="QA_AdmTalk" ColumnName="QA_AdmTalk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="Taste_ItModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="Rep_ID" ColumnName="Rep_ID" />
+                <ScalarProperty Name="Rep_MemberID" ColumnName="Rep_MemberID" />
+                <ScalarProperty Name="Rep_AdministratorID" ColumnName="Rep_AdministratorID" />
+                <ScalarProperty Name="Rep_RestaurantID" ColumnName="Rep_RestaurantID" />
+                <ScalarProperty Name="Rep_NewsID" ColumnName="Rep_NewsID" />
+                <ScalarProperty Name="Rep_CommentID" ColumnName="Rep_CommentID" />
+                <ScalarProperty Name="Rep_AccuseTypeID" ColumnName="Rep_AccuseTypeID" />
+                <ScalarProperty Name="Rep_Content" ColumnName="Rep_Content" />
+                <ScalarProperty Name="Rep_CreatedDate" ColumnName="Rep_CreatedDate" />
+                <ScalarProperty Name="Rep_Status" ColumnName="Rep_Status" />
+                <ScalarProperty Name="Rep_SolvedDate" ColumnName="Rep_SolvedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReservationBookeds">
+            <EntityTypeMapping TypeName="Taste_ItModel.ReservationBooked">
+              <MappingFragment StoreEntitySet="ReservationBooked">
+                <ScalarProperty Name="RVBooked_ID" ColumnName="RVBooked_ID" />
+                <ScalarProperty Name="RVBooked_BookedDate" ColumnName="RVBooked_BookedDate" />
+                <ScalarProperty Name="RVBooked_DiscountID" ColumnName="RVBooked_DiscountID" />
+                <ScalarProperty Name="RVBooked_ReservationOpenedID" ColumnName="RVBooked_ReservationOpenedID" />
+                <ScalarProperty Name="RVBooked_MemberID" ColumnName="RVBooked_MemberID" />
+                <ScalarProperty Name="RVBooked_Seats" ColumnName="RVBooked_Seats" />
+                <ScalarProperty Name="RVBooked_ReminderContext" ColumnName="RVBooked_ReminderContext" />
+                <ScalarProperty Name="RVBooked_CheckinTime" ColumnName="RVBooked_CheckinTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReservationOpeneds">
+            <EntityTypeMapping TypeName="Taste_ItModel.ReservationOpened">
+              <MappingFragment StoreEntitySet="ReservationOpened">
+                <ScalarProperty Name="RVOpen_ID" ColumnName="RVOpen_ID" />
+                <ScalarProperty Name="RVOpen_OffPriceTitle" ColumnName="RVOpen_OffPriceTitle" />
+                <ScalarProperty Name="RVOpen_RestaurantID" ColumnName="RVOpen_RestaurantID" />
+                <ScalarProperty Name="RVOpen_Seats" ColumnName="RVOpen_Seats" />
+                <ScalarProperty Name="RVOpen_DateTime" ColumnName="RVOpen_DateTime" />
+                <ScalarProperty Name="RVOpen_OffPrice" ColumnName="RVOpen_OffPrice" />
+                <ScalarProperty Name="RVOpen_TeamHeader" ColumnName="RVOpen_TeamHeader" />
+                <ScalarProperty Name="RVOpen_SeatsRemain" ColumnName="RVOpen_SeatsRemain" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Restaurants">
+            <EntityTypeMapping TypeName="Taste_ItModel.Restaurant">
+              <MappingFragment StoreEntitySet="Restaurants">
+                <ScalarProperty Name="Res_ID" ColumnName="Res_ID" />
+                <ScalarProperty Name="Res_Name" ColumnName="Res_Name" />
+                <ScalarProperty Name="Res_Account" ColumnName="Res_Account" />
+                <ScalarProperty Name="Res_Password" ColumnName="Res_Password" />
+                <ScalarProperty Name="Res_Address" ColumnName="Res_Address" />
+                <ScalarProperty Name="Res_Email" ColumnName="Res_Email" />
+                <ScalarProperty Name="Res_City" ColumnName="Res_City" />
+                <ScalarProperty Name="Res_Phone" ColumnName="Res_Phone" />
+                <ScalarProperty Name="Res_MaxConsumption" ColumnName="Res_MaxConsumption" />
+                <ScalarProperty Name="Res_MinConsumption" ColumnName="Res_MinConsumption" />
+                <ScalarProperty Name="Res_StarRate" ColumnName="Res_StarRate" />
+                <ScalarProperty Name="Res_IntroductionContext" ColumnName="Res_IntroductionContext" />
+                <ScalarProperty Name="Res_WorkingDate" ColumnName="Res_WorkingDate" />
+                <ScalarProperty Name="Res_PayBy" ColumnName="Res_PayBy" />
+                <ScalarProperty Name="Res_Seats" ColumnName="Res_Seats" />
+                <ScalarProperty Name="Res_ParkingSeats" ColumnName="Res_ParkingSeats" />
+                <ScalarProperty Name="Res_TenPercentService" ColumnName="Res_TenPercentService" />
+                <ScalarProperty Name="Res_HomePagePicture" ColumnName="Res_HomePagePicture" />
+                <ScalarProperty Name="Res_RoleID" ColumnName="Res_RoleID" />
+                <ScalarProperty Name="Res_CreateDate" ColumnName="Res_CreateDate" />
+                <ScalarProperty Name="Res_QAEnable" ColumnName="Res_QAEnable" />
+                <ScalarProperty Name="Res_TaxID" ColumnName="Res_TaxID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rights">
+            <EntityTypeMapping TypeName="Taste_ItModel.Right">
+              <MappingFragment StoreEntitySet="Right">
+                <ScalarProperty Name="Right_ID" ColumnName="Right_ID" />
+                <ScalarProperty Name="Right_Name" ColumnName="Right_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="Taste_ItModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+                <ScalarProperty Name="Role_Name" ColumnName="Role_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusTypes">
+            <EntityTypeMapping TypeName="Taste_ItModel.StatusType">
+              <MappingFragment StoreEntitySet="StatusType">
+                <ScalarProperty Name="Sta_ID" ColumnName="Sta_ID" />
+                <ScalarProperty Name="Sta_Context" ColumnName="Sta_Context" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubTypes">
+            <EntityTypeMapping TypeName="Taste_ItModel.SubType">
+              <MappingFragment StoreEntitySet="SubType">
+                <ScalarProperty Name="SubT_ID" ColumnName="SubT_ID" />
+                <ScalarProperty Name="SubT_Contect" ColumnName="SubT_Contect" />
+                <ScalarProperty Name="SubT_ResTypeID" ColumnName="SubT_ResTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Taste_ItModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TheTypes">
+            <EntityTypeMapping TypeName="Taste_ItModel.TheType">
+              <MappingFragment StoreEntitySet="TheType">
+                <ScalarProperty Name="ResType_ID" ColumnName="ResType_ID" />
+                <ScalarProperty Name="ResType_Style" ColumnName="ResType_Style" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type_Detail">
+            <EntityTypeMapping TypeName="Taste_ItModel.Type_Detail">
+              <MappingFragment StoreEntitySet="Type_Detail">
+                <ScalarProperty Name="ResTypeDet_ID" ColumnName="ResTypeDet_ID" />
+                <ScalarProperty Name="ResTypeDet_RestaurantID" ColumnName="ResTypeDet_RestaurantID" />
+                <ScalarProperty Name="ResTypeDet_NewsID" ColumnName="ResTypeDet_NewsID" />
+                <ScalarProperty Name="ResTypeDet_ResTypeID" ColumnName="ResTypeDet_ResTypeID" />
+                <ScalarProperty Name="ResTypeDet_SubTypeID" ColumnName="ResTypeDet_SubTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Role_s_Right" TypeName="Taste_ItModel.Role_s_Right" StoreEntitySet="Role's_Right">
+            <EndProperty Name="Right">
+              <ScalarProperty Name="Right_ID" ColumnName="RR_RightID" />
+            </EndProperty>
+            <EndProperty Name="Role">
+              <ScalarProperty Name="Role_ID" ColumnName="RR_RoleID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

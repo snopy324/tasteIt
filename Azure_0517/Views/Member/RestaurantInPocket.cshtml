@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Azure_0517.Models.Restaurant>
+@{
+    ViewBag.Title = "我收藏的餐廳";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/restaurantblock.css" rel="stylesheet" />
+    <style>
+        .star-rating {
+            display: flex;
+            align-items: center;
+            font-size: 1.6em;
+            /*justify-content: center;*/
+        }
+
+        .back-stars {
+            display: flex;
+            color: lightgray;
+            position: relative;
+            text-shadow: 4px 4px 10px gray;
+        }
+
+        .front-stars {
+            display: flex;
+            color: #FFBC0B;
+            overflow: hidden;
+            position: absolute;
+            text-shadow: 2px 2px 5px #d29b09;
+            top: 0;
+        }
+    </style>
+}
+<div class="container alert alert-secondary" role="alert">
+    <div class="row">
+        <div class="col-4 m-0 p-0">
+            <h3 style="line-height:40px;text-align:center">我收藏的餐廳</h3>
+        </div>
+        <div class="col-8 text-right">
+            <span style="line-height:40px;text-align:center">排序條件:</span>
+            <select style="text-align:center" id="orderBy" name="orderBy" class="custom-select custom-select-sm col-4">
+                <option class="text-center" value="評價" selected>依照評價</option>
+                <option class="text-center" value="消費金額(升序)">消費金額(升序)</option>
+                <option class="text-center" value="消費金額(降序)">消費金額(降序)</option>
+            </select>
+        </div>
+    </div>
+</div>
+@*<form class="row">
+        <div class="col-1"></div>
+
+    </form>*@
+@*<br /><br /><br /><br />*@
+<div class="container">
+    <div class="container" id="searchResult" @*class="row"*@>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        function load() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RestaurantInPocketList", "Member")',
+                data: {
+                    orderBy: $('#orderBy').val()
+                },
+                success: function (data) {
+                    $('#searchResult').html(data)
+                }
+            })
+        }
+        load();
+
+        $(document).on('change', '#orderBy', function () {
+            load();
+        })
+
+        $(document).on('click', 'p>a', function () {
+            var page = $(this).text()
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RestaurantInPocketList", "Member")',
+                data: {
+                    orderBy: $('#orderBy').val(),
+                    Page : page
+                },
+                success: function (data) {
+                    $('#searchResult').html(data)
+                }
+            })
+        })
+    </script>
+    <script>
+        $(document).on('click', "button.btn.LVM.m-0.p-0", function () {
+            if ($(this).data('flaglike') != null) {
+                let source = $(this);
+                let s_image = source.find("img");
+                let the_rid = source.data('flagrid');
+                let the_n_m = source.data('t_m');
+                let test = source.parent().parent().children(2).find('p>span');
+                //console.log(test.text());
+                //let r_l=$(`#thelikecount${flagrid}`);
+                let likecount = test.text();
+                let number_likecount = Number(likecount);
+
+                var l_change = source.hasClass('btn-warning')== true ? 0 : 1;
+                if (l_change == 0)
+                {
+                     l_change = 1;
+                }
+                else if (l_change == 1)
+                {
+                     l_change = 0;
+                }
+            $.ajax({
+                method: "Post",
+                url: '@Url.Action("addtolikeorcancel", "Restaurant")',
+                data: { resid:the_rid, memid:the_n_m, flagstatus: l_change}
+            }).done(function (data) {
+                if (l_change == 1) {
+                    source.removeClass("btn-warning");
+                    source.addClass("btn-light")
+                    source.attr("title", "加到收藏");
+                    s_image.attr("title", "加到收藏");
+                    let number2 = String(number_likecount - 1);
+                    //console.log(typeof (number2));
+                    //console.log(number2);
+                    test.text(number2);
+
+                } else {
+                    source.addClass("btn-warning");
+                    source.removeClass("btn-light")
+                    source.attr("title", "取消收藏");
+                    s_image.attr("title", "取消收藏");
+                    let number3 = String(number_likecount + 1);
+                    //console.log(typeof (number3));
+                    //console.log(number3);
+                    test.text(number3);
+                }
+                //alert(data);
+            });
+            };
+        });
+
+
+    </script>
+}

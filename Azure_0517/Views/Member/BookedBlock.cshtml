@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Azure_0517.Models.ReservationBooked>
+
+@foreach (var book in Model)
+{
+   
+    <div class="reservation-item" id="reservation_@book.RVBooked_ID">
+        <div class="reservation-element">
+            <div class="date-wrapper">
+                <div>@(book.ReservationOpened.RVOpen_DateTime.Month)月</div>
+                <div class="day">@book.ReservationOpened.RVOpen_DateTime.Day</div>
+                <div>@book.ReservationOpened.RVOpen_DateTime.DayOfWeek.ToString().Substring(0, 3)</div>
+            </div>
+            <div class="info-wrapper">
+                <div class="info-text">
+                    訂位編號: <span class="titleID">@book.RVBooked_ID</span> / @book.ReservationOpened.RVOpen_DateTime.ToString("HH:mm") / <span class="titleseat">@book.RVBooked_Seats</span> 人
+                    @if ((book.ReminderText != "" && book.ReminderText != null))
+                    {
+                        <span class="reminder info-text">食物敏感備註:@(book.ReminderText)</span>
+                    }
+                </div>
+
+                
+                <h2 class="restaurant-name">
+                    @book.ReservationOpened.Restaurant.Res_Name
+                </h2>
+                @*</a>*@
+                @if (book.RVBooked_CheckinTime.HasValue)
+                {
+                    <span class="badge badge-pill badge-success status-tag">&ensp;完成&ensp;</span>
+                }
+                else if (book.ReservationOpened.RVOpen_DateTime < DateTime.Now)
+                {
+                    <span class="badge badge-pill badge-warning status-tag">&ensp;缺席&ensp;</span>
+                }
+                else if (book.BackUpNo != null)
+                {
+                    <span class="badge badge-pill badge-danger status-tag">&ensp;候補&ensp;</span>
+                }
+                else
+                {
+                    <span class="badge badge-pill badge-info status-tag">&ensp;等待&ensp;</span>
+                }
+
+                <span class="ezcash-tag">@book.ReservationOpened.OffpriceReadme</span>
+
+
+
+            </div>
+
+            @if (book.ReservationOpened.RVOpen_DateTime > DateTime.Now && !book.RVBooked_CheckinTime.HasValue)
+            {
+                <div class="text-muted">
+                    <a data-bookid='@book.RVBooked_ID' class="badge badge-secondary" href="#popup">修改設定</a>
+                    <a data-bookid=@book.RVBooked_ID class="badge badge-danger noticeNeed" href="#">刪除訂位</a>
+                </div>
+            }
+
+            @Html.HiddenFor(m => book.RVBooked_Seats)
+            @Html.HiddenFor(m => book.ReservationOpened.RVOpen_SeatsRemain)
+        </div>
+    </div>
+
+    <hr />
+
+
+
+
+  
+}
+
+<div class="pagination-container">
+    @for (int i = 1; i <= (ViewBag.DataCount + 2) / 3; i++)
+    {
+        <button class="pagebtn">@i</button>
+    }
+</div>
+<footer>
+    <p>共 @(ViewBag.DataCount) 筆資料</p>
+</footer>
+
+
+

@@ -1,0 +1,158 @@
+﻿@model Azure_0517.Models.Gift
+@{
+    ViewBag.Title = "修改紅利商品";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+        .section-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .title {
+            text-align: center;
+            color: crimson;
+            margin: 3rem;
+            font-size: 28px;
+            font-weight: bolder !important;
+        }
+
+        .form-group {
+            margin-left: 150px;
+        }
+
+        .col-md-10 img {
+            margin-left: 180px;
+            max-height: 350px;
+            max-width: 350px;
+        }
+
+        .use {
+            height: 40px;
+            width: 100px;
+            border-radius: 3px;
+            box-shadow: -3px -5px 3px rgba(20%,20%,40%,0.5) inset;
+        }
+
+        .file-btn {
+            font-size: 14px;
+            background-color: #4b98f8;
+            color: #fff;
+            border: 2px solid #51c9e8;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            position: absolute;
+            left: 580px;
+            box-shadow: -3px -5px 3px rgba(20%,20%,40%,0.5) inset;
+        }
+    </style>
+}
+
+<div class="section-header">
+    <h3 class="title">
+        <i class="fa fa-book"></i>修改紅利商品
+    </h3>
+</div>
+
+@using (Html.BeginForm("GiftEdit", "Administrator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @*@Html.AntiForgeryToken()*@
+    <div class="container">
+        <hr />
+        <!--獎品編號-->
+        @Html.EditorFor(model => model.Gift_ID, new { htmlAttributes = new { type = "hidden" } })
+        <!--獎品照片-->
+        <div class="form-group" style="position:relative">
+            <button class="file-btn">選擇照片</button>
+            @Html.LabelFor(model => model.Gift_Picture, new { @class = "control-label col-md-2" })
+            <input class="text-box single-line" style="width:95px;height:45px;position:relative;left:430px;opacity:0;cursor:pointer" type="file" name="ReplacePicture" id="ReplacePicture" />
+            <div class="col-md-10">
+                <img id="target" width="350" height="350" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Gift_Picture)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gift_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gift_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.Gift_Name, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gift_Point, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gift_Point, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.Gift_Point, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gift_Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gift_Quantity, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gift_CreatedAdmini, "創建人員", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="Gift_CreatedAdmini" id="Gift_CreatedAdmini" value="@Model.Member.Mem_Name" readonly="readonly" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gift_CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <input class="form-control" type="datetime" name="Gift_CreatedDate" id="Gift_CreatedDate" value="@Model.Gift_CreatedDate" readonly="readonly" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gift_Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Gift_Content, new { @class = "form-control", style = "resize:none;" })
+                @*@Html.ValidationMessageFor(model => model.Gift_Content, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10" style="text-align:center">
+                <div class="btn-group">
+                    <input type="submit" value="修改" class="btn btn-secondary use" style="border-radius:30px 0 0 30px" />
+                    @*@Html.ActionLink("回到首頁", "GiftOverview")*@
+                    <a href="@Url.Action("GiftOverview","Administrator")" class="use btn btn-danger" style="border-radius:0 30px 30px 0">回到首頁</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("ReplacePicture").addEventListener("change", fileviewer);
+        })
+
+        function fileviewer() {
+            var files = document.getElementById("ReplacePicture").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    document.getElementById("target").setAttribute("src", fileContent);
+                })
+                reader.readAsDataURL(x);
+            }
+        }
+        $('.file-btn').click(function () {
+            event.preventDefault();
+        })
+    </script>
+}

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Azure_0517.Models.News>
+    @*model是否需要更改*@
+@{
+    ViewBag.Title ="餐廳 - 食記";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>餐廳 - 食記</h3>
+
+<div class="container">
+    <form id="MyForm" action="~/Restaurant/ReportNews_Restaurant" method="post">
+        @foreach (var news in Model)
+        {
+            <div class="row" style="border-radius:15px;margin:20px">
+                <div class="col-4" style="background-color:darkorange;border-bottom-left-radius:15px;border-top-left-radius:15px;">
+                    <p style="text-align:center">施工中</p>
+                </div>
+                <div class="col-7" style="background-color:orange;text-align:left;border-bottom-right-radius:15px;border-top-right-radius:15px;">
+                    <div style="margin-top:15px;font-size:x-large">
+                        <a href="~/Home/BlogPage/@news.New_ID" id="@news.New_ID" name="id">@Html.DisplayFor(n => news.New_Title)</a>
+                    </div>
+                    <hr />
+                    <a>@Html.DisplayFor(n => news.Restaurant.Res_Name)</a>
+                    <hr />
+                    <div>@Html.Raw(news.New_Content)</div>
+                </div>
+                <div class="col-1" style="padding:0;">
+                    <div style="height:20px;margin-bottom:20px;border-top-right-radius:15px;">
+                        <a class="btn btn-success" style="margin-left:10px" id="report" name="report"><i class="fas fa-pen-square"></i>檢舉</a>
+                        @Html.Hidden("Rep_Content", null, new { Rep_Content = "Rep_Content" })
+                        @Html.Hidden("Rep_NewsID", news.New_ID, null)
+                    </div>
+                    @*<a class="btn btn-success" style="margin-left:10px" name=""><i class="fas fa-pen-square"></i>修改</a>*@
+                    
+                    @*@Html.ActionLink("刪除", "DeleteNews", "Member", new { id = news.New_ID }, new { @class = "btn btn-danger" ,@style= "margin-left:10px" })*@
+                    @*<a class="btn btn-danger" style="margin-left:10px"><i class="fas fa-pen-square"></i>刪除</a>*@
+                </div>
+            </div>
+            <br />
+        }
+    </form>
+</div>
+
+@section scripts{
+    <script>
+        //用on事件幫控制項加入方法
+        $(document).on('click','#report',function () {
+            var Rep_Content = prompt("請輸入檢舉內容");
+            //if (Rep_Content != null && Rep_Content !="") {
+            //    $('#target').val(Rep_Content);
+            //    alert(Rep_Content);
+            //}
+            //else {
+            //    alert("取消檢舉");
+            //}
+            if (Rep_Content != null && Rep_Content !="") {
+                alert(Rep_Content);
+                document.getElementById("Rep_Content").value = Rep_Content;
+                document.getElementById("MyForm").submit();
+                alert("進入審核階段");
+            }
+            else {
+                alert("取消檢舉");
+            }
+        })
+
+    </script>
+    
+    
+    }

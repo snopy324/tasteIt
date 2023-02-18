@@ -1,0 +1,263 @@
+﻿@model  IEnumerable<Azure_0517.Models.ViewModel.MapObj>
+@{
+    ViewBag.Title = "等等吃啥!?";
+}
+
+
+@section styles{
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            width:500px;
+            height:500px;
+        }
+        .loading{
+            position:absolute;
+            top:160px;
+            left:120px;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        /*html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }*/
+    </style>
+}
+
+<div style="margin:10px -50px;">
+    <div style="margin-bottom:3px;">
+        <label for="myaddress">你在</label>
+        <input style="width:500px;" type="text" id="myaddress" name="myaddress" value="" />
+        <label for="myaddress">對嗎?</label>
+        <button id="whatfor" class="btn btn-secondary">吃啥</button>
+        <button id="GoogleMapDemo" class="btn btn-info">Demo</button>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+
+            <div id="RestaurantsResult" style="overflow-y:auto; max-height:500px;"></div>
+
+
+
+            @* ------ Ajax ------ *@
+        </div>
+        <div id="map" class="col-8"></div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $('#GoogleMapDemo').click(function () {
+            $('#myaddress').val('台北火車站')
+        })
+    </script>
+
+    <script>
+        var locationNow;
+        var map;
+        var Markers = [];
+        var originMarker;
+        center = { lat: 23.5878346, lng: 120.9483611 };
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (location) {
+                    var geocoder = new google.maps.Geocoder;
+                    locationNow = `${location.coords.latitude},${location.coords.longitude}`; 
+                    //center = { lat: location.coords.latitude, lng: location.coords.longitude };
+                    center = { lat: 25.039944, lng: 121.543295 };
+                    geocoder.geocode({ 'location': center }, function (results, status) {
+                        if (status === 'OK') {
+                            if (results[0]) {
+                                $('#myaddress').val(results[0].formatted_address)
+                                
+                                originMarker = new google.maps.Marker({
+                                    map: map,
+                                    draggable: false,
+                                    animation: google.maps.Animation.DROP,
+                                    position: center
+                                });
+                            } else {
+                                window.alert('No results found');
+                            }
+                        } else {
+                            console.log(status)
+                            window.alert('Geocoder failed due to: ' + status);
+                        }
+                    });
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+
+        $('#whatfor').click(function () {
+
+            ClearMarkers();
+            $('#RestaurantsResult').html('')
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GoogleGeometry", "Home")',
+                data: { address: $('#myaddress').val() },
+                success: function (data) {
+                    if (originMarker) {
+                        originMarker.setMap(null);
+                        originMarker = null;
+                    }
+                    originMarker = new google.maps.Marker({
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        position: { lat: Number(data.lat), lng: Number(data.lng) }
+                    })
+                    moveToLocation(data.lat, data.lng);
+                }
+            })
+
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GoogleRestaurantJson","Home")',
+                data: { address: $('#myaddress').val() },
+                beforeSend: function () {
+                    $('#RestaurantsResult').append(
+                        $('#loading_gif').clone()
+                            .attr('hidden', false)
+                            .addClass('loading')
+                            .show()
+                    )
+                },
+                success: function (data) {
+                    $('#RestaurantsResult').html('')
+                    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    var maxDistance = 0;
+                    if (data == '錯誤地址') {
+                        $('#RestaurantsResult').text(data)
+                        return;
+                    }
+
+                    $.each(data, function (key, Obj) {
+                        var img = `http://maps.google.com/mapfiles/marker${chars[key]}.png`;
+
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            draggable: false,
+                            icon: img,
+                            animation: google.maps.Animation.DROP,
+                            position: { lat: Number(Obj.geometry.lat), lng: Number(Obj.geometry.lng) }
+                        });
+
+                        $(marker).click(function () {
+                            if (this.getAnimation() !== null) {
+                                this.setAnimation(null);
+                            }
+                            else {
+                                this.setAnimation(google.maps.Animation.BOUNCE);
+                            }
+                        });
+
+                        Markers.push(marker)
+
+                        var docFrag = $(document.createDocumentFragment())
+
+                        var dis = Number((Obj.distance) / 1000).toFixed(2)
+                        var dur = Number((Obj.duration) / 60).toFixed()
+						if(Number(Obj.distance)>maxDistance){
+						maxDistance=Number(Obj.distance);
+						}
+
+                        var card = $('<div/>').addClass('card')
+                            .attr('data-lat', Obj.geometry.lat)
+                            .attr('data-lng', Obj.geometry.lng)
+                            .attr('data-markerid', key)
+                        var card_body = $('<div/>').addClass('card-body')
+                        var card_title = $('<div/>').addClass('card-title')
+                        var img = $('<img/>').attr('alt','Alternate Text').attr('src', `http://maps.google.com/mapfiles/marker${chars[key]}.png`)
+                        var span = $('<span/>').addClass('ml-2 h6').text(Obj.RestaurantName)
+                        var card_text = $('<p/>').addClass('card-text').text(Obj.RestaurantAddress)
+                        var d_block = $('<span/>').addClass('d-block')
+                        var a = $('<a/>').addClass('badge badge-info').text('前往訂位').attr('href', `@Url.Action("RestaurantHomePage","Restaurant")/${Obj.RestaurantID}`)
+                        var pull_right = $('<small/>').addClass('pull-right').text(`路程: ${dis} 公里 / ${dur} 分鐘`)
+
+                        card_title.append(img, span);
+                        d_block.append(a, pull_right);
+                        card_body.append(card_title, card_text, d_block);
+                        card.append(card_body);
+                        card.click(function () {
+                            //Pin點彈跳
+                            $.each(Markers, function (key, ele) {
+                                if (ele.getAnimation()) {
+                                    $(ele).trigger('click')
+                                }
+                            })
+                            var ele = Markers[Number($(this).data('markerid'))];
+                            $(ele).trigger('click');
+                            //地圖中心移動
+                            moveToLocation($(this).data('lat'), $(this).data('lng'));
+
+                        })
+                        docFrag.append(card);
+
+
+                        map.setZoom(getZoomLevel(maxDistance));
+                        $('#RestaurantsResult').append(docFrag)
+
+                    })
+                }
+            })
+        })
+
+        function getZoomLevel(distance) {
+            if (distance != null) {
+                var scale = distance / 500;
+                zoomLevel = Number((16 - Math.log(scale) / Math.log(2))).toFixed();
+            }
+            return Number(zoomLevel);
+        }
+
+        function ClearMarkers() {
+            $.each(Markers, function (key, marker) {
+                marker.setMap(null);
+            })
+            Markers = [];
+        }
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: center
+            });
+
+            getLocation();
+
+
+        }
+
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            }
+            else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+        }
+
+        function moveToLocation(lat, lng) {
+            var center = new google.maps.LatLng(Number(lat), Number(lng))
+            map.setZoom(14);
+            map.panTo(center);
+        }
+
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_WPox-HcTi5m-YQffFq59AavDZiapyVE&callback=initMap">
+    </script>
+}

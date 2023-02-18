@@ -1,0 +1,107 @@
+﻿@model IPagedList<Azure_0517.Models.Restaurant>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web;
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(r => r.First().Res_HomePagePicture)</th>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(m => m.First().Res_ID)</th>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(m => m.First().Res_Name)</th>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(m => m.First().Res_City)</th>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(m => m.First().Res_Phone)</th>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(m => m.First().Res_CreateDate)</th>
+                <th class="text-center adm_res_fs">@Html.DisplayNameFor(m => m.First().Res_Email)</th>
+                <th class="text-center adm_res_fs">編輯</th>
+                <th class="text-center adm_res_fs">對話</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var res in Model)
+            {
+                //"RestaurantHomePage", "Restaurant", new { id = res.Res_ID },null)
+
+                <tr>
+                    <td class="table_row">
+                        <img src="@Url.Action("getimage", "Administrator", new {id=res.Res_ID,flag="res" })" style="width:50px;height:50px;" />
+                    </td>
+                    <td class="adm_res_fs table_row table_td">
+                        <a class="adm_res_fs" href="~/Restaurant/RestaurantHomePage/@res.Res_ID">@Html.DisplayFor(m => res.Res_ID)</a>
+                    </td>
+                    <td class="table_row table_td">
+                        <div style="width:100px;height:20px;">
+                            <p class="adm_res_fs" style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap;" href="~/Restaurant/RestaurantHomePage/@res.Res_ID">@Html.DisplayFor(m => res.Res_Name)</p>
+                        </div>
+                    </td>
+                    <td class="adm_res_fs table_row table_td">@Html.DisplayFor(m => res.City.Cit_Name)</td>
+                    <td class="adm_res_fs table_row table_td">@Html.DisplayFor(m => res.Res_Phone)</td>
+                    <td class="adm_res_fs table_row table_td">@Html.DisplayFor(m => res.Res_CreateDate)</td>
+                    <td class="adm_res_fs table_row table_td">@Html.DisplayFor(m => res.Res_Email)</td>
+                    <td class="table_row table_td">@Html.ActionLink("編輯", "RestaurantManage", "Administrator", new { id = res.Res_ID }, new { @class = "btn btn-secondary adm_res_fs" })</td>
+                    <td class="table_row table_td">@Html.ActionLink("QA", "AdmQAShow", "Administrator", new { QA_RestaurantID = res.Res_ID }, new { @class = "btn btn-success adm_res_fs ContactRestaurant", data_id = res.Res_ID })</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+<div class="container">
+    <div class="pagination-container" style="display:flex;flex-direction:row;justify-content:center">
+        <ul class="pagination">
+            @if (!Model.IsFirstPage)
+            {
+                <li>
+                    <button id="page-1" class="pagebtn" style="outline:none"><<</button>
+                </li>
+            }
+
+            @{
+                int count = 1;
+
+                if (Model.PageNumber >= 3)
+                {
+                    var p2 = Model.PageNumber - 2;
+                    <li>
+                        <button id="page-@p2" class="pagebtn" style="outline:none">@p2</button>
+                    </li>
+                    count++;
+                }
+                if (Model.PageNumber >= 2)
+                {
+                    var p1 = Model.PageNumber - 1;
+                    <li>
+                        <button id="page-@p1" class="pagebtn" style="outline:none">@p1</button>
+                    </li>
+                    count++;
+
+                }
+
+                <li>
+                    <button id="page-@Model.PageNumber" class="pagebtn" style="outline:none">@Model.PageNumber</button>
+                </li>
+                count++;
+                var num = Model.PageNumber + 1;
+                for (int i = count; i <= 5; i++)
+                {
+                    if (num <= Model.PageCount)
+                    {
+                        <li>
+                            <button id="page-@num" class="pagebtn" style="outline:none">@num</button>
+                        </li>
+                        num++;
+                    }
+                }
+
+            }
+
+            @if (!Model.IsLastPage)
+            {
+                <li>
+                    <button id="page-@Model.PageCount" class="pagebtn" style="outline:none">>></button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿@model Azure_0517.Models.ViewModel.AdmQAViewModel
+@if (Request.Cookies["Role"].Value == "Administrator")
+{
+    if (Model.RoleId == 1)
+    {
+        @Html.Action("ContactContent", "Home", new { QA_MemberID = Model.Id })
+    }
+    else if (Model.RoleId == 0)
+    {
+        @Html.Action("ContactContent", "Home", new { QA_RestaurantID = Model.Id })
+    }
+}
+else if (Request.Cookies["Role"].Value == "Member")
+{
+    if (Model.RoleId == 3)
+    {
+        @Html.Action("ContactContent", "Home", new { QA_AdministratorID = Model.Id })
+    }
+    else if (Model.RoleId == 0)
+    {
+        @Html.Action("ContactContent", "Home", new { QA_RestaurantID = Model.Id })
+    }
+}
+else if (Request.Cookies["Role"].Value == "Restaurant")
+{
+    if (Model.RoleId == 1)
+    {
+        @Html.Action("ContactContent", "Home", new { QA_MemberID = Model.Id })
+    }
+    else if (Model.RoleId == 3)
+    {
+        @Html.Action("ContactContent", "Home", new { QA_AdministratorID = Model.Id })
+    }
+}

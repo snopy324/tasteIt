@@ -1,0 +1,102 @@
+﻿@model Azure_0517.Models.ReservationOpened
+
+
+
+<h3>新增開放訂位</h3>
+
+<div class="container">
+    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", id = "NewReservationForm" }))
+    {
+        @Html.Hidden("RVOpen_RestaurantID", (object)ViewBag.RestaurantID)
+        <div class="form-group">
+            @Html.LabelFor(m => m.RVOpen_OffPriceTitle, new { @class = "col-sm-2 col-form-label col-form-label-sm" })
+            @Html.EditorFor(m => m.RVOpen_OffPriceTitle, new { htmlAttributes = new { required = true, placeholder = Html.DisplayNameFor(m => m.RVOpen_OffPriceTitle), @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.Label("開放日期", new { @class = "col-sm-2 col-form-label col-form-label-sm" })
+            @Html.TextBox("OpenDate", DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), new { required = true, @class = "form-control", type = "Date" })
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                @Html.Label("開始時間", new { @class = "col-form-label col-form-label-sm" })
+                @Html.TextBox("StartTime", DateTime.Now.ToString("HH:mm"), new { required = true, @class = "form-control", type = "time" })
+            </div>
+            <div class="col">
+                @Html.Label("結束時間", new { @class = "col-form-label col-form-label-sm" })
+                @Html.TextBox("EndTime", DateTime.Now.AddHours(2).ToString("HH:mm"), new { required = true, @class = "form-control", type = "time" })
+            </div>
+            <div class="col">
+                @Html.Label("翻桌間隔", new { @class = "col-form-label col-form-label-sm" })
+                @Html.TextBox("StepTime", "", new { @placeholder = "單位:分鐘", @class = "form-control", type = "number", Required = true })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("優惠種類", new { @class = "col-form-label col-form-label-sm" })
+        </div>
+        
+        <div class="form-group">
+            @Html.Label("紅利", new { @class = "col-form-label col-form-label-sm" })
+            @Html.RadioButton("品項", "紅利", true)
+            @Html.DropDownList("RVOpen_OffPrice",
+           new SelectList(new string[] { "+10點", "+20點", "+30點", "+40點", "+50點", "+75點", "+100點" })
+           , new { @class = "form-control" })
+
+        </div>
+        <div class="form-group">
+            @Html.Label("折扣", new { @class = "col-form-label col-form-label-sm" })
+            @Html.RadioButton("品項", "折扣",new { id = "折扣" })
+            @Html.DropDownList("RVOpen_OffPrice",
+          new SelectList(new string[] {"95折" , "9折", "85折", "8折", "75折", "7折", "65折", "6折" })
+          ,new { disabled = true, @class = "form-control RVOpen_OffPricedis" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.RVOpen_Seats, new { @class = "col-form-label col-form-label-sm" })
+            @Html.EditorFor(m => m.RVOpen_Seats, new { htmlAttributes = new { required = true, placeholder = Html.DisplayNameFor(m => m.RVOpen_Seats), @class = "form-control" } })
+        </div>
+
+
+        <button id="NewReservationSend" value="_" class="btn btn-primary">新增訂位</button>
+        <br /><br /><br /><br />
+
+
+
+
+    }
+</div>
+<button class="btn btn-info" id="ReservationDemo">Demo</button>
+@section scripts{
+    <script>
+        $('input[type="radio"]').click(function () {
+            //RVOpen_OffPrice
+            $('input[type="radio"]').next().prop('disabled', true);
+            $(this).next().prop('disabled', false);
+        })
+
+        $(':submit').click(function () {
+            var Flag = false;
+            $.each($('input'), function (key, element) {
+                if ($(element).val() == '') {
+                    Flag = true;
+                    return;
+                }
+            })
+            if (Flag) {
+                return;
+            }
+            $('input[type="radio"]').toArray().forEach(function (element, index) {
+                if (element.checked != true) {
+                    $(element).next().attr('name', '')
+                }
+            })
+        })
+
+        $('#Demo').click(function () {
+            $('#RVOpen_OffPriceTitle').val('來店面享紅利回饋')
+            $('#StepTime').val(1200)
+            $('#RVOpen_Seats').val(10)
+
+        })
+    </script>
+
+}

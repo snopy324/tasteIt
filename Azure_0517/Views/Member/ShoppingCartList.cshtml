@@ -1,0 +1,242 @@
+﻿@model List<Azure_0517.Models.ViewModel.CartViewModel>
+@{
+    ViewBag.Title = "購物車清單";
+}
+
+@section styles{
+    <script src="https://use.fontawesome.com/c560c025cf.js"></script>
+    <style>
+        td {
+            text-align: center;
+        }
+
+        th {
+            background-color: aliceblue;
+            text-align: center;
+        }
+
+        td img {
+            width: 130px;
+            height: 130px;
+        }
+
+        .row .btn {
+            box-shadow: 2px 2px 2px rgba(20%,20%,40%,0.5);
+        }
+
+        .sec-btn {
+            width: 100%;
+            font-size: 20px;
+            font-weight: 600;
+            height: calc(3rem + 2px) !important;
+            color: #fff;
+            border-radius: 5px;
+            border-style:none;
+        }
+
+            .sec-btn:active {
+                box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+            }
+
+        .send-btn {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            line-height: 1.5;
+            text-align: center;
+            box-shadow: -2px -4px 3px rgba(20%,20%,40%,0.5) inset;
+        }
+
+            .send-btn:hover {
+                color: white;
+                text-decoration: none;
+            }
+
+            .send-btn:active {
+                box-shadow: 3px 5px 3px rgba(20%,20%,40%,0.5) inset;
+            }
+    </style>
+
+}
+
+<div class="container mb-5 mt-5">
+    <div class="card-header bg-dark text-light">
+        
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        購物車
+        <div class="clearfix"></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">獎品圖片</th>
+                            <th scope="col">獎品名稱</th>
+                            <th scope="col">點數</th>
+                            <th scope="col">數量</th>
+                            <th scope="col">小計</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="@item.LastQuantity" data-id="@item.GiftID">
+                                <td>
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Picture)" />
+                                </td>
+                                <td id="name">@item.Name</td>
+                                <td>@item.Point</td>
+                                <td id="@item.GiftDet_ID">@Html.EditorFor(p => item.GetQuantity, new { htmlAttributes = new { @class = "qty ", min = "1", max = item.LastQuantity, size = "4", @style = "width:60px;text-align:center" } })</td>
+                                <td class="amount" id="@item.GiftID">@item.Amount</td>
+                                <td>
+                                    <a onclick="DeleteCartItem(@item.GiftID)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </a>
+                                </td>
+                            </tr>
+                        }
+                        <tr style="background-color:darkgray">
+                            <td style="color:white;">
+                                <strong>會員點數:</strong>
+                            </td>
+                            <td style="color:white;" class="text-left">
+                                <strong>@Model.FirstOrDefault().MemberPoint Pt</strong>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td style="color:white;">
+                                <strong>總計:</strong>
+                            </td>
+                            <td style="color:white;" class="text-right">
+                                <strong id="total">xxxxx </strong>
+                                <strong>Pt</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a href="~/Member/GiftExchange" class="sec-btn send-btn" style="background-color:#2eabd8;">繼續購物</a>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                    <button id="checkout" class="sec-btn send-btn" style="background-color:#16af16;">結帳送出</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function priceSum() {   //總計
+            var sum = 0;
+            $(".amount").each(function () {
+                sum += parseInt($(this).text());
+            });
+            $("#total").text(sum.toFixed(0));
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("_CartPartial", "Member")',
+            }).done(function (data) {
+                $('#Cart').html(data);
+                $(window).scroll();
+                if ($('#total').text() == "0") {
+                    alert('購物車已無獎品,前往兌換清單');
+                    location.href = '@Url.Action("GiftExchange","Member")';
+                }
+            })
+        }
+
+        function amount() {     //小計
+            $('input').each(function (i, element) {
+                var GDid = Number($(element).parent().attr("id"));
+                var qty = Number($(element).val());
+                var max = Number($(element).attr('max'));
+                var name = $(element).closest('tr').find('#name').text();
+
+                if (qty > max) {
+                    alert(name + ' 超過庫存量');
+                    qty = $(element).val(max);
+                }
+
+                $(element).parent().next("td").load("GiftQuantityChange", { GD_ID: GDid, Qty: qty }, function () {
+                    priceSum();
+                });
+            })
+        }
+
+        //載入頁面後計算總計
+        $(document).ready(function () {
+            amount();
+        })
+
+        //購物車內點擊,連動更改小計總計
+        $('input').on('click', function () {
+            amount();
+        })
+        //購物車內輸入數量,連動更改小計總計
+        $('input').on("keyup",function () {
+            
+            var id = $(this).closest('tr').data('id');
+            $(this).val($(this).val().replace(/[^0-9.]/g, '')); 
+            if (String($(this).val()) == "0" || String($(this).val()) == "") {
+                //console.log($(this).closest('tr').data('id'));
+                DeleteCartItem($(this).closest('tr').data('id'))
+                $(this).closest('tr').contents().remove();
+            }
+            amount();
+        });
+
+
+        //刪除獎品的同時,清除表格內容及更改總計
+        $('.btn-danger').click(function () {
+            $(this).closest("tr").contents().remove();
+            amount();
+        })
+
+        //刪除商品ajax
+        function DeleteCartItem(giftID) {
+            $.ajax({
+                type: 'POST',
+                url:'@Url.Action("DeleteCartItem","Member")',
+                data: { id: giftID }
+            }).done(function (data) {
+                $('#Cart').html(data);
+                $(window).scroll();
+                $('#total').text($('#icon-cart').data('sum'));
+                if ($('#total').text() == "0") {
+                    alert('購物車已無獎品,前往兌換清單');
+                    location.href = '@Url.Action("GiftExchange","Member")';
+                }
+                })
+        }
+
+        //結帳
+        $('#checkout').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CartCheckOut", "Member")'
+            }).done(function (data) {
+                if (data == '結帳完成，回到兌換頁面') {
+                    SuccessAnimation('結帳成功');
+                }
+                else if (data == '點數不足') {
+                    alert('點數不足');
+                }
+                else {
+                    alert('請先登入會員');
+                    location.href = '@Url.Action("MemberLogin", "Home")'
+                }
+                })
+        })
+
+        //結帳完成
+        $('.apply-btn,.close').click(function () {
+            location.href='@Url.Action("GiftExchange", "Member")'
+        })
+    </script>
+}

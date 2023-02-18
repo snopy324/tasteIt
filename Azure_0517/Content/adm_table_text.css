@@ -1,0 +1,9 @@
+﻿.table_row {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.table_td {
+    text-align: center;
+    line-height: 50px;
+}

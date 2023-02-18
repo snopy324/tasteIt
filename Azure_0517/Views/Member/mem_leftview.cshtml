@@ -1,0 +1,62 @@
+﻿@model Azure_0517.Models.Member
+
+<style>
+    .list-group *{
+        background-color: transparent !important;
+    }
+    .list-group {
+        background-color: #EBC8B4 !important;
+    }
+</style>
+
+<div class="container-fluid p-0 mr-0 ml-0">
+    @Html.Action("HeadPhotoBlock", "Member", new { id = Model.Mem_ID })
+    <ul class="list-group">
+        <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">姓名:</span>@Model.Mem_Name</p></li>
+        <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">暱稱:</span>@Model.Mem_NickName</p></li>
+        @{
+            string gender = "";
+            if (Model.Mem_Gender.Value)
+            {
+                gender = "男";
+            }
+            else
+            {
+                gender = "女";
+            }
+        }
+        <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">性別:</span>@(gender)</p></li>
+        <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">點數:</span>@Model.Mem_Point</p></li>
+        <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">經驗值:</span>@Model.Mem_Exp</p></li>
+
+    </ul>
+</div>
+<div class="accordion" id="accordionExample">
+
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseONE" aria-expanded="false" aria-controls="collapseThree">
+                    更多資料
+                </button>
+            </h2>
+        </div>
+        <div id="collapseONE" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body p-0 m-0">
+                <ul class="list-group p-0 m-0">
+                    <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">生日:</span>@Model.Mem_Birthday</p></li>
+                    <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">電話:</span>@Model.Mem_Phone</p></li>
+                    <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">電子信箱:</span>@Model.Mem_Mail</p></li>
+                    <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">地址:</span><br>@Model.Mem_Address</p></li>
+                    <li class="list-group-item"><p class="p-0 m-0"><span class="text-danger">介紹:</span><br>@Model.Mem_Introduction</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+﻿@model Azure_0517.Models.ViewModel.ReservationOpen_Book
+
+<div class="container reservation-booking">
+
+    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", @class = "", id = "ReservationBookingForm" }))
+    {
+        <div class="form-group">
+            @*@Html.LabelFor(m => m.Reservation.Restaurant.Res_Name, new { @class = "form-control" })*@
+
+            <h5>
+                <a href="@Url.Action("RestaurantHomePage", "Restaurant", new{ id = Model.Reservation.RVOpen_RestaurantID })">
+                    @Html.DisplayFor(m => m.Reservation.Restaurant.Res_Name, new { @class = "" })
+                </a>
+            </h5>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Reservation.RVOpen_DateTime, new { @class = "" }) :
+            @Html.DisplayFor(m => m.Reservation.RVOpen_DateTime, new { @class = "" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Reservation.RVOpen_OffPrice, new { @class = "" }) :
+            @Html.DisplayFor(m => m.Reservation.RVOpen_OffPrice, new { @class = "" })
+        </div>
+        <div class="form-group form-inline">
+
+            @Html.LabelFor(m => m.Booked.RVBooked_Seats, new { @class = "" }) :
+            @Html.EditorFor(m => m.Booked.RVBooked_Seats, new { htmlAttributes = new { required = true, id = "RVBooked_Seats", @class = "form-control", min = "1" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Member.Mem_Name, new { @class = "" }) :
+            @Html.DisplayFor(m => m.Member.Mem_Name, new { htmlAttributes = new { data_save = Model.Member.Mem_Name, @class = "", disable = true } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Member.Mem_Phone, new { @class = "" }) :
+            @Html.DisplayFor(m => m.Member.Mem_Phone, new { htmlAttributes = new { data_save = Model.Member.Mem_Phone, @class = "", disable = true } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Booked.ReminderText, new { @class = "" }) :
+            <br />
+            @Html.EditorFor(m => m.Booked.ReminderText, new { htmlAttributes = new { placeholder = Html.DisplayNameFor(m => m.Booked.ReminderText), @class = "form-control" } })
+        </div>
+
+
+        <button class="btn btn-success" id="NewReservationBooking">訂位</button>
+    <button id="BookingDemo" class="btn btn-info ">Demo</button>
+        <br /><br /><br /><br />
+
+        @Html.HiddenFor(m => m.Booked.RVBooked_ReservationOpenedID)
+        @Html.HiddenFor(m => m.Booked.RVBooked_MemberID)
+        @Html.HiddenFor(m => m.BackupData)
+        @Html.HiddenFor(m => m.Reservation.RVOpen_Seats)
+        @Html.HiddenFor(m => m.Reservation.RVOpen_SeatsRemain)
+        
+    }
+</div>
+
+
+
+
+@section scripts{
+    @*========================================== TextReminder ==========================================*@
+    <script>
+        $(':submit').click(function () {
+            var strReminder = ""
+            $.each($('input[type=text]'), function (index, element) {
+                if ($(element).data('save') != $(element).val()) {
+                    strReminder += $(element).prev().text() + ":" + $(element).val() + ";";
+                }
+            })
+            //alert(strReminder)
+            $('#BackupData').val(strReminder)
+            //alert($('#BackupData').val())
+            //alert($('textarea').first().val())
+        })
+
+    </script>
+    @*========================================== TextReminder ==========================================*@
+}

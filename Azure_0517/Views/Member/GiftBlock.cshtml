@@ -1,0 +1,54 @@
+﻿@model Azure_0517.Models.Gift
+
+<style>
+    .body {
+        text-align: center;
+    }
+
+    .card {
+        background-color: beige;
+        text-align: center;
+        border: ridge 3px goldenrod;
+    }
+
+    .card-title {
+        font-size: 28px;
+        color: crimson;
+    }
+
+    .card-img-top {
+        margin-top: 20px;
+        border: ridge 2px gold;
+    }
+
+    img {
+        max-height: 350px;
+        max-width: 350px;
+    }
+
+    p {
+        line-height: 16px;
+        height: 18px;
+    }
+</style>
+
+
+<body>
+    <div class="card" style="max-width: 540px;">
+        <img src=@Url.Action("GiftGetImage","Administrator",new {id=Model.Gift_ID}) class="card-img-top" />
+        <div class="card-body">
+            <h2 class="card-title">@Model.Gift_Name</h2>
+
+            @Html.DisplayNameFor(p => p.Gift_Point):
+            <p>@Model.Gift_Point</p>
+            @Html.DisplayNameFor(p => p.Gift_Quantity):
+            <p>@Model.Gift_Quantity</p>
+            @Html.DisplayNameFor(p => p.Gift_CreatedDate):
+            <p>@Model.Gift_CreatedDate</p>
+            @Html.DisplayNameFor(p => p.Gift_CreatedAdmini):
+            <p>@Html.DisplayFor(m => m.Member.Mem_Name)</p>
+            @Html.DisplayNameFor(p => p.Gift_Content):
+            <p>@Model.Gift_Content</p>
+        </div>
+    </div>
+</body>

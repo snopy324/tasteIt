@@ -1,0 +1,163 @@
+﻿@model  Azure_0517.Models.Restaurant
+@using System;
+@section styles{
+    @*<style>
+            .forimage {
+                width: 64px !important;
+                height: 64px !important;
+            }
+
+            .starshine {
+                -webkit-filter: grayscale(0);
+            }
+
+            .stargray {
+                -webkit-filter: grayscale(1);
+            }
+
+
+            .chudiv {
+                background-color: lightgoldenrodyellow;
+                border-bottom: 1px solid lightblue;
+                border-right: 1px solid lightblue;
+                border-left: 1px solid lightblue;
+            }
+            .introduction {
+                width: 700px !important;
+                height: 53px !important;
+            }
+        </style>*@
+    <style>
+        .star-rating {
+            display: flex;
+            align-items: center;
+            font-size: 1.6em;
+            /*justify-content: center;*/
+        }
+
+        .back-stars {
+            display: flex;
+            color: lightgray;
+            position: relative;
+            text-shadow: 4px 4px 10px gray;
+        }
+
+        .front-stars {
+            display: flex;
+            color: #FFBC0B;
+            overflow: hidden;
+            position: absolute;
+            text-shadow: 2px 2px 5px #d29b09;
+            top: 0;
+        }
+    </style>
+}
+<div class="container">
+    <div class="media chudiv">
+        <img src="@Url.Action("getimage","Home",new {id=Model.Res_ID})" class="mr-3" style="width:200px;height:200px" alt="...">
+        <div class="media-body" style="width:530px">
+            <div class="container-fluid row mt-1 pl-0 ml-0">
+                <div class="col-9 pl-0 ml-0 mb-0 pb-0">
+                    <a href="@Url.Action("RestaurantHomePage","Restaurant",new {id=Model.Res_ID })"> <h2 class="mt-0" style="display:inline-block">@Model.Res_Name</h2></a>
+                </div>
+                <div class="col-2 mt-1 mb-0 pb-0 text-right align-content-center">
+                    <p>
+                        <img src="~/tasteitlogo/like_icon.png" title="收藏數" style="width:30px;height:30px" />
+                        <span id="thelikecount@(Model.Res_ID)" class="align-bottom text-danger" style="font-size:x-large;font-weight:500;"> @ViewBag.likecount</span>
+                    </p>
+                </div>
+                <div class="col-1 mb-0 pb-0 text-left mt-1">
+                    @if (ViewBag.flag == null)
+                    {
+                        <button id="addtolike" data-flagrid="@Model.Res_ID" class="btn btn-light m-0 p-0 LVM lileicon" data-toggle="tooltip" data-placement="top" title="加到收藏">
+                            <img class="p-1" id="c_likeicon" src="~/tasteitlogo/loveicon.png" data-toggle="tooltip" data-placement="top" title="加到收藏" />
+                        </button>
+                    }
+                    else if (ViewBag.flag == "like")
+                    {
+                        <button id="addtolike" data-flagrid="@Model.Res_ID" data-t_m="@ViewBag.the_mem" data-flaglike="@ViewBag.flag" class="btn btn-warning  m-0 p-0 LVM lileicon" data-toggle="tooltip" data-placement="top" title="取消收藏">
+                            <img class="p-0 m-1" id="c_likeicon" src="~/tasteitlogo/loveicon.png" data-toggle="tooltip" data-placement="top" title="取消收藏" style="width:25px;height:25px;" />
+                        </button>
+                    }
+                    else if (ViewBag.flag == "notlike")
+                    {
+                        <button id="addtolike" data-flagrid="@Model.Res_ID" data-t_m="@ViewBag.the_mem" data-flaglike="@ViewBag.flag" class="btn btn-light  m-0 p-0 LVM lileicon" data-toggle="tooltip" data-placement="top" title="加到收藏">
+                            <img class="p-0 m-1" id="c_likeicon" src="~/tasteitlogo/loveicon.png" data-toggle="tooltip" data-placement="top" title="加到收藏" style="width:30px;height:30px;" />
+                        </button>
+                    }
+                </div>
+            </div>
+            <div class="container-fluid pl-0 ml-0 text-left">
+                <p class="p-0 mt-1 mb-1">
+                    所在城市: @Model.City.Cit_Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 地址: @Model.Res_Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @{
+                        if (ViewBag.tagstring != null)
+                        {
+                            foreach (var t_tag in ViewBag.tagstring.Split(','))
+                            {
+                                <span class="badge badge-warning badge-warning">@t_tag</span>
+                            }
+                        }
+                        if (ViewBag.stagstring != null)
+                        {
+                            foreach (var s_tag in ViewBag.stagstring.Split(','))
+                            {
+                                <span class="badge badge-dark">@s_tag</span>
+                            }
+                        }
+                    }
+                </p>
+                @{
+                    decimal percent = (Convert.ToDecimal(Model.Res_StarRate) / 5) * 100;
+                }
+                <div class="p-0 mt-1 mb-2" style="display:flex;flex-direction:row;justify-content:space-between">
+                    <div class="star-rating" style="align-self:flex-end" title="">
+                        <div class="back-stars">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+
+                            <div class="front-stars" style="width:@(percent)%">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <span class="text-danger pl-4" style="font-size:large">@Model.Res_StarRate 分</span>
+                    </div>
+                    <span style="align-self:flex-end">連絡電話: @Model.Res_Phone</span>
+                    <span style="align-self:flex-end">價格區間: @Model.Res_MinConsumption 至 @Model.Res_MaxConsumption </span>
+                </div>
+                <div class="introduction">
+                    <span class="hidetext p-0 m-0">@Model.Res_IntroductionContext</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-header">
+        <div data-restid="@Model.Res_ID" class="reservation-ul">
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        @*if (Request.Cookies["Role"] != null) {
+            if (Request.Cookies["Role"].value == "Member") {
+                let m_key = Request.Cookies["Key"].value;
+                $.ajax({
+                    method:'Get',
+                    url: '@Url.Action("likeornot","Home")',
+                    data: { memid: m_key,resid:@Model.Res_ID}
+                }).done(function (data) {
+
+                })
+            }
+        }*@
+    </script>
+}

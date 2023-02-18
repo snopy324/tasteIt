@@ -1,0 +1,18 @@
+﻿@model Azure_0517.Models.ViewModel.AdmQAViewModel
+@if (Request.Cookies["Role"].Value == "Administrator")
+{
+    <h1>@Model.Name</h1>
+
+}
+else if (Request.Cookies["Role"].Value == "Member")
+{
+    <h1>@Model.Name</h1>
+}
+else if (Request.Cookies["Role"].Value == "Restaurant")
+{
+    <h1>@Model.Name</h1>
+}
+
+
+<span style="flex:1"></span>
+<span id="close" class="close-button">Ⅹ</span>

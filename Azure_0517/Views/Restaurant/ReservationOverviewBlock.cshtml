@@ -1,0 +1,110 @@
+﻿@model IEnumerable<IGrouping<int, Azure_0517.Models.ReservationOpened>>
+
+@foreach (var team in Model)
+{
+<div class="panel-group section reservation-manage" id="accordion1">
+    <a class="close" style="position:relative; right:50px;top:10px" data-key="@team.Key" href='#'>&times;</a>
+    <div class="panel panel-default">
+        <div class="panel-heading row ">
+            <div class="section-header">
+                <a class="section-header-a" data-toggle="collapse" data-parent="#accordion1" href="#Team@(team.Key)">
+                    <span>
+                        @team.First().RVOpen_DateTime.ToString("yyyy-MM-dd") &nbsp;&nbsp;
+                        @Html.DisplayNameFor(t => t.First().First().RVOpen_OffPrice) : @team.First().RVOpen_OffPrice
+                        , @Html.DisplayNameFor(t => t.First().First().RVOpen_Seats) : @team.First().RVOpen_Seats
+                    </span>
+                </a>
+            </div>
+        </div>
+        @foreach (var open in team)
+        {
+            <div id="Team@(team.Key)" class="text-left panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="panel-group" id="accordion2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="section-content-a" data-toggle="collapse" data-parent="#accordion2" href="#Open@(open.RVOpen_ID)">
+                                    @open.RVOpen_DateTime.ToString("HH:mm")&nbsp;
+                                    @*訂位狀況:<cite>@open.RVOpen_SeatsRemain / @open.RVOpen_Seats</cite>*@
+                                    剩餘:@(open.RVOpen_SeatsRemain)&nbsp; 位&nbsp;&nbsp;
+                                    <span class="text-right">
+                                        訂位狀況
+                                    </span>
+                                </a>
+                            </div>
+                            @foreach (var book in open.ReservationBookeds.OrderBy(L => L.BackUpNo))
+                            {
+                                <div id="Open@(open.RVOpen_ID)" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        @if (book.RVBooked_CheckinTime.HasValue)
+                                        {
+                                        <a href="#" class="membercheck badge btn-success section-list" data-bookid="@book.RVBooked_ID">
+                                            @book.Member.Mem_Name
+
+                                            <cite>
+                                                @(book.RVBooked_Seats)位
+                                            </cite>
+                                            @if (book.BackUpNo != null)
+                                            {
+                                                <span>(候補順位:@book.BackUpNo)</span>
+                                            }
+
+                                            @if ((book.ReminderText != "" && book.ReminderText != null))
+                                            {
+                                                <span>(@book.ReminderText)</span>
+                                            }
+
+                                        </a>
+                                        }
+                                        else if (book.ReservationOpened.RVOpen_DateTime >= DateTime.Now)
+                                        {
+                                            <a href="#" class="membercheck badge btn-info section-list" data-bookid="@book.RVBooked_ID">
+                                                @book.Member.Mem_Name&nbsp;&nbsp;
+
+                                                <cite>
+                                                    @(book.RVBooked_Seats)位
+                                                </cite>
+                                                @if (book.BackUpNo != null)
+                                                {
+                                                    <span>(候補順位:@book.BackUpNo)</span>
+                                                }
+                                                @if ((book.ReminderText != "" && book.ReminderText != null))
+                                                {
+                                                    <span>(@book.ReminderText)</span>
+                                                }
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="membercheck badge btn-warning section-list" data-bookid="@book.RVBooked_ID">
+                                                @book.Member.Mem_Name
+
+                                                <cite>
+                                                    @(book.RVBooked_Seats)位
+                                                </cite>
+                                                @if (book.BackUpNo != null)
+                                                {
+                                                    <span>(候補順位:@book.BackUpNo)</span>
+                                                }
+                                                @if ((book.ReminderText != "" && book.ReminderText != null))
+                                                {
+                                                    <span>(@book.ReminderText)</span>
+                                                }
+                                            </a>
+                                        }
+
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+}

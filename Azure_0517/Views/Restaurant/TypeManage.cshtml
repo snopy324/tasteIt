@@ -1,0 +1,235 @@
+﻿@model Azure_0517.Models.ViewModel.TypemanageViewmodel
+
+@*@{
+        ViewBag.homepage = Model.res.Res_ID;
+        ViewBag.Title = "TypeManage";
+        Layout = "~/Views/Shared/RestanrantHome_LayoutPage.cshtml";
+    }*@
+
+@section styles{
+    @*<style>
+            .thetype {
+            }
+
+            .subtype {
+            }
+
+            .restype {
+            }
+        </style>*@
+}
+<div class="container">
+    <div class="">
+        <a onclick="savetype('@Model.res.Res_ID')" href="javascript:void(0);" class="btn btn-primary btn-lg btn-block">確認並送出</a>
+        @*<button id="c_btn_type" class="btn btn-success">確認</button>*@
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <fieldset class="text-center">
+                <legend>大標籤</legend>
+                <div id="ttype" @*class="btn-group-vertical thetype" role="group" aria-label="Basic example"*@>
+                    @if (Model.nonthetype != null)
+                    {
+                        int t_skip = 0;
+                        int t_skip2 = 0;
+                        <div id="ttype_1" class="btn-group-vertical thetype  align-top" role="group" aria-label="Basic example">
+                            @for (int i = 0; i < Model.nonthetype.Count(); i++)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    <button data-p="t_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-warning btn-lg btn-block m-2">@Model.nonthetype.Skip(t_skip).Take(1).FirstOrDefault()</button>
+                                    t_skip++;
+                                }
+                                else { t_skip++; continue; }
+                            }
+                        </div>
+                        <div id="ttype_2" class="btn-group-vertical thetype  align-top" role="group" aria-label="Basic example">
+                            @for (int x = 0; x < Model.nonthetype.Count(); x++)
+                            {
+                                if (x % 2 != 0)
+                                {
+                                    <button data-p="t_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-warning btn-lg btn-block m-2">@Model.nonthetype.Skip(t_skip2).Take(1).FirstOrDefault()</button>
+                                    t_skip2++;
+                                }
+                                else { t_skip2++; continue; }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="ttype_1" class="btn-group-vertical thetype align-top" role="group" aria-label="Basic example"></div>
+                        <div id="ttype_2" class="btn-group-vertical thetype align-top" role="group" aria-label="Basic example"></div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-4">
+            <fieldset class="text-center">
+                <legend>小標籤</legend>
+                <div id="stype">
+                    @if (Model.nonsubtype != null)
+                    {
+                        int s_skip = 0;
+                        int s_skip2 = 0;
+                        <div id="stype_1" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example">
+                            @for (int s = 0; s < Model.nonsubtype.Count(); s++)
+                            {
+                                if (s % 2 == 0)
+                                {
+                                    <button data-p="s_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-dark btn-lg btn-block m-2">@Model.nonsubtype.Skip(s_skip).Take(1).FirstOrDefault()</button>
+                                    s_skip++;
+                                }
+                                else { s_skip++; continue; }
+                            }
+                        </div>
+                        <div id="stype_2" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example">
+                            @for (int s = 0; s < Model.nonsubtype.Count(); s++)
+                            {
+                                if (s % 2 != 0)
+                                {
+                                    <button data-p="s_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-dark btn-lg btn-block m-2">@Model.nonsubtype.Skip(s_skip2).Take(1).FirstOrDefault()</button>
+                                    s_skip2++;
+                                }
+                                else { s_skip2++; continue; }
+                            }
+                        </div>
+                        @*foreach (var item in Model.nonsubtype)
+                            {
+                                <button data-p="s_type" type="button" class="btn btn-dark btn-lg btn-block m-2">@item</button>
+                            }*@
+                    }
+                    else
+                    {
+                        <div id="stype_1" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example"></div>
+                        <div id="stype_2" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example"></div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-4">
+            <fieldset class="text-center">
+                <legend>我的餐廳標籤</legend>
+                <div id="restype" @*class="btn-group-vertical restype" role="group" aria-label="Basic example"*@>
+                    @if (Model.Resthetypes != null)
+                    {
+                        @*foreach (var item in Model.Resthetypes)
+                            {
+                                <button data-p="t_type" type="button" class="btn btn-warning btn-lg btn-block m-2">@item</button>
+                            }*@
+                        int t_skip = 0;
+                        int t_skip2 = 0;
+                        <div id="r_ttype_1" class="btn-group-vertical thetype align-top" role="group" aria-label="Basic example">
+                            @for (int i = 0; i < Model.Resthetypes.Count(); i++)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    <button data-p="t_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-warning btn-lg btn-block m-2">@Model.Resthetypes.Skip(t_skip).Take(1).FirstOrDefault()</button>
+                                    t_skip++;
+                                }
+                                else { t_skip++; continue; }
+                            }
+                        </div>
+                        <div id="r_ttype_2" class="btn-group-vertical thetype align-top" role="group" aria-label="Basic example">
+                            @for (int x = 0; x < Model.Resthetypes.Count(); x++)
+                            {
+                                if (x % 2 != 0)
+                                {
+                                    <button data-p="t_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-warning btn-lg btn-block m-2">@Model.Resthetypes.Skip(t_skip2).Take(1).FirstOrDefault()</button>
+                                    t_skip2++;
+                                }
+                                else { t_skip2++; continue; }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="r_ttype_1" class="btn-group-vertical thetype align-top" role="group" aria-label="Basic example"></div>
+                        <div id="r_ttype_2" class="btn-group-vertical thetype align-top" role="group" aria-label="Basic example"></div>
+                    }
+                    @if (Model.RessubTypes != null)
+                    {
+                        @*foreach (var item in Model.RessubTypes)
+                            {
+                                <button data-p="s_type" type="button" class="btn btn-dark m-2">@item</button>
+                            }*@
+                        int s_skip = 0;
+                        int s_skip2 = 0;
+                        <div id="r_stype_1" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example">
+                            @for (int s = 0; s < Model.RessubTypes.Count(); s++)
+                            {
+                                if (s % 2 == 0)
+                                {
+                                    <button data-p="s_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-dark btn-lg btn-block m-2">@Model.RessubTypes.Skip(s_skip).Take(1).FirstOrDefault()</button>
+
+                                    s_skip++;
+                                }
+                                else { s_skip++; continue; }
+                            }
+                        </div>
+                        <div id="r_stype_2" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example">
+                            @for (int s = 0; s < Model.RessubTypes.Count(); s++)
+                            {
+                                if (s % 2 != 0)
+                                {
+                                    <button data-p="s_type" style="width:95px;height:40px;font-size:xx-small;border-radius:15px 15px;" type="button" class="btn btn-dark btn-lg btn-block m-2">@Model.RessubTypes.Skip(s_skip2).Take(1).FirstOrDefault()</button>
+                                    s_skip2++;
+                                }
+                                else { s_skip2++; continue; }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="r_stype_1" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example"></div>
+                        <div id="r_stype_2" class="btn-group-vertical subtype align-top" role="group" aria-label="Basic example"></div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @*<script>
+
+            $(document).on('click', '#ttype>.btn', function () {
+                $("#restype").append(this);
+            });
+            $(document).on('click', '#stype>.btn', function () {
+                $("#restype").append(this);
+            });
+            $(document).on('click', '#restype>.btn', function () {
+
+                var target = $(this).data("p");
+
+                if (target == "t_type") {
+                    $("#ttype").append(this);
+                }
+                else {
+                    $("#stype").append(this);
+                }
+            });
+        </script>
+        <script type="text/javascript">
+            var target = document.getElementById('restype').children;
+
+            function savetype(resid) {
+                $.ajax({
+                        type: 'Get',
+                        url: '@Url.Action("cleartype", "Restaurant")',
+                        data: { id: resid }
+                    });
+                for (let t of target) {
+                $.ajax({
+                    type: 'POST',
+                    url:'@Url.Action("savetypechanged", "Restaurant")',
+                    data: { id: resid, content: t.textContent, t_type: t.getAttribute('data-p') },
+                    success: function () {
+                        console.log("savesuccess")
+                    }
+                }).done(function (data) { console.log(data); })
+                }
+                alert("儲存成功!");
+            }
+        </script>*@
+}

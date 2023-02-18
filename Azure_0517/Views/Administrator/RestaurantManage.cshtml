@@ -1,0 +1,145 @@
+﻿@model Azure_0517.Models.Restaurant
+@{
+    ViewBag.Title = "餐廳管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    @using (Html.BeginForm("RestaurantManage", "Administrator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_ID, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_ID, new { htmlattributes = new { @class = "form-control readonly", value = Model.Res_ID, @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Name, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Name, new { htmlattributes = new { id = "Res_Name", @class = "form-control", value = Model.Res_Name } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Account, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Account, new { htmlattributes = new { id = "Res_Account", @class = "form-control", value = Model.Res_Account } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Password, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Password, new { htmlattributes = new { id = "Res_Password", @class = "form-control", value = Model.Res_Password } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.City, new { @class = "col-sm-2 col-form-label" })
+            @{
+                var city = new SelectList(ViewBag.citues, "Cit_ID", "Cit_Name");
+            }
+            <div class="col-sm-10">
+                @Html.DropDownListFor(c => c.Res_City, city, new { id = "Res_City", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Address, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Address, new { id = "Res_Address", htmlattributes = new { @class = "form-control", value = Model.Res_Address } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Email, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Email, new { htmlattributes = new { id = "Res_Email", @class = "form-control", value = Model.Res_Email } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Phone, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Phone, new { htmlattributes = new { id = "Res_Phone", @class = "form-control", value = Model.Res_Phone } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_Seats, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_Seats, new { htmlattributes = new { id = "Res_Seats", @class = "form-control", value = Model.Res_Seats } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_ParkingSeats, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_ParkingSeats, new { htmlattributes = new { id = "Res_ParkingSeats", @class = "form-control", value = Model.Res_ParkingSeats } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_MaxConsumption, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_MaxConsumption, new { htmlattributes = new { id = "Res_MaxConsumption", @class = "form-control", value = Model.Res_MaxConsumption } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_MinConsumption, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_MinConsumption, new { htmlattributes = new { id = "Res_MinConsumption", @class = "form-control", value = Model.Res_MinConsumption } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_CreateDate, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(t => t.Res_CreateDate, new { htmlattributes = new { @class = "form-control", value = Model.Res_CreateDate, @readonly = "readonly" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(t => t.Res_HomePagePicture, new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-10 text-center">
+                <img id="c_target_dataphoto" name="c_target_dataphoto" src="@Url.Action("getdbimage", "Restaurant" ,new { id=Model.Res_ID ,table="restaurant" })" alt="Preview Image" width="500" height="500" />
+                @*<label class="btn btn-info">
+                        <input class="disabled" id="c_photo" name="c_photo" type="file">
+                        <i class="fa fa-photo"></i>.
+                    </label>*@
+                <input type="file" class="form-control-file" style="margin-left:10.8rem" id="c_photo" name="c_photo">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-primary">確認修改</button>
+                @Html.ActionLink("返回前頁", "RestaurantOverview", "Administrator", null, new { @class = "btn btn-success" })
+                <button id="c_demo" type="button" class="btn btn-info">Demo鍵</button>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).on("change", "#c_photo", function () {
+            var files = document.getElementById("c_photo").files;
+            for (var x of files) {
+                var reader = new FileReader();
+                reader.addEventListener("load", function (e) {
+                    var fileContent = e.target.result;
+                    document.getElementById("c_target_dataphoto").setAttribute("src", fileContent);
+                });
+                reader.readAsDataURL(x);
+            }
+        });
+
+        $("#c_demo").click(function () {
+            $("#Res_Name").val('Demo餐廳');
+            $("#Res_Account").val('r9999');
+            $("#Res_Password").val('000');
+            $("#Res_Address").val('台北市大安區復新南路121號');
+            $("#Res_Email").val('r9999@gmail.com');
+            $("#Res_Phone").val('0922371254');
+            $("#Res_Seats").val('40');
+            $("#Res_ParkingSeats").val('20');
+            $("#Res_MaxConsumption").val('1500');
+            $("#Res_MinConsumption").val('500');
+            $("#Res_City").val('23')
+        });
+
+    </script>
+}
+

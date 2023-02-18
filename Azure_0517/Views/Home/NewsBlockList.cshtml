@@ -1,0 +1,8 @@
+﻿
+@model IEnumerable<Azure_0517.Models.News>
+
+@foreach (var news in Model)
+{
+    @Html.Action("NewsMetroBlock", "Restaurant", new { id = news.New_ID })
+}
+
